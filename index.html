@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+    <style>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 22px;
+    line-height: 1.55;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 13px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 30px;
+
+    margin-top: 18px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+#prevBtn,
+#nextBtn {
+    width: auto;
+    height: auto;
+}
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 24px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 18px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 17px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 17px;
+        min-height: 60px;
+        padding: 16px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 15px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 17px;
+    }
+
+    #infoExample {
+        font-size: 16px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 25px;
+    }
+
+    .option {
+        font-size: 20px;
+        min-height: 64px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 15px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton" onclick="previousQuestion()">Previous</button>
+    </div>
+
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+
+
+<script>
+
+const vocabulary = {
+savour:"taste; flavor; enjoyment; relish; appreciate; show signs or traces",
+saxophone:"a musical instrument played by blowing into a mouthpiece",
+scab:"a dry crust that forms over a wound; a person who refuses to join a strike or union",
+scaffold:"a temporary structure used by workers when building or repairing a building; a structure used for hanging people",
+scallop:"a shellfish with two fan-shaped shells; a decorative edge with a series of curves",
+scalpel:"a small, very sharp knife used by doctors or surgeons",
+scaremonger:"a person who spreads alarming or panic-inducing news or rumors",
+scary:"frightening or causing fear",
+scathing:"extremely critical or severe",
+scatterbrain:"a person who is forgetful and unable to concentrate",
+scavenge:"to search for and collect useful things that have been thrown away",
+scenario:"a possible situation or sequence of events; a script or outline",
+schema:"a diagram or outline that shows how something is organized",
+schematize:"to represent or organize something in the form of a plan or diagram",
+schizophrenia:"a serious mental disorder that affects a person's thoughts, feelings, and behavior",
+scholastic:"related to school or education; academic",
+scintillation:"brilliance or liveliness, especially of intelligence; sparkling or flashing light",
+scoff:"to mock or ridicule someone or something; to eat something quickly or greedily",
+scowl:"to look at someone angrily with a frown",
+scrawl:"to write or draw something in a careless, messy way",
+sallow:"yellowish or pale in color, especially because of illness",
+salutary:"having a helpful or beneficial effect",
+salvage:"to rescue people or property from danger; to recover or reuse something that would otherwise be lost or wasted",
+salvo:"a simultaneous firing of several guns; a sudden burst of cheers or applause",
+samba:"a Brazilian dance or style of music",
+sanctification:"the act of making something holy; the act of making something acceptable or justified",
+sanctify:"to make something holy; to make something acceptable or legitimate",
+sanctuary:"a holy or sacred place; a place of safety or protection; a place where animals are protected",
+sanctum:"a sacred or private place; a private room or study",
+sanguine:"optimistic, hopeful, or cheerful; having a healthy reddish complexion",
+sap:"a liquid in plants that carries water and nutrients; to weaken or undermine something gradually",
+sardonic:"showing mocking or cynical humor",
+sarong:"a long piece of cloth worn around the body, especially by people in Southeast Asia",
+sartorial:"related to clothing, especially men's clothing",
+sash:"a long band of cloth worn around the waist or across the body; the frame of a window that holds the glass",
+satiate:"to satisfy a desire or appetite completely; to make someone feel completely satisfied or tired of something",
+satiation:"the state of being completely satisfied, especially after eating; the feeling of being tired of something",
+satyr:"a creature in Greek and Roman mythology that was part human and part goat; a man with very strong sexual desires",
+savagery:"extremely cruel or violent behavior",
+savant:"a highly knowledgeable or learned person",
+sedan:"a car with four doors and a separate trunk",
+sedative:"a drug or medicine that makes a person calm or sleepy",
+seduce:"to persuade someone to have sex with you; to tempt or attract someone into doing something",
+seduction:"the act of persuading someone to have sex with you; the power to attract or tempt someone",
+seductive:"attractive or tempting, especially in a sexual way",
+seedy:"dirty, shabby, or run-down; looking or feeling unhealthy",
+seep:"to flow slowly through small holes or spaces",
+seethe:"to boil or bubble; to be extremely angry or excited; to be full of activity or movement",
+segregate:"to separate people or things; to treat people unfairly by keeping them separate from others",
+segregation:"the act of separating people or things; especially the separation of racial groups",
+selenium:"a chemical element",
+"self-annihilation":"the destruction of oneself; complete self-destruction",
+"self-effacing":"not trying to attract attention or praise; modest and humble",
+"self-fulfilling":"becoming true because people expect it to become true or act in ways that make it true",
+"self-made":"successful because of one's own efforts rather than family wealth or influence",
+"self-opinionated":"having very strong opinions and believing that one's own opinions are always right",
+"self-possessed":"calm and confident, especially in a difficult situation",
+"self-preservation":"the instinct or effort to protect oneself from danger or harm",
+"self-restraint":"the ability to control one's feelings, desires, or actions",
+"self-styled":"describing someone who gives themselves a particular name, title, or position",
+"self-willed":"determined to do what one wants, even when others disagree",
+semantic:"related to the meaning of words or language",
+semantics:"the study of the meanings of words and sentences",
+semblance:"the appearance or outward form of something; a slight similarity",
+seminal:"having a strong influence on the later development of something",
+senatorial:"related to a senate or senator",
+senile:"showing the mental or physical decline associated with old age",
+sensor:"a device that detects and measures changes in the environment",
+senility:"the physical or mental decline associated with old age",
+sentinel:"a person or soldier who guards a place",
+sentry:"a guard or soldier who watches and protects a place",
+separatist:"a person who wants a region or group to become independent from a larger country or organization",
+sepulchre:"a tomb or burial place",
+sequel:"a result or consequence; a story, film, or book that continues an earlier one",
+serenade:"a piece of music performed for or in honor of someone",
+serf:"a person who was legally tied to a piece of land and forced to work for its owner; a person treated like a slave",
+serrated:"having an edge with a series of sharp points like a saw",
+serum:"the clear liquid part of blood; a liquid used for medical treatment or containing antibodies",
+serviceable:"usable and suitable for a particular purpose; strong enough to be used for a long time",
+servile:"too willing to obey or serve someone; lacking independence or dignity",
+servility:"excessive willingness to obey or serve someone",
+servitude:"the condition of being forced to work for and obey another person",
+"set-piece":"a carefully planned scene or part of a novel, film, play, or other work",
+setter:"a type of long-haired hunting dog",
+severity:"the quality of being very serious or strict; extreme intensity; harsh punishment or difficult conditions",
+sexism:"unfair treatment or prejudice based on a person's sex or gender",
+sexist:"a person who has sexist beliefs; showing prejudice based on sex or gender",
+shack:"a small, simple, poorly built house or shelter",
+shaggy:"having long, thick, untidy hair or fur",
+shag:"a cormorant, a type of sea bird",
+shamble:"to walk slowly and awkwardly, dragging one's feet",
+shanghai:"to trick or force someone into doing something; to kidnap someone and force them to work as a sailor",
+shapely:"having an attractive and well-proportioned shape",
+shatter:"to break or destroy something into many small pieces",
+sheaf:"a bundle of grain, papers, or other things tied together",
+shear:"to cut the wool off a sheep; to break or cut something suddenly",
+sheath:"a protective cover for a knife or sword; a condom",
+sheen:"a soft shine or glow on the surface of something",
+sheikh:"an Arab leader or chief; a Muslim religious leader",
+shimmer:"to shine with a soft, flickering light",
+shin:"the front part of the lower leg; meat from the lower leg of an animal",
+shirk:"to avoid work, responsibility, or a duty, especially because of laziness or fear",
+shoal:"a large group of fish; a shallow area of water, especially one with sand or rocks",
+shoddy:"of poor quality or badly made",
+shortfall:"an amount that is less than what is needed or expected",
+shove:"to push someone or something roughly",
+shred:"a small amount or piece; to tear or cut something into small pieces",
+shrew:"a small mouse-like animal that eats insects; an unpleasant, bad-tempered woman",
+shrinkage:"a reduction in size, especially because of heat, moisture, or use",
+shrivel:"to become or make something smaller, drier, and wrinkled",
+shroud:"a cloth used to cover a dead body; something that covers or hides something; to cover or hide",
+shrubbery:"an area of land covered with shrubs",
+shrubby:"covered with or consisting of shrubs",
+shuffle:"to walk without lifting one's feet properly; to mix or rearrange things",
+shun:"to deliberately avoid someone or something",
+shunt:"to move a train onto another track; to move or transfer something to another place or position",
+sibling:"a brother or sister",
+sic:"used in a quotation to show that an unusual or incorrect word was in the original text",
+sickbay:"a room or small hospital for sick people, especially on a ship or at a boarding school",
+sickening:"causing disgust; making someone feel sick or extremely unpleasant",
+sideline:"the line marking the side of a sports field; a job or activity done in addition to one's main work",
+sidestep:"to move aside to avoid something; to avoid dealing with a problem or question",
+sidle:"to move quietly or cautiously sideways or closer to someone",
+sierra:"a mountain range with a jagged or saw-like outline",
+sighting:"an occasion when someone or something is seen",
+signet:"a small seal or stamp used as a personal mark",
+silage:"grass or other green plants preserved as animal food",
+silhouette:"a dark shape or outline of a person or object seen against a lighter background",
+silica:"a chemical substance found in sand, rocks, and glass",
+silo:"a tall structure used for storing grain or other materials; an underground structure for storing missiles",
+silt:"fine sand, mud, or other material carried by water and deposited at the bottom of rivers or lakes",
+simmer:"to cook gently in liquid just below boiling point; to contain or develop strong emotions; to be close to becoming violent",
+simpleton:"a person who is not intelligent or is easily fooled",
+simulate:"to pretend to have or feel something; to imitate or reproduce the behavior of something",
+sinew:"a tendon; a source of strength or power",
+singe:"to burn something slightly, usually damaging only the surface",
+sinuous:"having many smooth curves; winding or twisting",
+sip:"to drink something slowly in small amounts; a small amount of liquid",
+siphon:"a tube used to move liquid from one container to another; to remove liquid using a siphon",
+sirloin:"a high-quality cut of beef from the back of a cow",
+sizeable:"fairly large",
+sizzle:"to make a hissing sound when being fried or cooked",
+skid:"to slide sideways, especially because of losing control; a sideways sliding movement",
+"skin-diving":"diving underwater using simple equipment such as a mask, fins, and a breathing tube",
+skinny:"extremely thin",
+slab:"a thick, flat piece of stone, wood, or another material",
+slag:"waste material produced during metal-making; a woman considered sexually immoral; to insult or criticize someone",
+slanderous:"containing false statements intended to damage someone's reputation",
+slangy:"using or containing a lot of slang",
+slash:"to cut violently with a sharp object; to reduce something greatly; to make a long cut in clothing as decoration; a long cut or opening",
+slat:"a thin, narrow strip of wood or plastic",
+slavish:"like a slave; following someone or something blindly without originality",
+sleazy:"dirty, cheap, or morally unpleasant",
+sleek:"smooth and shiny; well-groomed and healthy-looking; fashionable and elegant",
+sleeper:"a person who is sleeping; a wooden support under railway tracks; a railway carriage with beds",
+slick:"smooth and effective; clever but not completely honest; smooth and slippery; a layer of oil floating on water",
+slime:"a thick, soft, slippery substance; a slimy substance produced by some animals",
+slimy:"covered with or resembling slime; dishonest or unpleasant",
+slink:"to move quietly and secretly; to move in a shy or uncomfortable way",
+slit:"a long, narrow cut or opening; to make a long, narrow cut in something",
+slither:"to move smoothly and quietly like a snake",
+sliver:"a thin, narrow piece broken or cut from something; to break or cut into thin pieces",
+slop:"to spill or splash liquid",
+slouch:"to sit, stand, or walk in a lazy, drooping way; a lazy or ineffective person",
+slug:"to hit someone very hard; a hard punch; a bullet; a piece of metal used instead of a coin in a machine",
+slump:"to fall or sit heavily; to decrease suddenly and greatly",
+slurry:"a thick liquid mixture of water and solid material",
+slur:"to speak unclearly; to make an insulting or damaging statement about someone; an insulting or damaging remark",
+smother:"to kill by preventing someone from breathing; to cover completely; to suppress or control a feeling",
+smolder:"to burn slowly without producing flames; to continue to exist as a strong but controlled emotion",
+smug:"too pleased with oneself and one's achievements",
+snag:"an unexpected difficulty or problem; a sharp object that catches or tears something; to catch or become caught",
+snare:"a trap for catching animals or people; something that attracts someone into a difficult situation; to catch with a trap",
+snarl:"to growl angrily; to speak angrily or rudely; an angry or threatening sound",
+snigger:"to laugh quietly or secretly in a disrespectful way",
+sniffle:"to breathe noisily through the nose, usually because of a cold or crying; a sniffing sound",
+snipe:"to attack or shoot from a hidden position; to criticize someone unfairly",
+sniper:"a person trained to shoot at targets from a hidden position",
+snivel:"to cry or complain in a weak, annoying way",
+snooty:"behaving as if one is better or more important than other people",
+snorkel:"a tube that allows a person to breathe while swimming underwater; to dive or swim using a snorkel",
+snort:"to force air noisily through the nose; a noisy sound made by breathing through the nose",
+snout:"the projecting nose and mouth of an animal; something shaped like an animal's nose; a person's nose; an informer to the police; tobacco",
+snub:"to deliberately ignore or treat someone coldly",
+snuff:"powdered tobacco that is inhaled through the nose; to extinguish a flame",
+sobriety:"the state of being serious, sensible, and self-controlled; the state of not being drunk",
+soggy:"very wet and soft",
+sol:"the fifth note of the musical scale",
+solace:"comfort in a time of sadness or difficulty; to comfort someone",
+solemnity:"seriousness and dignity; a serious or formal ceremony",
+soliloquy:"a speech in which a character in a play speaks their thoughts aloud, especially when alone",
+solitary:"living or being alone; single; remote and rarely visited",
+solitude:"the state of being alone; a lonely or remote place",
+solvency:"the ability to pay debts and meet financial obligations",
+sombre:"dark or dull in color; serious, sad, or gloomy",
+sonar:"a system that uses sound waves to detect and locate objects underwater",
+sonata:"a piece of music written for one or a few instruments",
+sophist:"a person who uses clever but false arguments to deceive people",
+soprano:"the highest female singing voice; a singer with the highest female voice",
+sordid:"morally bad or shameful; dirty and unpleasant",
+sortie:"a short trip or visit; a military attack or operation; a flight made by one aircraft during a military operation",
+spaniel:"a type of hunting dog with long ears and long hair",
+spar:"a long strong piece of wood or metal used as part of a ship or other structure; to exchange light punches; to argue or disagree with someone",
+sparingly:"in a limited or economical way",
+spasm:"a sudden involuntary movement or contraction; a sudden short period of activity or emotion",
+spasmodic:"happening suddenly and irregularly; related to muscle spasms",
+spate:"a large number or amount of something that happens suddenly",
+spatter:"to splash or scatter small drops of liquid onto something",
+spatial:"related to space or the position and arrangement of things",
+speckle:"a small spot or mark on a surface",
+spectre:"a ghost; a frightening possibility or fear",
+spectrum:"a range of colors produced when light is separated; a wide range of related things",
+spew:"to forcefully send out liquid, gas, or other material; to vomit",
+spindle:"a thin rod used for spinning or winding; a rotating shaft",
+spinner:"a person who spins thread or yarn",
+spirited:"full of energy, enthusiasm, and liveliness",
+spirituality:"the quality or state of being concerned with the spirit, religion, or deeper meaning of life",
+spleen:"an organ in the body that helps clean the blood; bad temper or anger",
+splutter:"to speak quickly and with difficulty; to make a series of short, explosive sounds",
+spook:"a ghost; to frighten or scare someone",
+spore:"a tiny reproductive cell produced by plants, fungi, and some microorganisms",
+sporadic:"happening occasionally and irregularly",
+spout:"a tube or opening through which liquid flows; a stream of liquid; to send out liquid; to speak rapidly and at length",
+sprawl:"to sit, lie, or fall with the arms and legs spread out; to spread out over a large area",
+sprint:"to run as fast as possible for a short distance",
+spurious:"false or not genuine; based on false reasoning",
+squabble:"to argue about something unimportant",
+squalid:"extremely dirty and unpleasant; morally unpleasant or shameful",
+squall:"a sudden strong wind or storm; a loud cry caused by pain or fear; to cry or scream loudly",
+squalor:"a very dirty and unpleasant condition; disgraceful or morally unpleasant conditions",
+squash:"to crush or flatten something; to force into a small space; to suppress something; a game played with rackets and a small ball; a type of vegetable related to pumpkins and zucchini",
+squawk:"to make a loud, harsh sound like a bird; to complain loudly",
+squeak:"a short, high-pitched sound; to make a high-pitched sound; to inform on someone",
+squeal:"a long, high-pitched cry or sound",
+squeamish:"easily made to feel sick or disgusted; easily shocked or nervous",
+squint:"to look with partly closed eyes; to have eyes that do not point in the same direction; a partly closed look",
+squire:"a landowner or gentleman in the English countryside; a local magistrate",
+squirm:"to twist or move around because of discomfort or embarrassment",
+squirt:"to force liquid out in a narrow stream; a narrow stream of liquid; an annoying or self-important person",
+staccato:"played or spoken with short, separate sounds",
+stag:"an adult male deer; a male-only event or gathering",
+staid:"calm, serious, old-fashioned, and conservative",
+stalemate:"a situation in which no progress can be made; a situation in chess in which neither side can make a move without losing; to cause a situation in which no progress is possible",
+stalk:"to follow or approach someone quietly and secretly; to walk in a proud or threatening way",
+stallion:"an adult male horse",
+stalwart:"strong and physically sturdy; loyal and determined; a loyal and reliable supporter",
+stamina:"physical or mental strength that allows someone to continue doing something for a long time",
+stampede:"a sudden uncontrolled rush of animals or people; to cause animals or people to rush suddenly",
+stance:"the way someone stands; an attitude, opinion, or position on an issue",
+standing:"social or professional position; the length of time something has continued; permanent or regularly established",
+stanza:"a group of lines forming a section of a poem",
+starboard:"the right side of a ship or aircraft when facing forward",
+stardom:"the status or position of being a famous entertainer",
+stark:"very clear and obvious; severe or extreme",
+surreptitious:"done secretly or without being noticed",
+surrogate:"a substitute or replacement; a person or thing that acts in place of another",
+susceptible:"easily influenced or affected by something; easily affected by a disease or condition",
+susceptibility:"the state of being easily influenced, affected, or harmed",
+sustenance:"food or other things needed to maintain life and health",
+swagger:"to walk or behave in a confident and arrogant way; an arrogant or overly confident manner",
+swap:"to exchange one thing for another; an exchange",
+swathe:"a long, wide strip of grass, plants, or land; a long, wide piece or area",
+swine:"a pig; an unpleasant or contemptible person or thing",
+swipe:"to hit or strike hard",
+swirl:"to move around in a twisting circular motion; a circular or twisting movement",
+swivel:"to turn or rotate around a fixed point; a device that allows something to rotate",
+swoop:"to move or fly down suddenly to attack or seize something; a sudden downward attack or movement",
+syndrome:"a group of medical signs or symptoms that occur together",
+synopsis:"a brief summary of a book, play, film, or other work",
+synoptic:"giving a brief general summary or overview",
+syphilis:"a sexually transmitted infection caused by bacteria"
+};
+// ======================================================
+// GENERATE 50 RANDOM QUIZ QUESTIONS
+// ======================================================
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+function generateQuizQuestions(numberOfQuestions = 50) {
+
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select 50 different vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, definition]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords]).slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the position of the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Clean the definition
+        const meaning = definition
+            .replace(/<br\s*\/?>/gi, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: The teacher discussed "${word}" in class.`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+
+// Generate exactly 50 questions
+const questionText = generateQuizQuestions(50);function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+
+const questions =
+    parseQuestions(questionText);
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+    document.querySelector(".navigation").style.display =
+        "flex";
+
+    const question = questions[currentQuestion];
+
+    // Question number
+    document.getElementById("progress").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+    // Current score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+
+    // Display question
+    document.getElementById("question").textContent =
+        question.question;
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    // Clear feedback
+    document.getElementById("feedback").textContent = "";
+
+    // Create buttons
+    question.options.forEach(function(option, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        button.addEventListener(
+            "click",
+            function() {
+                checkAnswer(index, button);
+            }
+        );
+
+        optionsDiv.appendChild(button);
+    });
+
+    // Previous button
+    document.getElementById("prevButton").disabled =
+        currentQuestion === 0;
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(selectedIndex, button) {
+
+    const question =
+        questions[currentQuestion];
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    // Correct answer
+    if (selectedIndex + 1 === question.answer) {
+
+        correctAnswers++;
+        score += 2;
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "Correct!";
+
+        // Automatically move on after a short pause
+        setTimeout(goToNextOrFinish, 900);
+    }
+
+    // Wrong answer
+    else {
+
+        button.classList.add("wrong");
+
+        // Show the correct answer
+        buttons[
+            question.answer - 1
+        ].classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "Wrong.";
+
+        // Show the info popup for the correct answer
+        showInfo(question);
+    }
+
+    // Update score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+}
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[question.answer - 1];
+
+    document.getElementById("infoWord").textContent =
+        correctOption;
+
+    document.getElementById("infoMeaning").innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" + question.meaning
+            : "";
+
+    document.getElementById("infoExample").innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" + question.example
+            : "";
+
+    document.getElementById("infoOverlay").classList.add("visible");
+}
+
+
+function closeInfo() {
+
+    document.getElementById("infoOverlay").classList.remove("visible");
+
+    // Automatically move on once the popup is dismissed
+    goToNextOrFinish();
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+        currentQuestion--;
+
+        displayQuestion();
+    }
+}
+
+
+// ======================================================
+// GO TO NEXT QUESTION (OR FINISH)
+// ======================================================
+
+function goToNextOrFinish() {
+
+    if (currentQuestion < questions.length - 1) {
+
+        currentQuestion++;
+
+        displayQuestion();
+    }
+
+    else {
+
+        showResult();
+    }
+}
+
+
+// ======================================================
+// RESTART QUIZ
+// ======================================================
+
+function restartQuiz() {
+
+currentQuestion = 0;
+
+correctAnswers = 0;
+
+score = 0;
+
+document.getElementById("result").innerHTML = "";
+
+document.getElementById("restartButton").style.display =
+    "none";
+
+displayQuestion();
+}
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+const totalQuestions = questions.length;
+
+const percentage =
+    (correctAnswers / totalQuestions) * 100;
+
+const mark =
+    percentage.toFixed(2);
+
+// Clear quiz
+document.getElementById("progress").textContent = "";
+document.getElementById("score").textContent = "";
+document.getElementById("question").textContent = "";
+document.getElementById("options").innerHTML = "";
+document.getElementById("feedback").textContent = "";
+
+document.querySelector(".navigation").style.display =
+    "none";
+
+document.getElementById("restartButton").style.display =
+    "block";
+
+// Display result
+document.getElementById("result").innerHTML =
+
+    "Quiz Finished!<br><br>" +
+
+    "Correct answers: " +
+    correctAnswers +
+    " / " +
+    totalQuestions +
+
+    "<br><br>" +
+
+    "Score: " +
+    score +
+    " / " +
+    (totalQuestions * 2) +
+
+    "<br><br>" +
+
+    "Mark: " +
+    mark +
+    " / 100";
+}
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById("question").textContent =
+        "No questions found.";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
