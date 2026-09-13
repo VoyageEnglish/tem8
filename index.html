@@ -936,18 +936,18 @@ synoptic:"giving a brief general summary or overview",
 syphilis:"a sexually transmitted infection caused by bacteria"
 };
 // ======================================================
-// GENERATE 50 RANDOM QUIZ QUESTIONS
+// GENERATE 100 RANDOM QUIZ QUESTIONS
 // ======================================================
 
 function shuffle(array) {
     return array.sort(() => Math.random() - 0.5);
 }
 
-function generateQuizQuestions(numberOfQuestions = 50) {
+function generateQuizQuestions(numberOfQuestions = 100) {
 
     const allWords = Object.entries(vocabulary);
 
-    // Randomly select 50 different vocabulary items
+    // Randomly select 100 different vocabulary items
     const selectedWords = shuffle([...allWords])
         .slice(0, Math.min(numberOfQuestions, allWords.length));
 
@@ -997,8 +997,8 @@ Example: The teacher discussed "${word}" in class.`;
 }
 
 
-// Generate exactly 50 questions
-const questionText = generateQuizQuestions(50);function parseQuestions(text) {
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(100);function parseQuestions(text) {
 
     // Normalize line breaks
 
