@@ -1,0 +1,2680 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+
+<script>
+const vocabulary = {
+
+vaccine: {
+    meaning: "a substance used to protect people or animals from a particular disease",
+    example: "The vaccine can protect people from serious illness."
+},
+
+vagabond: {
+    meaning: "a person who wanders from place to place without a home or regular job",
+    example: "The vagabond traveled from town to town."
+},
+
+vagrant: {
+    meaning: "a person who has no home or regular job and lives by wandering from place to place",
+    example: "The city provided shelter for homeless vagrants."
+},
+
+valet: {
+    meaning: "a male servant who looks after a man's clothes and personal needs; a person who parks cars",
+    example: "The valet helped him with his luggage."
+},
+
+validate: {
+    meaning: "to prove that something is true or correct; to make something officially valid",
+    example: "The experiment helped validate the scientist's theory."
+},
+
+valour: {
+    meaning: "great courage, especially in a dangerous situation",
+    example: "The soldier was honored for his valour."
+},
+
+valve: {
+    meaning: "a device that controls the flow of a liquid or gas; a structure that controls the flow of blood",
+    example: "The engineer replaced the damaged valve."
+},
+
+vandal: {
+    meaning: "a person who deliberately damages public property, buildings, or works of art",
+    example: "The police arrested the vandal who damaged the statue."
+},
+
+vandalism: {
+    meaning: "the deliberate destruction or damage of public or private property",
+    example: "The school installed cameras to prevent vandalism."
+},
+
+vanguard: {
+    meaning: "the leading part of a group or movement; the people at the forefront of new developments",
+    example: "The company is at the vanguard of artificial intelligence research."
+},
+
+vanilla: {
+    meaning: "a tropical plant; a flavoring made from its beans",
+    example: "She ordered a bowl of vanilla ice cream."
+},
+
+"vanilla ice cream": {
+    meaning: "ice cream flavored with vanilla",
+    example: "The children enjoyed vanilla ice cream after dinner."
+},
+
+"vanilla essence": {
+    meaning: "a concentrated vanilla flavoring used in cooking",
+    example: "Add a few drops of vanilla essence to the cake mixture."
+},
+
+vantage: {
+    meaning: "a position that gives you a good view or an advantage",
+    example: "From this vantage point, we could see the entire valley."
+},
+
+vanquish: {
+    meaning: "to defeat an opponent completely",
+    example: "The army finally vanquished its enemy."
+},
+
+variant: {
+    meaning: "a form of something that differs slightly from another form",
+    example: "Scientists discovered a new variant of the virus."
+},
+
+varicose: {
+    meaning: "abnormally swollen or enlarged, especially referring to veins",
+    example: "She developed varicose veins in her legs."
+},
+
+vat: {
+    meaning: "a very large container used for holding or processing liquids",
+    example: "The workers poured the mixture into a large vat."
+},
+
+vault: {
+    meaning: "a large room or container used for storing valuable things; a curved roof; a jump over something",
+    example: "The bank keeps important documents in a secure vault."
+},
+
+veal: {
+    meaning: "meat from a young calf",
+    example: "The restaurant serves veal with vegetables."
+},
+
+veer: {
+    meaning: "to suddenly change direction",
+    example: "The car veered off the road."
+},
+
+vehement: {
+    meaning: "showing very strong feelings or opinions",
+    example: "She made a vehement protest against the decision."
+},
+
+venerable: {
+    meaning: "deserving respect because of age, experience, or character",
+    example: "The university is a venerable institution."
+},
+
+venerate: {
+    meaning: "to respect or admire someone deeply",
+    example: "Many people venerate the country's founding leaders."
+},
+
+"venereal disease": {
+    meaning: "a disease that is mainly transmitted through sexual contact",
+    example: "The clinic provides testing and treatment for venereal diseases."
+},
+
+vengeance: {
+    meaning: "punishment or harm inflicted in return for an injury or wrong",
+    example: "He wanted to take vengeance on those who had betrayed him."
+},
+
+vengeful: {
+    meaning: "wanting to hurt or punish someone because of a wrong they have done",
+    example: "He became increasingly vengeful after the betrayal."
+},
+
+venison: {
+    meaning: "the meat of a deer",
+    example: "They served roasted venison for dinner."
+},
+
+venomous: {
+    meaning: "producing venom; full of hatred or maliciousness",
+    example: "The snake is highly venomous."
+},
+
+ventricle: {
+    meaning: "one of the chambers of the heart or brain",
+    example: "The left ventricle pumps blood around the body."
+},
+
+ventricular: {
+    meaning: "relating to a ventricle, especially one of the heart",
+    example: "The scan showed a problem with the ventricular function."
+},
+
+venue: {
+    meaning: "a place where an event or activity takes place",
+    example: "The concert venue can hold thousands of people."
+},
+
+verbatim: {
+    meaning: "using exactly the same words as were originally spoken or written",
+    example: "The journalist quoted the president verbatim."
+},
+
+verdure: {
+    meaning: "green vegetation, especially in a beautiful natural setting",
+    example: "The mountain was covered in lush verdure."
+},
+
+veritable: {
+    meaning: "real or genuine; used to emphasize that something is truly what it is described as",
+    example: "The festival was a veritable feast of music and art."
+},
+
+vermin: {
+    meaning: "animals or insects regarded as harmful or destructive; people considered harmful to society",
+    example: "The farmer used traps to control the vermin."
+},
+
+vernacular: {
+    meaning: "the ordinary language spoken by people in a particular place",
+    example: "The book is written in the local vernacular."
+},
+
+vernal: {
+    meaning: "relating to spring",
+    example: "The garden was filled with vernal flowers."
+},
+
+vertebrate: {
+    meaning: "an animal that has a backbone",
+    example: "Humans are vertebrates."
+},
+
+vertex: {
+    meaning: "the highest point or top of something; the point where lines or edges meet",
+    example: "The two sides of the triangle meet at the vertex."
+},
+
+verve: {
+    meaning: "energy, enthusiasm, and liveliness",
+    example: "She performed the song with great verve."
+},
+
+vestige: {
+    meaning: "a small remaining sign, trace, or part of something that once existed",
+    example: "There was no vestige of the old building left."
+},
+
+vex: {
+    meaning: "to annoy, worry, or frustrate someone",
+    example: "The complicated instructions began to vex him."
+},
+
+vexation: {
+    meaning: "a feeling of annoyance or worry; something that causes annoyance",
+    example: "To her great vexation, the computer suddenly stopped working."
+},
+
+vexatious: {
+    meaning: "causing annoyance, worry, or frustration",
+    example: "The repeated delays were extremely vexatious."
+},
+
+viable: {
+    meaning: "able to work successfully or be developed successfully",
+    example: "We need to find a viable solution to the problem."
+},
+
+vial: {
+    meaning: "a small glass container, especially one used for medicine or perfume",
+    example: "The nurse took a vial of blood for testing."
+},
+
+vibe: {
+    meaning: "the mood, atmosphere, or feeling of a place or situation",
+    example: "The café has a relaxed and friendly vibe."
+},
+
+vicarage: {
+    meaning: "the house where a vicar lives",
+    example: "The meeting was held at the local vicarage."
+},
+
+vicarious: {
+    meaning: "experienced indirectly through another person",
+    example: "She got vicarious pleasure from watching her son win the competition."
+},
+
+vicariously: {
+    meaning: "indirectly, through another person's experiences",
+    example: "He experienced the excitement vicariously through his children."
+},
+
+victimize: {
+    meaning: "to treat someone unfairly or cruelly, especially by making them suffer or take the blame",
+    example: "The weaker students were sometimes victimized by their classmates."
+},
+
+vigil: {
+    meaning: "a period of staying awake to watch over someone or something; a period before a religious festival",
+    example: "The family kept a vigil beside the patient's bed."
+},
+
+vie: {
+    meaning: "to compete strongly with someone for something",
+    example: "Several students are vying for the scholarship."
+},
+
+vignette: {
+    meaning: "a short description or story; a small decorative picture",
+    example: "The book contains several vivid vignettes of university life."
+},
+
+vile: {
+    meaning: "extremely unpleasant or evil; morally bad",
+    example: "He was arrested for his vile behavior."
+},
+
+villainous: {
+    meaning: "evil or typical of a villain",
+    example: "The story's villainous character was finally defeated."
+},
+
+vindicate: {
+    meaning: "to prove that someone was right or not guilty",
+    example: "The new evidence vindicated the accused man."
+},
+
+vindictive: {
+    meaning: "wanting revenge and willing to hurt someone in return for a wrong",
+    example: "His vindictive behavior made it difficult to resolve the conflict."
+},
+
+viola: {
+    meaning: "a musical instrument similar to a violin but slightly larger and lower in pitch",
+    example: "She plays the viola in the university orchestra."
+},
+
+violate: {
+    meaning: "to break a law, rule, or agreement; to interfere with or damage something sacred or private",
+    example: "The company was fined for violating environmental regulations."
+},
+
+virgin: {
+    meaning: "a person who has never had sexual intercourse; something not previously used, developed, or explored",
+    example: "The expedition entered a region of virgin forest."
+},
+
+virile: {
+    meaning: "having qualities traditionally associated with strong masculinity; having sexual or reproductive power",
+    example: "The character is portrayed as young and virile."
+},
+
+virtuous: {
+    meaning: "having high moral standards; behaving in a morally good way",
+    example: "She was known for her virtuous character."
+},
+
+virulent: {
+    meaning: "extremely harmful or poisonous; showing intense hatred",
+    example: "The disease is caused by a particularly virulent strain."
+},
+
+visage: {
+    meaning: "a person's face or facial appearance",
+    example: "His tired visage showed how little he had slept."
+},
+
+viscera: {
+    meaning: "the internal organs of the body, especially those in the abdomen",
+    example: "The surgeon carefully examined the patient's viscera."
+},
+
+viscount: {
+    meaning: "a British nobleman ranking below an earl and above a baron",
+    example: "The viscount attended the royal ceremony."
+},
+
+vista: {
+    meaning: "a beautiful or impressive view; a possible future situation",
+    example: "The hill offered a magnificent vista of the city."
+},
+
+visitation: {
+    meaning: "an official visit or inspection; a visit, especially an unwelcome one",
+    example: "The school received a government visitation."
+},
+
+visualize: {
+    meaning: "to imagine or form a mental picture of something",
+    example: "Try to visualize yourself succeeding in the exam."
+},
+
+vitalize: {
+    meaning: "to give energy, life, or strength to something",
+    example: "The new program helped vitalize the local economy."
+},
+
+vivacity: {
+    meaning: "liveliness, energy, and enthusiasm",
+    example: "Her vivacity made her popular with her students."
+},
+
+vocalist: {
+    meaning: "a singer, especially one who performs with a band",
+    example: "The band's vocalist has a powerful voice."
+},
+
+vocalization: {
+    meaning: "the act or process of producing sounds with the voice",
+    example: "The study examined children's early vocalization."
+},
+
+vocally: {
+    meaning: "by using the voice; openly or verbally",
+    example: "She vocally opposed the new policy."
+},
+
+vocative: {
+    meaning: "a grammatical form used when directly addressing someone",
+    example: "In some languages, a special vocative form is used when addressing a person."
+},
+
+vodka: {
+    meaning: "a strong clear alcoholic drink originally associated with Russia and Eastern Europe",
+    example: "Vodka is traditionally served cold."
+},
+
+vogue: {
+    meaning: "a popular fashion or style at a particular time",
+    example: "Bright colors are currently in vogue."
+},
+
+"come into vogue": {
+    meaning: "to become fashionable or popular",
+    example: "Online learning came into vogue during the pandemic."
+},
+
+"in vogue": {
+    meaning: "fashionable and popular",
+    example: "Natural materials are currently in vogue."
+},
+
+"out of vogue": {
+    meaning: "no longer fashionable or popular",
+    example: "That style has been out of vogue for years."
+},
+
+void: {
+    meaning: "an empty space; having no legal or effective force",
+    example: "The contract was declared void."
+},
+
+volatile: {
+    meaning: "likely to change suddenly and unpredictably; easily evaporated",
+    example: "The political situation remains highly volatile."
+},
+
+volatility: {
+    meaning: "the quality of changing suddenly and unpredictably",
+    example: "Investors are worried about market volatility."
+},
+
+volitional: {
+    meaning: "done by one's own choice or will",
+    example: "The action was entirely volitional."
+},
+
+voluble: {
+    meaning: "talking a lot and easily; fluent in speech",
+    example: "The voluble speaker continued for another hour."
+},
+
+voluminous: {
+    meaning: "very large in size or amount; containing a lot of writing",
+    example: "The lawyer examined a voluminous collection of documents."
+},
+
+vortex: {
+    meaning: "a powerful circular movement of air or water; a situation that draws people into it",
+    example: "The boat was pulled toward the center of the vortex."
+},
+
+vulgarity: {
+    meaning: "rude or offensive behavior or language; lack of good taste",
+    example: "His jokes were criticized for their vulgarity."
+},
+
+vulture: {
+    meaning: "a large bird that feeds mainly on dead animals",
+    example: "A vulture circled above the desert."
+},
+
+waddle: {
+    meaning: "to walk with short steps while moving the body from side to side",
+    example: "The duck waddled across the road."
+},
+
+wade: {
+    meaning: "to walk through water; to move with difficulty through something",
+    example: "We had to wade across the shallow river."
+},
+
+wafer: {
+    meaning: "a very thin, light, crisp biscuit",
+    example: "The children shared a chocolate wafer."
+},
+
+waistcoat: {
+    meaning: "a sleeveless garment worn over a shirt, usually as part of a suit",
+    example: "He wore a black waistcoat with his suit."
+},
+
+waltz: {
+    meaning: "a dance in which two people move together in a regular pattern",
+    example: "They learned how to waltz at the dance class."
+},
+
+wail: {
+    meaning: "to cry or complain with a long high sound",
+    example: "The child began to wail when his mother left."
+},
+
+wane: {
+    meaning: "to become gradually weaker, smaller, or less important",
+    example: "Her enthusiasm for the project began to wane."
+},
+
+waive: {
+    meaning: "to choose not to demand or enforce a rule, right, or payment",
+    example: "The university agreed to waive the application fee."
+},
+
+wallow: {
+    meaning: "to roll around in mud or water; to enjoy something excessively",
+    example: "The pigs were wallowing in the mud."
+},
+
+"on the wane": {
+    meaning: "gradually becoming weaker, less important, or less popular",
+    example: "Interest in the old technology is on the wane."
+},
+
+wanton: {
+    meaning: "deliberately cruel or harmful; immoral or uncontrolled",
+    example: "The attack caused wanton destruction."
+},
+
+wares: {
+    meaning: "goods or products for sale",
+    example: "The market is filled with local wares."
+},
+
+warp: {
+    meaning: "to bend or twist something out of shape; to distort an idea or judgment",
+    example: "Heat can warp the wooden door."
+},
+
+warranty: {
+    meaning: "a written promise to repair or replace a product if necessary within a specified period",
+    example: "The phone comes with a two-year warranty."
+},
+
+wary: {
+    meaning: "careful because you do not completely trust someone or something",
+    example: "You should be wary of offers that seem too good to be true."
+},
+
+watermark: {
+    meaning: "a faint mark or design made in paper or added to a digital image",
+    example: "The document contains a security watermark."
+},
+
+watershed: {
+    meaning: "a ridge separating areas drained by different rivers; an important turning point",
+    example: "The invention of the internet was a watershed in modern history."
+},
+
+watertight: {
+    meaning: "completely sealed against water; impossible to criticize or challenge",
+    example: "The lawyer presented a watertight argument."
+},
+
+watery: {
+    meaning: "containing or resembling a lot of water; thin or weak",
+    example: "The soup tasted watery."
+},
+
+waver: {
+    meaning: "to become weaker or less certain; to hesitate",
+    example: "She never wavered in her determination."
+},
+
+wayward: {
+    meaning: "difficult to control; behaving in an unpredictable or disobedient way",
+    example: "The teacher struggled to control the wayward student."
+},
+
+wean: {
+    meaning: "to gradually stop a baby from breastfeeding; to gradually make someone stop depending on something",
+    example: "The mother began to wean her baby."
+},
+
+"wean from": {
+    meaning: "to gradually make someone stop using or depending on something",
+    example: "The doctor helped him wean himself from sleeping pills."
+},
+
+wedge: {
+    meaning: "a piece of material with two sloping sides used to hold or separate things",
+    example: "He placed a wedge under the door."
+},
+
+weighty: {
+    meaning: "heavy; important and requiring serious consideration",
+    example: "The committee discussed several weighty issues."
+},
+
+weird: {
+    meaning: "very strange, unusual, or difficult to explain",
+    example: "There was a weird noise outside."
+},
+
+whack: {
+    meaning: "to hit something with a hard blow; a strong hit",
+    example: "He gave the ball a hard whack."
+},
+
+whiff: {
+    meaning: "a brief smell or small amount of air; a slight indication",
+    example: "A whiff of fresh bread came from the kitchen."
+},
+
+whimsical: {
+    meaning: "playful, unusual, or based on sudden ideas rather than reason",
+    example: "The artist is known for her whimsical designs."
+},
+
+whirlwind: {
+    meaning: "a rapidly rotating column of air; a situation involving intense activity",
+    example: "The trip was a whirlwind of meetings and events."
+},
+
+whisk: {
+    meaning: "to move or take someone away quickly; to beat or stir food rapidly",
+    example: "Whisk the eggs until they are smooth."
+},
+
+whizz: {
+    meaning: "to move very quickly with a rushing sound; a person who is extremely skilled",
+    example: "The cyclist whizzed past us."
+},
+
+whoop: {
+    meaning: "to shout loudly because of excitement or joy",
+    example: "The crowd whooped when the team scored."
+},
+
+wicked: {
+    meaning: "morally bad or evil; mischievous or playful",
+    example: "The wicked character caused trouble throughout the story."
+},
+
+wicker: {
+    meaning: "material made by weaving thin branches or strips of wood",
+    example: "The chairs are made of wicker."
+},
+
+wield: {
+    meaning: "to use or exercise power, influence, or authority",
+    example: "The manager wields considerable influence in the company."
+},
+
+wiggle: {
+    meaning: "to move from side to side with small quick movements",
+    example: "The baby wiggled its fingers."
+},
+
+wilt: {
+    meaning: "to become weak and droop, especially because of heat; to lose energy or confidence",
+    example: "The flowers wilted in the hot sun."
+},
+
+wily: {
+    meaning: "clever at getting what you want by using tricks or deception",
+    example: "The wily fox escaped from the trap."
+},
+
+wince: {
+    meaning: "to make a small movement because of pain, embarrassment, or distress",
+    example: "He winced when the doctor touched his injured arm."
+},
+
+windfall: {
+    meaning: "an unexpected amount of money or other benefit",
+    example: "The inheritance was an unexpected windfall."
+},
+
+wisp: {
+    meaning: "a small thin piece or amount of something",
+    example: "A wisp of smoke rose from the chimney."
+},
+
+withstand: {
+    meaning: "to resist or survive something difficult or damaging",
+    example: "The building was designed to withstand strong winds."
+},
+
+wizard: {
+    meaning: "a man with magical powers; a person who is extremely skilled at something",
+    example: "She is a computer wizard."
+},
+
+wobble: {
+    meaning: "to move unsteadily from side to side",
+    example: "The table began to wobble."
+},
+
+woe: {
+    meaning: "great sadness or trouble",
+    example: "The novel is filled with stories of love and woe."
+},
+
+woeful: {
+    meaning: "very sad; extremely bad or inadequate",
+    example: "The team's woeful performance disappointed its fans."
+},
+
+woo: {
+    meaning: "to try to gain someone's love; to try to persuade or attract someone",
+    example: "The company is trying to woo new customers."
+},
+
+wrapper: {
+    meaning: "a piece of paper or material used to cover or protect something",
+    example: "He threw the candy wrapper into the bin."
+},
+
+wrath: {
+    meaning: "extreme anger",
+    example: "The decision provoked the wrath of local residents."
+},
+
+wreathe: {
+    meaning: "to surround or cover something; to form something into a wreath",
+    example: "Smoke wreathed the mountain peak."
+},
+
+wreckage: {
+    meaning: "the remains of something that has been badly damaged or destroyed",
+    example: "Rescuers searched the wreckage for survivors."
+},
+
+wrench: {
+    meaning: "to twist or pull something suddenly and forcefully; a tool used for turning nuts and bolts",
+    example: "He wrenched the door open."
+},
+
+wrest: {
+    meaning: "to take or obtain something with great effort or difficulty",
+    example: "She wrested control of the company from her rivals."
+},
+
+wriggle: {
+    meaning: "to twist or move with small movements from side to side",
+    example: "The child wriggled out of his mother's arms."
+},
+
+wring: {
+    meaning: "to twist something to remove liquid; to obtain something through pressure or force",
+    example: "She wrung the water out of the towel."
+},
+
+writhe: {
+    meaning: "to twist and move because of pain or discomfort",
+    example: "The injured man writhed in pain."
+},
+
+"writhe at": {
+    meaning: "to suffer mental or emotional pain because of something",
+    example: "She writhed at the memory of her embarrassing mistake."
+},
+
+wry: {
+    meaning: "showing dry or slightly mocking humor; twisted or distorted",
+    example: "He gave a wry smile at the unexpected result."
+},
+
+"X-chromosome": {
+    meaning: "one of the two types of sex chromosomes in humans",
+    example: "Humans normally have either one or two X chromosomes."
+},
+
+xenophobia: {
+    meaning: "fear or dislike of foreigners or people from other countries",
+    example: "Education can help reduce xenophobia."
+},
+
+yahoo: {
+    meaning: "a rude or uncivilized person; Yahoo, the internet company",
+    example: "The story describes him as a loud and uncouth yahoo."
+},
+
+yank: {
+    meaning: "to pull something suddenly and forcefully",
+    example: "He yanked the door open."
+},
+
+yardstick: {
+    meaning: "a standard used for measuring or judging something",
+    example: "Academic performance is often used as a yardstick for success."
+},
+
+yeoman: {
+    meaning: "a farmer who owns and works his own land",
+    example: "The novel describes the life of a medieval yeoman."
+},
+
+yummy: {
+    meaning: "very tasty or delicious",
+    example: "The cake looks really yummy."
+},
+
+yuppie: {
+    meaning: "a young urban professional, especially one with a high income",
+    example: "The neighborhood became popular with wealthy yuppies."
+},
+
+zany: {
+    meaning: "funny and unusual in a silly or exaggerated way",
+    example: "The comedian is famous for his zany behavior."
+},
+
+zenith: {
+    meaning: "the highest point or greatest level of something",
+    example: "His career reached its zenith in his forties."
+},
+
+zest: {
+    meaning: "great enthusiasm, energy, or enjoyment",
+    example: "She approaches every challenge with zest."
+},
+
+"a zest for life": {
+    meaning: "great enthusiasm and enjoyment of living",
+    example: "Her zest for life inspired everyone around her."
+},
+
+Zionism: {
+    meaning: "a political movement supporting a Jewish national homeland in the historical land of Israel",
+    example: "The history of Zionism is closely connected with the modern history of Israel."
+},
+
+Zoom: {
+    meaning: "to move very quickly; to increase rapidly",
+    example: "The car zoomed down the highway."
+},
+
+"zoom in on": {
+    meaning: "to use a camera or lens to make something appear larger and closer",
+    example: "The photographer zoomed in on the bird."
+},
+
+"zoom out": {
+    meaning: "to use a camera or lens to make something appear smaller and farther away",
+    example: "Zoom out to see the entire map."
+},
+
+Zulu: {
+    meaning: "a member of a major South African ethnic group; the language of the Zulu people",
+    example: "Zulu is one of the widely spoken languages of South Africa."
+},
+
+ubiquitous: {
+    meaning: "present or found everywhere",
+    example: "Smartphones have become ubiquitous in modern life."
+},
+
+ulcer: {
+    meaning: "an open sore on the skin or inside the body, especially the stomach",
+    example: "Stress can sometimes make a stomach ulcer worse."
+},
+
+ulterior: {
+    meaning: "hidden or secret, especially a purpose or motive",
+    example: "I suspected that he had an ulterior motive."
+},
+
+ultrasonic: {
+    meaning: "involving sound waves with frequencies higher than humans can hear",
+    example: "The doctor used an ultrasonic device."
+},
+
+ultrasound: {
+    meaning: "sound waves above the range of human hearing; a medical examination using such waves",
+    example: "The doctor performed an ultrasound examination."
+},
+
+umpire: {
+    meaning: "the official who controls a baseball or tennis match",
+    example: "The umpire ruled that the ball was out."
+},
+
+unabashed: {
+    meaning: "not embarrassed or ashamed",
+    example: "He was unabashed about asking for help."
+},
+
+unabated: {
+    meaning: "continuing without becoming weaker",
+    example: "The rain continued unabated throughout the night."
+},
+
+unaccountable: {
+    meaning: "impossible to explain; not responsible for one's actions",
+    example: "For some unaccountable reason, the machine stopped working."
+},
+
+unaffected: {
+    meaning: "not changed or influenced by something; natural and sincere",
+    example: "She remained unaffected by the criticism."
+},
+
+unassuming: {
+    meaning: "modest and not trying to attract attention",
+    example: "Despite his success, he remained unassuming."
+},
+
+unawares: {
+    meaning: "without knowing or realizing what is happening",
+    example: "The sudden question caught him unawares."
+},
+
+unbecoming: {
+    meaning: "not suitable or appropriate; not attractive or proper",
+    example: "Such rude behavior is unbecoming of a teacher."
+},
+
+uncanny: {
+    meaning: "strange or mysterious in a way that is difficult to explain",
+    example: "She has an uncanny ability to remember names."
+},
+
+unceremonious: {
+    meaning: "not formal or polite; done without ceremony",
+    example: "He received an unceremonious dismissal."
+},
+
+uncharitable: {
+    meaning: "not kind, generous, or sympathetic",
+    example: "It would be uncharitable to blame her for the mistake."
+},
+
+uncompromising: {
+    meaning: "unwilling to change one's position or accept a compromise",
+    example: "She took an uncompromising stand on the issue."
+},
+
+unconcerned: {
+    meaning: "not worried or interested in something",
+    example: "He seemed unconcerned about the delay."
+},
+
+uncouth: {
+    meaning: "rude, rough, or lacking good manners",
+    example: "His uncouth behavior embarrassed his friends."
+},
+
+underachieve: {
+    meaning: "to perform less well than expected or than one's ability suggests",
+    example: "Some talented students underachieve because they lack motivation."
+},
+
+undercharge: {
+    meaning: "to charge someone less money than the correct amount",
+    example: "The cashier accidentally undercharged me."
+},
+
+undercover: {
+    meaning: "done secretly, especially by a police officer whose identity is hidden",
+    example: "The police officer was working undercover."
+},
+
+undercut: {
+    meaning: "to sell goods more cheaply than a competitor; to weaken someone's position",
+    example: "The new company undercut its competitors' prices."
+},
+
+underdog: {
+    meaning: "a person or team expected to lose a competition",
+    example: "The underdog surprised everyone by winning the final."
+},
+
+underdone: {
+    meaning: "not cooked enough",
+    example: "The steak was underdone."
+},
+
+underhand: {
+    meaning: "secret and dishonest; done in an unfair way",
+    example: "The company was accused of using underhand tactics."
+},
+
+underlie: {
+    meaning: "to be the basic cause, idea, or foundation of something",
+    example: "Several economic problems underlie the crisis."
+},
+
+undermine: {
+    meaning: "to weaken something gradually; to damage the foundation of something",
+    example: "Constant criticism can undermine a person's confidence."
+},
+
+underpass: {
+    meaning: "a road or passage that goes underneath another road or railway",
+    example: "Pedestrians can use the underpass to cross the highway."
+},
+
+underprivileged: {
+    meaning: "having fewer opportunities, rights, or advantages than other people",
+    example: "The charity provides education for underprivileged children."
+},
+
+undersell: {
+    meaning: "to sell something at a lower price than a competitor",
+    example: "The store undersells most of its competitors."
+},
+
+underside: {
+    meaning: "the lower surface or bottom part of something",
+    example: "The underside of the table was covered with dust."
+},
+
+understate: {
+    meaning: "to describe something as less important or serious than it really is",
+    example: "To say the situation is difficult would be an understatement."
+},
+
+understudy: {
+    meaning: "a performer who learns another actor's role and replaces them when necessary",
+    example: "The understudy performed the lead role last night."
+},
+
+undertaker: {
+    meaning: "a person whose job is to arrange funerals and prepare dead bodies",
+    example: "The undertaker helped the family arrange the funeral."
+},
+
+underwater: {
+    meaning: "below the surface of water",
+    example: "The divers explored an underwater cave."
+},
+
+underwrite: {
+    meaning: "to provide financial support; to accept financial responsibility for insurance or securities",
+    example: "The bank agreed to underwrite the project."
+},
+
+undignified: {
+    meaning: "not showing the dignity or respectability expected of a person",
+    example: "He thought arguing in public was undignified."
+},
+
+"undreamt-of": {
+    meaning: "not previously imagined or expected",
+    example: "The discovery brought undreamt-of opportunities."
+},
+
+undue: {
+    meaning: "greater than is reasonable, necessary, or appropriate",
+    example: "The decision caused undue stress."
+},
+
+undulate: {
+    meaning: "to move or form in smooth waves or curves",
+    example: "The fields undulated gently in the wind."
+},
+
+unduly: {
+    meaning: "more than is reasonable or appropriate",
+    example: "Do not worry unduly about the result."
+},
+
+unearth: {
+    meaning: "to dig something out of the ground; to discover something hidden",
+    example: "Researchers unearthed several ancient artifacts."
+},
+
+unequivocal: {
+    meaning: "clear and leaving no possibility of doubt",
+    example: "She gave an unequivocal answer."
+},
+
+unethical: {
+    meaning: "not morally acceptable or not following professional ethical standards",
+    example: "It would be unethical to hide the results."
+},
+
+unfailing: {
+    meaning: "always reliable or present; never failing",
+    example: "She showed unfailing support for her friends."
+},
+
+unfathomable: {
+    meaning: "impossible to understand or measure",
+    example: "The reason for his decision remains unfathomable."
+},
+
+ungodly: {
+    meaning: "wicked or impious; extremely inconvenient or unreasonable, especially of a time",
+    example: "We had to get up at an ungodly hour."
+},
+
+ungracious: {
+    meaning: "not polite, pleasant, or willing to accept something graciously",
+    example: "His ungracious response surprised everyone."
+},
+
+ungrateful: {
+    meaning: "not showing appreciation for something received",
+    example: "It would be ungrateful to ignore all their help."
+},
+
+unicorn: {
+    meaning: "a mythical animal resembling a horse with a single horn",
+    example: "The child drew a colorful unicorn."
+},
+
+unify: {
+    meaning: "to bring people or things together into one whole",
+    example: "The leader tried to unify the divided group."
+},
+
+unilateral: {
+    meaning: "done or decided by one person, group, or country without agreement from others",
+    example: "The company made a unilateral decision to change the policy."
+},
+
+uninformed: {
+    meaning: "not having enough information or knowledge about something",
+    example: "An uninformed decision can lead to serious problems."
+},
+
+unintelligible: {
+    meaning: "impossible or very difficult to understand",
+    example: "His speech was almost unintelligible."
+},
+
+uninviting: {
+    meaning: "not attractive, welcoming, or pleasant",
+    example: "The dark room looked cold and uninviting."
+},
+
+unisex: {
+    meaning: "designed for or suitable for both males and females",
+    example: "The store sells unisex clothing."
+},
+
+unison: {
+    meaning: "simultaneous or coordinated action; singing or playing the same notes together",
+    example: "The students answered in unison."
+},
+
+unkempt: {
+    meaning: "not neat or tidy, especially because of untidy hair or clothes",
+    example: "He arrived with unkempt hair and dirty shoes."
+},
+
+unleash: {
+    meaning: "to release something powerful or emotional",
+    example: "The speech unleashed a wave of public anger."
+},
+
+unlisted: {
+    meaning: "not included in a published list; not included in a telephone directory",
+    example: "The company has an unlisted telephone number."
+},
+
+unnerve: {
+    meaning: "to make someone lose confidence, courage, or self-control",
+    example: "The sudden noise unnerved the students."
+},
+
+unobtrusive: {
+    meaning: "not attracting attention; not noticeable or disturbing",
+    example: "The security cameras are small and unobtrusive."
+},
+
+unoccupied: {
+    meaning: "not being used or lived in",
+    example: "The room has been unoccupied for several months."
+},
+
+unorthodox: {
+    meaning: "different from what is usual, traditional, or accepted",
+    example: "He uses an unorthodox approach to teaching."
+},
+
+unpalatable: {
+    meaning: "not pleasant to taste; difficult or unpleasant to accept",
+    example: "The medicine had an unpalatable taste."
+},
+
+unparalleled: {
+    meaning: "having no equal; better or greater than anything similar",
+    example: "The city offers unparalleled opportunities for young artists."
+},
+
+unplug: {
+    meaning: "to remove an electrical plug; to remove an obstacle or connection",
+    example: "Remember to unplug the computer before cleaning it."
+},
+
+unprejudiced: {
+    meaning: "not influenced by unfair opinions or prejudices",
+    example: "The judge must remain unprejudiced."
+},
+
+unpretentious: {
+    meaning: "modest and not trying to impress people",
+    example: "The restaurant is small and unpretentious."
+},
+
+unprincipled: {
+    meaning: "having no moral principles and willing to do anything to achieve a goal",
+    example: "The politician was criticized as unprincipled."
+},
+
+unprofessional: {
+    meaning: "not behaving according to accepted professional standards",
+    example: "His rude response was highly unprofessional."
+},
+
+unqualified: {
+    meaning: "not having the necessary qualifications, skills, or training",
+    example: "He was unqualified for the position."
+},
+
+unquestionable: {
+    meaning: "certain and impossible to doubt",
+    example: "Her talent is unquestionable."
+},
+
+unquestioning: {
+    meaning: "accepting something without asking questions or expressing doubt",
+    example: "The leader expected unquestioning loyalty."
+},
+
+unravel: {
+    meaning: "to undo something twisted or complicated; to solve or clarify something",
+    example: "The detective slowly unraveled the mystery."
+},
+
+unreal: {
+    meaning: "not real; seeming strange or imaginary",
+    example: "The beautiful view seemed almost unreal."
+},
+
+unrelenting: {
+    meaning: "continuing without becoming weaker or stopping",
+    example: "The team faced unrelenting pressure."
+},
+
+unremitting: {
+    meaning: "continuing without stopping or becoming weaker",
+    example: "She worked with unremitting determination."
+},
+
+unruly: {
+    meaning: "difficult to control; disorderly or disobedient",
+    example: "The teacher had difficulty controlling the unruly class."
+},
+
+unscrew: {
+    meaning: "to remove something by turning it in the opposite direction to screwing it in",
+    example: "Unscrew the lid carefully."
+},
+
+unseemly: {
+    meaning: "not suitable, appropriate, or socially acceptable",
+    example: "His behavior was considered unseemly."
+},
+
+unsettle: {
+    meaning: "to make someone feel worried or uncomfortable; to disturb a situation",
+    example: "The unexpected news unsettled her."
+},
+
+unsettled: {
+    meaning: "not stable, calm, or certain",
+    example: "The political situation remains unsettled."
+},
+
+unsightly: {
+    meaning: "unpleasant or ugly to look at",
+    example: "The old building had become unsightly."
+},
+
+unskilled: {
+    meaning: "not having special skills or training",
+    example: "The factory provides jobs for unskilled workers."
+},
+
+unsociable: {
+    meaning: "not enjoying or seeking the company of other people",
+    example: "He became increasingly unsociable after moving to the new city."
+},
+
+unsuspecting: {
+    meaning: "not aware of danger, deception, or what is about to happen",
+    example: "The thief approached the unsuspecting victim."
+},
+
+unswerving: {
+    meaning: "firm and determined; not changing direction or purpose",
+    example: "She showed unswerving loyalty to her team."
+},
+
+untenable: {
+    meaning: "impossible to defend, maintain, or accept",
+    example: "His argument became untenable after new evidence appeared."
+},
+
+untimely: {
+    meaning: "happening at an unsuitable or inappropriate time; happening too early",
+    example: "His untimely death shocked the whole community."
+},
+
+untiring: {
+    meaning: "continuing to work or act without becoming tired",
+    example: "She made an untiring effort to help the students."
+},
+
+untold: {
+    meaning: "not told or revealed; extremely large or numerous",
+    example: "The project has brought untold benefits to the community."
+},
+
+untouchable: {
+    meaning: "not allowed to be touched; impossible to criticize, punish, or defeat",
+    example: "The star seemed untouchable after winning so many awards."
+},
+
+untruth: {
+    meaning: "a statement that is not true; a lie",
+    example: "He admitted that he had told an untruth."
+},
+
+unwieldy: {
+    meaning: "large, heavy, or difficult to carry, use, or control",
+    example: "The old computer was too unwieldy to carry around."
+},
+
+unwind: {
+    meaning: "to undo something wound around something; to relax after work or stress",
+    example: "I like to read before bed to unwind."
+},
+
+unwitting: {
+    meaning: "not aware of something; not intentional",
+    example: "He became an unwitting participant in the experiment."
+},
+
+unworldly: {
+    meaning: "not concerned with ordinary worldly matters; spiritual or inexperienced",
+    example: "Her unworldly attitude made her seem innocent."
+},
+
+upcoming: {
+    meaning: "going to happen soon",
+    example: "We are preparing for the upcoming examination."
+},
+
+upfront: {
+    meaning: "honest, direct, and clear about something",
+    example: "She was upfront about the possible risks."
+},
+
+upheaval: {
+    meaning: "a major change that causes disorder or confusion",
+    example: "The country experienced political upheaval."
+},
+
+upholster: {
+    meaning: "to cover furniture with padding and fabric",
+    example: "They hired someone to upholster the old sofa."
+},
+
+upkeep: {
+    meaning: "the work or money needed to maintain something",
+    example: "The house requires a lot of upkeep."
+},
+
+uplift: {
+    meaning: "to improve someone's mood or moral condition; an improvement in mood or spirit",
+    example: "Music can uplift people's spirits."
+},
+
+upmarket: {
+    meaning: "of high quality and relatively expensive",
+    example: "The area is known for its upmarket restaurants."
+},
+
+uprising: {
+    meaning: "an organized rebellion against a government or authority",
+    example: "The uprising was eventually suppressed."
+},
+
+upstart: {
+    meaning: "a person who has recently become successful and behaves as though they are important",
+    example: "The young upstart quickly challenged the established companies."
+},
+
+upstream: {
+    meaning: "toward or in the direction from which a river flows",
+    example: "The fishermen moved upstream."
+},
+
+upsurge: {
+    meaning: "a sudden large increase",
+    example: "There has been an upsurge in demand for electric cars."
+},
+
+uptown: {
+    meaning: "in or toward the residential part of a town or city",
+    example: "They took a taxi uptown."
+},
+
+uranium: {
+    meaning: "a heavy radioactive chemical element used as a source of nuclear energy",
+    example: "Uranium is used as fuel in some nuclear reactors."
+},
+
+urinate: {
+    meaning: "to pass urine from the body",
+    example: "The patient was asked to urinate into a container."
+},
+
+usurer: {
+    meaning: "a person who lends money at extremely high rates of interest",
+    example: "The usurer charged the borrower an enormous amount of interest."
+},
+
+usurp: {
+    meaning: "to take power, authority, or a position without having the right to do so",
+    example: "The general attempted to usurp the president's power."
+},
+
+utilitarian: {
+    meaning: "designed to be useful and practical rather than attractive",
+    example: "The building has a simple, utilitarian design."
+},
+
+Utopia: {
+    meaning: "an imagined perfect society or place",
+    example: "The novel describes a futuristic Utopia."
+}
+
+};
+
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+
+const questions =
+    parseQuestions(questionText);
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+function saveQuizProgress() {
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+            questions: questions,
+            currentQuestion: currentQuestion,
+            correctAnswers: correctAnswers,
+            score: score,
+            questionResults: questionResults
+        })
+    );
+}
+
+function loadQuizProgress() {
+
+const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
+
+if (!saved) {
+    return false;
+}
+
+try {
+
+    const data = JSON.parse(saved);
+
+    // Restore the same questions
+    questions.length = 0;
+    questions.push(...data.questions);
+
+    currentQuestion = data.currentQuestion || 0;
+    correctAnswers = data.correctAnswers || 0;
+    score = data.score || 0;
+    questionResults = data.questionResults || [];
+
+    return true;
+
+} catch (error) {
+
+    console.error("Could not load quiz progress:", error);
+
+    localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+    return false;
+}
+}
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+    document.querySelector(".navigation").style.display =
+        "flex";
+
+    const question = questions[currentQuestion];
+
+    // Question number
+    document.getElementById("progress").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+    // Current score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+
+    // Display question
+    document.getElementById("question").textContent =
+        question.question;
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    // Clear feedback
+    document.getElementById("feedback").textContent = "";
+
+    // Create buttons
+    question.options.forEach(function(option, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        button.addEventListener(
+            "click",
+            function() {
+                checkAnswer(index, button);
+            }
+        );
+
+        optionsDiv.appendChild(button);
+    });
+
+    // Previous button
+    document.getElementById("prevButton").disabled =
+        currentQuestion === 0;
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(selectedIndex, button) {
+
+    const question =
+        questions[currentQuestion];
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(".option");
+
+    buttons.forEach(function(btn) {
+        btn.disabled = true;
+    });
+
+    // Correct answer
+    if (selectedIndex + 1 === question.answer) {
+
+questionResults[currentQuestion] = 1;
+saveQuizProgress();
+
+score = questionResults.reduce(
+    (total, mark) => total + mark,
+    0
+);
+
+correctAnswers = questionResults.filter(
+    mark => mark === 1
+).length;
+
+button.classList.add("correct");
+        button.classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "Correct!";
+
+        // Automatically move on after a short pause
+        setTimeout(goToNextOrFinish, 900);
+    }
+
+    // Wrong answer
+    else {
+
+        button.classList.add("wrong");
+
+        // Show the correct answer
+        buttons[
+            question.answer - 1
+        ].classList.add("correct");
+
+        document.getElementById("feedback").textContent =
+            "Wrong.";
+
+        // Show the info popup for the correct answer
+        showInfo(question);
+    }
+
+    // Update score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+}
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[question.answer - 1];
+
+    document.getElementById("infoWord").textContent =
+        correctOption;
+
+    document.getElementById("infoMeaning").innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" + question.meaning
+            : "";
+
+    document.getElementById("infoExample").innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" + question.example
+            : "";
+
+    document.getElementById("infoOverlay").classList.add("visible");
+}
+
+
+function closeInfo() {
+
+    document.getElementById("infoOverlay").classList.remove("visible");
+
+    // Automatically move on once the popup is dismissed
+    goToNextOrFinish();
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+currentQuestion--;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+}
+
+document.getElementById("prevButton").addEventListener("click", previousQuestion);
+// ======================================================
+// GO TO NEXT QUESTION (OR FINISH)
+// ======================================================
+
+function goToNextOrFinish() {
+
+    if (currentQuestion < questions.length - 1) {
+
+currentQuestion++;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+
+    else {
+
+        showResult();
+    }
+}
+
+// ======================================================
+// RESTART QUIZ
+// ======================================================
+
+function restartQuiz() {
+
+localStorage.removeItem(QUIZ_STORAGE_KEY);
+currentQuestion = 0;
+
+correctAnswers = 0;
+
+score = 0;
+questionResults = [];
+
+
+document.getElementById("result").innerHTML = "";
+
+document.getElementById("restartButton").style.display =
+    "none";
+
+displayQuestion();
+}
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+const totalQuestions = questions.length;
+
+const percentage =
+    (correctAnswers / totalQuestions) * 100;
+
+const mark =
+    percentage.toFixed(2);
+
+// Clear quiz
+document.getElementById("progress").textContent = "";
+document.getElementById("score").textContent = "";
+document.getElementById("question").textContent = "";
+document.getElementById("options").innerHTML = "";
+document.getElementById("feedback").textContent = "";
+
+document.querySelector(".navigation").style.display =
+    "none";
+
+document.getElementById("restartButton").style.display =
+    "block";
+
+// Display result
+document.getElementById("result").innerHTML =
+
+    "Quiz Finished!<br><br>" +
+
+    "Correct answers: " +
+    correctAnswers +
+    " / " +
+    totalQuestions +
+
+    "<br><br>" +
+
+    "Score: " +
+    score +
+    " / " +
+totalQuestions +
+
+    "<br><br>" +
+
+    "Mark: " +
+    mark +
+    " / 100";
+}
+
+// ======================================================
+// START QUIZ
+// ======================================================
+if (questions.length > 0) {
+
+loadQuizProgress();
+
+displayQuestion();
+}
+
+else {
+
+    document.getElementById("question").textContent =
+        "No questions found.";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
