@@ -2332,32 +2332,32 @@ let questionResults = [];
 
 const QUIZ_STORAGE_KEY = "englishQuizProgress";
 
+function getVocabularySignature() {
+    return JSON.stringify(Object.keys(vocabulary).sort());
 function saveQuizProgress() {
-    localStorage.setItem(
-        QUIZ_STORAGE_KEY,
-        JSON.stringify({
-            questions: questions,
-            currentQuestion: currentQuestion,
-            correctAnswers: correctAnswers,
-            score: score,
-            questionResults: questionResults
-        })
-    );
+    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify({
+        vocabularySignature: getVocabularySignature(),
+        questions,
+        currentQuestion,
+        correctAnswers,
+        score,
+        questionResults
+    }));
 }
 
 function loadQuizProgress() {
+    const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
 
-const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
-
-if (!saved) {
-    return false;
-}
-
-try {
+    if (!saved) return false;
 
     const data = JSON.parse(saved);
 
-    // Restore the same questions
+    // Check whether the vocabulary has changed
+    if (data.vocabularySignature !== getVocabularySignature()) {
+        localStorage.removeItem(QUIZ_STORAGE_KEY);
+        return false;
+    }
+
     questions.length = 0;
     questions.push(...data.questions);
 
@@ -2367,20 +2367,9 @@ try {
     questionResults = data.questionResults || [];
 
     return true;
-
-} catch (error) {
-
-    console.error("Could not load quiz progress:", error);
-
-    localStorage.removeItem(QUIZ_STORAGE_KEY);
-
-    return false;
 }
-}
-// ======================================================
-// DISPLAY QUESTION
-// ======================================================
-
+    
+    
 function displayQuestion() {
 
     document.querySelector(".navigation").style.display =
