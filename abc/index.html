@@ -510,21 +510,20 @@ body {
 }
 
 
-
 /* ==========================================
    DIFFICULT WORD / STAR BUTTONS
    ========================================== */
-   #reviewStarredButton {
+
+#starButton,
+#reviewStarredButton {
     position: fixed;
     right: 20px;
-    bottom: 20px;
     z-index: 900;
 
     min-height: 32px;
     padding: 4px 8px;
-    font-size: 13px;
-
     font-family: Arial, sans-serif;
+    font-size: 13px;
     font-weight: bold;
     color: #374151;
     background: #ffffff;
@@ -534,17 +533,14 @@ body {
     touch-action: manipulation;
 }
 
-#starButton.starred {
-    color: #b45309;
-    background: #fef3c7;
-    border-color: #f59e0b;
-}
 #starButton {
-    position: fixed;
-    right: 20px;
     bottom: 60px;
-    z-index: 900;
 }
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
 #starButton:active,
 #reviewStarredButton:active {
     transform: scale(0.97);
