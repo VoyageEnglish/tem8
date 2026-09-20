@@ -1,0 +1,4631 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+#starButton,
+#reviewStarredButton {
+    position: fixed;
+    z-index: 900;
+    min-height: 42px;
+    padding: 8px 12px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 2px solid #d1d5db;
+    border-radius: 10px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    top: 62px;
+    right: 12px;
+}
+
+#reviewStarredButton {
+    top: 112px;
+    right: 12px;
+}
+
+#starButton.starred {
+    color: #b45309;
+    background: #fef3c7;
+    border-color: #f59e0b;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full Screen
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+<button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+    ★ Review (0)
+</button>
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+
+<script>
+
+const vocabulary = {
+
+    abacus: {
+    meaning: "a device with rows of sliding beads used for counting and calculating",
+    example: "The students learned how to use an abacus to perform simple calculations."
+},
+
+abase: {
+    meaning: "to lower in dignity or self-respect; to humble",
+    example: "He refused to abase himself by apologizing for something he had not done."
+},
+
+abate: {
+    meaning: "to become less strong or severe; to reduce or lessen",
+    example: "The storm finally began to abate in the early morning."
+},
+
+abdicate: {
+    meaning: "to formally give up a position, power, or right; to give up a throne",
+    example: "The king decided to abdicate the throne in favor of his son."
+},
+
+abduct: {
+    meaning: "to take someone away illegally by force",
+    example: "The police searched the area after the child was abducted."
+},
+
+aberrant: {
+    meaning: "different from what is normal or usual",
+    example: "The scientist noticed an aberrant result in the experiment."
+},
+
+abhor: {
+    meaning: "to hate or detest someone or something intensely",
+    example: "She abhors cruelty to animals."
+},
+
+abject: {
+    meaning: "extremely unpleasant or hopeless; completely lacking pride or dignity",
+    example: "The refugees were living in abject poverty."
+},
+
+abode: {
+    meaning: "a house or home",
+    example: "The cottage became their permanent abode."
+},
+
+abominable: {
+    meaning: "very unpleasant or hateful; extremely bad",
+    example: "The hotel served abominable food."
+},
+
+abrasive: {
+    meaning: "rough or damaging to a surface; unpleasant or irritating",
+    example: "The abrasive material scratched the surface of the table."
+},
+
+abstain: {
+    meaning: "to deliberately avoid something; to choose not to vote",
+    example: "He decided to abstain from alcohol during the holiday."
+},
+
+abstention: {
+    meaning: "the act of deliberately avoiding something; the act of not voting",
+    example: "The motion passed despite several abstentions."
+},
+
+abstinence: {
+    meaning: "the practice of deliberately avoiding something, especially alcohol or sexual activity",
+    example: "He practiced abstinence from alcohol for several months."
+},
+
+abusive: {
+    meaning: "using insulting, offensive, or violent language or behavior",
+    example: "The manager was criticized for his abusive language."
+},
+
+abyss: {
+    meaning: "a very deep hole or a seemingly bottomless depth",
+    example: "The explorers looked down into the dark abyss."
+},
+
+accede: {
+    meaning: "to agree to a request; to take office or a position of power",
+    example: "The government finally acceded to the workers' demands."
+},
+
+accessible: {
+    meaning: "easy to reach, enter, obtain, or understand",
+    example: "The museum is easily accessible by public transportation."
+},
+
+accession: {
+    meaning: "the act of taking office or becoming king or queen",
+    example: "The king celebrated the anniversary of his accession to the throne."
+},
+
+acclaim: {
+    meaning: "enthusiastic public approval or praise; to praise enthusiastically",
+    example: "The new novel was acclaimed by critics."
+},
+
+accompanist: {
+    meaning: "a person who provides musical accompaniment for a singer or performer",
+    example: "The pianist worked as an accompanist for the young singer."
+},
+
+accomplice: {
+    meaning: "a person who helps another person commit a crime",
+    example: "The thief was arrested along with his accomplice."
+},
+
+accredit: {
+    meaning: "to officially recognize or attribute something to a person or organization",
+    example: "The invention was accredited to a team of researchers."
+},
+
+accrue: {
+    meaning: "to increase or accumulate over time",
+    example: "Interest will accrue on the account every month."
+},
+
+acoustics: {
+    meaning: "the science of sound; the qualities of a place that affect sound",
+    example: "The concert hall is famous for its excellent acoustics."
+},
+
+acquiesce: {
+    meaning: "to accept or agree to something without protest",
+    example: "She eventually acquiesced to her parents' wishes."
+},
+
+acquit: {
+    meaning: "to officially declare someone not guilty; to perform or fulfill a duty",
+    example: "The jury acquitted the defendant of all charges."
+},
+
+acquittal: {
+    meaning: "a judgment that someone is not guilty of a crime",
+    example: "The defendant celebrated his acquittal after the trial."
+},
+
+acrimony: {
+    meaning: "bitterness or harshness in speech or behavior",
+    example: "The debate ended with considerable acrimony."
+},
+
+acronym: {
+    meaning: "a word formed from the first letters of other words",
+    example: "NASA is an acronym for the National Aeronautics and Space Administration."
+},
+
+acumen: {
+    meaning: "the ability to make good judgments and understand situations quickly",
+    example: "Her business acumen helped the company become successful."
+},
+
+adamant: {
+    meaning: "firmly determined and unwilling to change one's mind",
+    example: "He was adamant that he would not change his decision."
+},
+
+addictive: {
+    meaning: "causing a strong desire to continue using or doing something",
+    example: "Some online games can be highly addictive."
+},
+
+adept: {
+    meaning: "very skilled or proficient at something",
+    example: "She is adept at solving difficult mathematical problems."
+},
+
+additive: {
+    meaning: "a substance added to something, especially food, to improve or preserve it",
+    example: "The product contains no artificial additives."
+},
+
+adhesive: {
+    meaning: "a substance that sticks things together; sticky",
+    example: "The workers used a strong adhesive to attach the pieces."
+},
+
+adjourn: {
+    meaning: "to stop or postpone a meeting or activity",
+    example: "The judge decided to adjourn the hearing until Monday."
+},
+
+adjudicate: {
+    meaning: "to make an official judgment or decision about a dispute",
+    example: "A panel of experts was asked to adjudicate the dispute."
+},
+
+adjunct: {
+    meaning: "something added or connected to something else; an additional part",
+    example: "The laboratory is an important adjunct to the university."
+},
+
+admonish: {
+    meaning: "to warn or criticize someone firmly but gently; to advise",
+    example: "The teacher admonished the students for being late."
+},
+
+ado: {
+    meaning: "a lot of unnecessary activity, excitement, or fuss",
+    example: "They completed the task without much ado."
+},
+
+adorn: {
+    meaning: "to decorate or make something more attractive",
+    example: "Flowers adorned the walls of the wedding hall."
+},
+
+adrift: {
+    meaning: "floating without being controlled or tied to anything; without direction",
+    example: "The small boat was left adrift in the middle of the lake."
+},
+
+adroit: {
+    meaning: "skillful, clever, or quick in using the hands or dealing with situations",
+    example: "She was adroit at handling difficult questions."
+},
+
+adulterate: {
+    meaning: "to make something less pure by adding inferior or harmful substances",
+    example: "The company was accused of adulterating the milk."
+},
+
+adultery: {
+    meaning: "sexual relations between a married person and someone who is not their spouse",
+    example: "The novel explores the consequences of adultery."
+},
+
+advent: {
+    meaning: "the arrival or beginning of an important event or period",
+    example: "The advent of the internet transformed communication."
+},
+
+adversary: {
+    meaning: "an opponent or enemy",
+    example: "The champion defeated his strongest adversary."
+},
+
+adverse: {
+    meaning: "unfavorable, harmful, or opposing",
+    example: "The project was delayed because of adverse weather conditions."
+},
+
+adversity: {
+    meaning: "a difficult or unpleasant situation; hardship or misfortune",
+    example: "She remained optimistic despite years of adversity."
+},
+
+advocacy: {
+    meaning: "public support for a particular idea, policy, or cause",
+    example: "Her advocacy for children's education attracted national attention."
+},
+
+aerobatics: {
+    meaning: "spectacular flying movements performed by aircraft",
+    example: "The audience watched the pilots perform daring aerobatics."
+},
+
+aerobics: {
+    meaning: "physical exercises designed to improve fitness through energetic movement",
+    example: "She attends an aerobics class twice a week."
+},
+
+aerodynamics: {
+    meaning: "the study of how air moves around objects, especially aircraft",
+    example: "Engineers studied the car's aerodynamics to reduce air resistance."
+},
+
+aerosol: {
+    meaning: "a substance consisting of very small particles or droplets suspended in air",
+    example: "The spray produces a fine aerosol."
+},
+
+aerospace: {
+    meaning: "the industry and science involving aircraft and space vehicles",
+    example: "He works for an aerospace company."
+},
+
+affable: {
+    meaning: "friendly, pleasant, and easy to talk to",
+    example: "The affable professor was popular with his students."
+},
+
+affiliate: {
+    meaning: "to join or become connected with an organization; a connected organization",
+    example: "The college is affiliated with a major university."
+},
+
+alchemy: {
+    meaning: "an ancient practice that attempted to transform ordinary metals into gold",
+    example: "Alchemy was once closely connected with the early study of chemistry."
+},
+
+alcoholism: {
+    meaning: "a condition involving excessive and uncontrolled consumption of alcohol",
+    example: "The organization provides support for people suffering from alcoholism."
+},
+
+alias: {
+    meaning: "a false or alternative name, especially one used to hide someone's identity",
+    example: "The suspect was traveling under an alias."
+},
+
+alibi: {
+    meaning: "evidence that a person was somewhere else when a crime was committed",
+    example: "The suspect had a strong alibi."
+},
+
+align: {
+    meaning: "to arrange in a straight line; to bring into agreement or alliance",
+    example: "The company decided to align its policies with international standards."
+},
+
+alimony: {
+    meaning: "money paid by one former spouse to another after a divorce",
+    example: "He was ordered to pay alimony after the divorce."
+},
+
+allay: {
+    meaning: "to reduce fear, worry, or doubt",
+    example: "The announcement helped allay public concerns."
+},
+
+allegiance: {
+    meaning: "loyalty or commitment to a leader, country, or cause",
+    example: "The soldiers swore allegiance to their country."
+},
+
+allegory: {
+    meaning: "a story, poem, or work of art in which characters and events represent deeper meanings",
+    example: "The novel can be read as an allegory of political power."
+},
+
+allergic: {
+    meaning: "having a medical reaction to a particular substance",
+    example: "She is allergic to peanuts."
+},
+
+allergy: {
+    meaning: "a medical condition in which the body reacts badly to a particular substance",
+    example: "His allergy to pollen becomes worse in spring."
+},
+
+alleviate: {
+    meaning: "to make pain, suffering, or a problem less severe",
+    example: "The medicine helped alleviate her pain."
+},
+
+allude: {
+    meaning: "to mention something indirectly without stating it clearly",
+    example: "The speaker alluded to several problems in the organization."
+},
+
+allure: {
+    meaning: "to attract or tempt someone by being attractive or interesting",
+    example: "The allure of the city attracted thousands of young people."
+},
+
+allusion: {
+    meaning: "an indirect reference to a person, event, or work",
+    example: "The poem contains an allusion to Greek mythology."
+},
+
+alms: {
+    meaning: "money, food, or other help given to poor people",
+    example: "The charity collected alms for homeless families."
+},
+
+ambience: {
+    meaning: "the atmosphere or mood of a place",
+    example: "The restaurant has a warm and relaxing ambience."
+},
+
+ambivalent: {
+    meaning: "having mixed or contradictory feelings about something",
+    example: "She felt ambivalent about moving to another city."
+},
+
+ambush: {
+    meaning: "a surprise attack by people hiding and waiting for someone; to attack in this way",
+    example: "The soldiers were caught in an ambush."
+},
+
+amiable: {
+    meaning: "friendly, pleasant, and easy to like",
+    example: "The amiable host made everyone feel welcome."
+},
+
+affinity: {
+    meaning: "a natural liking or connection; similarity or relationship",
+    example: "The two writers had a strong affinity for classical literature."
+},
+
+afflict: {
+    meaning: "to cause someone physical or mental suffering",
+    example: "The disease continues to afflict millions of people."
+},
+
+affront: {
+    meaning: "to insult or offend someone; an insult or offense",
+    example: "He regarded the remark as a personal affront."
+},
+
+afoot: {
+    meaning: "in progress or being planned",
+    example: "Several changes are already afoot."
+},
+
+afresh: {
+    meaning: "again, especially from the beginning",
+    example: "After the failure, they decided to start afresh."
+},
+
+aggravate: {
+    meaning: "to make a problem, illness, or situation worse",
+    example: "Stress can aggravate the symptoms."
+},
+
+aggregate: {
+    meaning: "the total amount or sum of several things",
+    example: "The aggregate cost of the project was higher than expected."
+},
+
+aggrieved: {
+    meaning: "feeling that one has been treated unfairly or wrongly",
+    example: "The aggrieved employees demanded an explanation."
+},
+
+agile: {
+    meaning: "able to move quickly and easily; flexible",
+    example: "The agile athlete quickly changed direction."
+},
+
+agitate: {
+    meaning: "to encourage people to protest or demand something; to make someone anxious or upset",
+    example: "The organization continues to agitate for social reform."
+},
+
+agitation: {
+    meaning: "a state of anxiety or nervous excitement; organized action to achieve change",
+    example: "The news caused considerable agitation among the students."
+},
+
+agnostic: {
+    meaning: "a person who believes that it is impossible to know whether God exists",
+    example: "He describes himself as an agnostic."
+},
+
+agonizing: {
+    meaning: "causing extreme physical or emotional pain",
+    example: "Waiting for the test results was agonizing."
+},
+
+ailing: {
+    meaning: "feeling unwell or suffering from an illness",
+    example: "The doctor visited the ailing patient."
+},
+
+ailment: {
+    meaning: "a minor illness or health problem",
+    example: "The medicine can relieve several common ailments."
+},
+
+airborne: {
+    meaning: "carried through the air; in the air or flying",
+    example: "The passengers were airborne for nearly twelve hours."
+},
+
+airlift: {
+    meaning: "the transportation of people or goods by aircraft, especially in an emergency; to transport by air",
+    example: "Food and medical supplies were airlifted to the disaster area."
+},
+
+ajar: {
+    meaning: "slightly open",
+    example: "The door was left ajar."
+},
+
+anesthetize: {
+    meaning: "to give someone a drug that causes loss of feeling or consciousness",
+    example: "The dentist anesthetized the patient before the operation."
+},
+
+amicable: {
+    meaning: "friendly and peaceful, especially between people who disagree",
+    example: "The two sides reached an amicable agreement."
+},
+
+anagram: {
+    meaning: "a word or phrase formed by rearranging the letters of another word or phrase",
+    example: "The students solved the anagram in a few seconds."
+},
+
+anal: {
+    meaning: "relating to the anus",
+    example: "The doctor performed an anal examination."
+},
+
+amnesia: {
+    meaning: "loss of memory or inability to remember things",
+    example: "The accident caused temporary amnesia."
+},
+
+analogue: {
+    meaning: "something similar to another thing; a counterpart",
+    example: "The machine has no exact analogue in modern technology."
+},
+
+amnesty: {
+    meaning: "an official pardon for people who have committed certain offenses",
+    example: "The government declared an amnesty for political prisoners."
+},
+
+analytical: {
+    meaning: "relating to careful examination and reasoning",
+    example: "She has a highly analytical approach to problems."
+},
+
+amoral: {
+    meaning: "not concerned with whether something is morally right or wrong",
+    example: "The novel portrays the character as completely amoral."
+},
+
+amphibious: {
+    meaning: "able to operate both on land and in water",
+    example: "The army used amphibious vehicles to cross the river."
+},
+
+anaemia: {
+    meaning: "a medical condition in which the blood does not contain enough healthy red blood cells",
+    example: "The doctor diagnosed her with anaemia."
+},
+
+anesthesia: {
+    meaning: "a state of unconsciousness or loss of feeling caused by drugs",
+    example: "The operation was performed under general anesthesia."
+},
+
+anaesthetic: {
+    meaning: "a drug used to cause loss of feeling or consciousness",
+    example: "The dentist applied a local anaesthetic before treatment."
+},
+
+anarchy: {
+    meaning: "a situation without government or order; complete disorder",
+    example: "The country descended into anarchy after the government collapsed."
+},
+
+anarchist: {
+    meaning: "a person who supports a political system without government",
+    example: "The book describes the ideas of an early anarchist."
+},
+
+anarchism: {
+    meaning: "a political theory advocating a society without government or authority",
+    example: "The course examines the history of anarchism."
+},
+
+anarchic: {
+    meaning: "without government or order; chaotic",
+    example: "The streets became increasingly anarchic."
+},
+
+anew: {
+    meaning: "again, especially in a different or fresh way",
+    example: "They decided to begin the project anew."
+},
+
+anguish: {
+    meaning: "extreme physical or emotional pain",
+    example: "She cried out in anguish after hearing the news."
+},
+
+animosity: {
+    meaning: "strong hatred or hostility",
+    example: "There was considerable animosity between the two groups."
+},
+
+annihilate: {
+    meaning: "to completely destroy or eliminate",
+    example: "The army was determined to annihilate the enemy forces."
+},
+
+annuity: {
+    meaning: "a fixed amount of money paid regularly, usually for a specified period or for life",
+    example: "He receives an annuity after retirement."
+},
+
+anomaly: {
+    meaning: "something unusual or different from what is expected",
+    example: "The scientist regarded the result as an anomaly."
+},
+
+anonymity: {
+    meaning: "the state of being unknown or unnamed",
+    example: "The donor requested complete anonymity."
+},
+
+antagonize: {
+    meaning: "to make someone hostile or angry",
+    example: "His careless comments antagonized his colleagues."
+},
+
+antelope: {
+    meaning: "a fast-running animal with horns, related to cattle and found mainly in Africa and Asia",
+    example: "A herd of antelope ran across the grassland."
+},
+
+anthology: {
+    meaning: "a collection of poems, stories, or other literary works",
+    example: "The book is an anthology of modern poetry."
+},
+
+anthropology: {
+    meaning: "the scientific study of human beings, cultures, and societies",
+    example: "She studies anthropology at university."
+},
+
+antibody: {
+    meaning: "a protein produced by the body to fight a particular disease or infection",
+    example: "The vaccine helps the body produce antibodies."
+},
+
+antidote: {
+    meaning: "a substance that counteracts a poison; something that relieves an unpleasant situation",
+    example: "The doctor administered an antidote to the poison."
+},
+
+antilogarithm: {
+    meaning: "the number whose logarithm is a given number",
+    example: "The students learned how to calculate an antilogarithm."
+},
+
+antipathy: {
+    meaning: "a strong feeling of dislike or opposition",
+    example: "He has a deep antipathy toward dishonesty."
+},
+
+appendix: {
+    meaning: "a section added to a book; a small organ attached to the large intestine",
+    example: "The statistics are included in the appendix."
+},
+
+antler: {
+    meaning: "one of the branched horns grown by male deer",
+    example: "The deer had large antlers."
+},
+
+anus: {
+    meaning: "the opening at the end of the digestive system",
+    example: "The medical examination included the anus."
+},
+
+apartheid: {
+    meaning: "a former system of racial segregation and discrimination in South Africa",
+    example: "The museum documents the history of apartheid."
+},
+
+apathy: {
+    meaning: "a lack of interest, enthusiasm, or concern",
+    example: "Student apathy made it difficult to organize the event."
+},
+
+apiece: {
+    meaning: "for each one; each",
+    example: "The tickets cost twenty dollars apiece."
+},
+
+apex: {
+    meaning: "the highest point or most important point",
+    example: "The climber finally reached the apex of the mountain."
+},
+
+apoplexy: {
+    meaning: "a stroke or sudden loss of consciousness caused by bleeding in the brain",
+    example: "The patient was rushed to hospital after suffering an apoplexy."
+},
+
+apostrophe: {
+    meaning: "a punctuation mark used to show possession or omitted letters",
+    example: "The word \"don't\" contains an apostrophe."
+},
+
+apparel: {
+    meaning: "clothing or clothes",
+    example: "The store sells sports apparel."
+},
+
+appease: {
+    meaning: "to calm someone or satisfy demands in order to prevent conflict",
+    example: "The company offered a refund to appease the angry customer."
+},
+
+append: {
+    meaning: "to add something to the end of something else",
+    example: "Please append your signature to the document."
+},
+
+appendicitis: {
+    meaning: "a painful condition in which the appendix becomes inflamed",
+    example: "He was taken to hospital with acute appendicitis."
+},
+
+arsenal: {
+    meaning: "a place where weapons and military equipment are stored or made",
+    example: "The country has a large arsenal of modern weapons."
+},
+
+arson: {
+    meaning: "the crime of deliberately setting fire to property",
+    example: "The building was destroyed in an act of arson."
+},
+
+artifact: {
+    meaning: "an object made by humans, especially one of historical or cultural interest",
+    example: "The museum displayed an ancient artifact."
+},
+
+artful: {
+    meaning: "clever or skillful; cleverly deceptive",
+    example: "The politician gave an artful answer to the difficult question."
+},
+
+arthritis: {
+    meaning: "a disease causing pain and stiffness in the joints",
+    example: "Her arthritis makes it difficult to climb stairs."
+},
+
+articulate: {
+    meaning: "to express ideas clearly; to join by means of a joint",
+    example: "She was able to articulate her ideas clearly."
+},
+
+artifice: {
+    meaning: "a clever trick or strategy used to deceive someone",
+    example: "The magician relied on artifice to fool the audience."
+},
+
+artisan: {
+    meaning: "a skilled craft worker who makes things by hand",
+    example: "The village is famous for its skilled artisans."
+},
+
+ascendant: {
+    meaning: "gaining power, influence, or importance",
+    example: "The ascendant political group gained more support."
+},
+
+ascertain: {
+    meaning: "to discover or establish something with certainty",
+    example: "The police are trying to ascertain the cause of the accident."
+},
+
+ascetic: {
+    meaning: "a person who practices severe self-discipline; practicing strict self-denial",
+    example: "The monk lived an ascetic life."
+},
+
+ascribe: {
+    meaning: "to attribute something to a particular cause or person",
+    example: "The success of the project was ascribed to careful planning."
+},
+
+asterisk: {
+    meaning: "a star-shaped symbol (*) used in writing or printing",
+    example: "An asterisk indicates an important note."
+},
+
+aspiration: {
+    meaning: "a strong desire or ambition to achieve something",
+    example: "Her aspiration is to become a university professor."
+},
+
+aspire: {
+    meaning: "to strongly desire or work toward achieving something",
+    example: "He aspires to become a successful writer."
+},
+
+assail: {
+    meaning: "to attack someone or something violently or strongly",
+    example: "The army assailed the enemy position."
+},
+
+assailant: {
+    meaning: "a person who attacks another person",
+    example: "The assailant was arrested shortly after the attack."
+},
+
+assent: {
+    meaning: "agreement or approval",
+    example: "The plan was approved with the full assent of the committee."
+},
+
+assertive: {
+    meaning: "confident and direct in expressing opinions or demands",
+    example: "She became more assertive during discussions."
+},
+
+assiduous: {
+    meaning: "very hardworking, careful, and persistent",
+    example: "His assiduous efforts eventually produced excellent results."
+},
+
+assimilate: {
+    meaning: "to absorb or understand; to become similar to a group or culture",
+    example: "It took time for the newcomers to assimilate into the community."
+},
+
+assorted: {
+    meaning: "of various different types mixed together",
+    example: "The box contained an assortment of assorted chocolates."
+},
+
+assortment: {
+    meaning: "a collection of different types of things",
+    example: "The shop sells a wide assortment of gifts."
+},
+
+apposite: {
+    meaning: "appropriate, suitable, or relevant",
+    example: "Her comment was particularly apposite to the discussion."
+},
+
+appraisal: {
+    meaning: "an evaluation or assessment of the value or quality of something",
+    example: "The house needs a professional appraisal."
+},
+
+appraise: {
+    meaning: "to evaluate or assess the value or quality of something",
+    example: "An expert was asked to appraise the painting."
+},
+
+apprehension: {
+    meaning: "anxiety or fear about something that may happen",
+    example: "She felt some apprehension before the interview."
+},
+
+aquarium: {
+    meaning: "a building or container in which fish and other aquatic animals are kept",
+    example: "The children spent the afternoon at the aquarium."
+},
+
+arbiter: {
+    meaning: "a person with the authority to settle a dispute or make a final decision",
+    example: "The judge acted as the final arbiter of the dispute."
+},
+
+arbitrate: {
+    meaning: "to settle a dispute by acting as an independent judge",
+    example: "An independent expert was invited to arbitrate the dispute."
+},
+
+arcade: {
+    meaning: "a covered passage with shops on one or both sides",
+    example: "They walked through the old shopping arcade."
+},
+
+archaic: {
+    meaning: "very old-fashioned or no longer commonly used",
+    example: "Some of the words in the text are now archaic."
+},
+
+archer: {
+    meaning: "a person who shoots arrows with a bow",
+    example: "The archer hit the center of the target."
+},
+
+archetype: {
+    meaning: "a typical example or original model of something",
+    example: "The character is an archetype of the brave hero."
+},
+
+archipelago: {
+    meaning: "a group or chain of islands",
+    example: "Indonesia is a vast archipelago."
+},
+
+archive: {
+    meaning: "a collection of historical documents; a place where such documents are stored",
+    example: "The researcher examined documents in the national archive."
+},
+
+ardent: {
+    meaning: "very enthusiastic, passionate, or devoted",
+    example: "She is an ardent supporter of classical music."
+},
+
+ardour: {
+    meaning: "strong enthusiasm, passion, or devotion",
+    example: "He pursued his studies with great ardour."
+},
+
+arduous: {
+    meaning: "requiring a lot of effort and hard work",
+    example: "Climbing the mountain was an arduous task."
+},
+
+argumentative: {
+    meaning: "often arguing or inclined to argue; relating to an argument",
+    example: "The argumentative student challenged every point."
+},
+
+ark: {
+    meaning: "a large boat described in the Bible as built by Noah",
+    example: "The children learned about Noah's Ark."
+},
+
+armada: {
+    meaning: "a large group or fleet of warships",
+    example: "An armada of ships approached the harbor."
+},
+
+armoury: {
+    meaning: "a place where weapons are stored or manufactured",
+    example: "The old building was once an armoury."
+},
+
+aroma: {
+    meaning: "a pleasant smell, especially from food or drink",
+    example: "The aroma of fresh coffee filled the room."
+},
+
+aromatic: {
+    meaning: "having a pleasant and distinctive smell",
+    example: "The kitchen was filled with aromatic herbs."
+},
+
+arrears: {
+    meaning: "money that is overdue and has not been paid; unfinished work",
+    example: "The tenant was two months in arrears with the rent."
+},
+
+asthma: {
+    meaning: "a medical condition that makes breathing difficult",
+    example: "The child uses an inhaler to control his asthma."
+},
+
+astral: {
+    meaning: "relating to the stars",
+    example: "The book describes ancient beliefs about astral influences."
+},
+
+astray: {
+    meaning: "away from the correct path or direction; into error",
+    example: "The hikers wandered astray in the forest."
+},
+
+astrology: {
+    meaning: "the study of the supposed influence of stars and planets on human affairs",
+    example: "She reads books about astrology."
+},
+
+astrophysics: {
+    meaning: "the branch of science concerned with the physical properties of stars and other objects in space",
+    example: "He plans to study astrophysics at university."
+},
+
+asylum: {
+    meaning: "protection or shelter from danger; formerly, a mental hospital",
+    example: "The refugees sought asylum in another country."
+},
+
+asymmetric: {
+    meaning: "not symmetrical; having different shapes or arrangements on opposite sides",
+    example: "The building has an unusual asymmetric design."
+},
+
+atrocious: {
+    meaning: "extremely cruel, violent, or very bad",
+    example: "The prisoners were subjected to atrocious treatment."
+},
+
+atrocity: {
+    meaning: "an extremely cruel or violent act",
+    example: "The report documented numerous atrocities committed during the war."
+},
+
+attest: {
+    meaning: "to prove or show that something is true",
+    example: "These documents attest to his experience."
+},
+
+attrition: {
+    meaning: "the gradual reduction of something through continued loss or use",
+    example: "The company reduced its workforce through natural attrition."
+},
+
+auctioneer: {
+    meaning: "a person who conducts an auction by selling things to the highest bidder",
+    example: "The auctioneer sold the painting for a record price."
+},
+
+audacious: {
+    meaning: "very bold, daring, or willing to take risks",
+    example: "The climber made an audacious attempt to reach the summit."
+},
+
+audible: {
+    meaning: "able to be heard",
+    example: "Her voice was barely audible from the back of the room."
+},
+
+audition: {
+    meaning: "a test of a performer's ability; to perform in a test",
+    example: "She went to an audition for the leading role."
+},
+
+augment: {
+    meaning: "to increase or make something larger",
+    example: "The company plans to augment its workforce."
+},
+
+aura: {
+    meaning: "a distinctive atmosphere or quality surrounding a person or place",
+    example: "The old castle has an aura of mystery."
+},
+
+auspicious: {
+    meaning: "suggesting that something is likely to be successful or favorable",
+    example: "The sunny weather was an auspicious start to the festival."
+},
+
+austere: {
+    meaning: "strict or severe; simple and without decoration or luxury",
+    example: "The monastery has a simple and austere interior."
+},
+
+austerity: {
+    meaning: "strictness or simplicity; a policy of reducing spending",
+    example: "The government introduced austerity measures."
+},
+
+authoritarian: {
+    meaning: "favoring or enforcing strict obedience to authority; a person who supports such rule",
+    example: "The country was governed by an authoritarian regime."
+},
+
+autocrat: {
+    meaning: "a ruler who has unlimited power; a domineering person",
+    example: "The autocrat refused to tolerate criticism."
+},
+
+autocratic: {
+    meaning: "using or favoring complete and unlimited power",
+    example: "The manager had an autocratic style of leadership."
+},
+
+autograph: {
+    meaning: "a person's handwritten signature, especially that of a famous person",
+    example: "The fan asked the actor for an autograph."
+},
+
+automate: {
+    meaning: "to make a process operate automatically",
+    example: "The factory plans to automate several production lines."
+},
+
+autopsy: {
+    meaning: "an examination of a dead body to determine the cause of death",
+    example: "The autopsy revealed the cause of death."
+},
+
+avail: {
+    meaning: "to help or benefit; to make use of",
+    example: "The medicine did little to avail him."
+},
+
+avalanche: {
+    meaning: "a large mass of snow and ice falling rapidly down a mountain",
+    example: "The skiers were warned about the danger of an avalanche."
+},
+
+aversion: {
+    meaning: "a strong feeling of dislike or unwillingness",
+    example: "She has a strong aversion to loud music."
+},
+
+avert: {
+    meaning: "to prevent something bad from happening; to turn away",
+    example: "Quick action helped avert a serious accident."
+},
+
+avid: {
+    meaning: "very enthusiastic or eager",
+    example: "He is an avid reader of history books."
+},
+
+awesome: {
+    meaning: "extremely impressive, inspiring admiration or fear",
+    example: "We stood in silence before the awesome beauty of the mountains."
+},
+
+babble: {
+    meaning: "to speak quickly and unclearly; to talk foolishly",
+    example: "The excited child began to babble about the trip."
+},
+
+badger: {
+    meaning: "a small animal with black and white markings; to repeatedly annoy or persuade someone",
+    example: "The children kept badgering their father to buy them a puppy."
+},
+
+baffle: {
+    meaning: "to confuse someone or make something difficult to understand",
+    example: "The strange result baffled the scientists."
+},
+
+baleful: {
+    meaning: "threatening harm or evil",
+    example: "The dog gave the stranger a baleful look."
+},
+
+ballad: {
+    meaning: "a traditional song or poem; a narrative song",
+    example: "The singer performed a beautiful ballad."
+},
+
+ballast: {
+    meaning: "heavy material used to stabilize a ship; something that provides stability",
+    example: "The ship carried sand as ballast."
+},
+
+ballerina: {
+    meaning: "a female ballet dancer",
+    example: "The young ballerina performed beautifully on stage."
+},
+
+ballistics: {
+    meaning: "the scientific study of the movement of bullets and other projectiles",
+    example: "The police consulted a ballistics expert."
+},
+
+balm: {
+    meaning: "a soothing substance used to relieve pain or irritation",
+    example: "The balm helped soothe the painful skin."
+},
+
+balustrade: {
+    meaning: "a row of posts supporting a rail, especially on stairs or balconies",
+    example: "She leaned against the stone balustrade."
+},
+
+banal: {
+    meaning: "boring because it is ordinary and has been repeated too often",
+    example: "The speech was full of banal observations."
+},
+
+bandwagon: {
+    meaning: "a popular trend that attracts people who want to join it",
+    example: "Many companies jumped on the bandwagon and began using the new technology."
+},
+
+bane: {
+    meaning: "a person or thing that causes trouble or harm",
+    example: "Traffic jams are the bane of his daily commute."
+},
+
+banish: {
+    meaning: "to send someone away; to force something unpleasant out of one's thoughts",
+    example: "The king banished the traitor from the kingdom."
+},
+
+banister: {
+    meaning: "a handrail fixed beside a staircase",
+    example: "She held the banister while walking downstairs."
+},
+
+banjo: {
+    meaning: "a musical instrument with a round body and strings",
+    example: "He played the banjo in a country music band."
+},
+
+banter: {
+    meaning: "playful teasing or joking; to tease someone in a friendly way",
+    example: "The friends exchanged friendly banter during dinner."
+},
+
+baritone: {
+    meaning: "a male singing voice between tenor and bass",
+    example: "His rich baritone voice impressed the audience."
+},
+
+baroque: {
+    meaning: "relating to a highly decorated European artistic style of the seventeenth century",
+    example: "The church is famous for its baroque architecture."
+},
+
+barrage: {
+    meaning: "a large number of attacks or questions; concentrated artillery fire",
+    example: "The speaker faced a barrage of difficult questions."
+},
+
+barricade: {
+    meaning: "a barrier used to block a road or passage; to block with a barrier",
+    example: "Police placed a barricade across the road."
+},
+
+barrister: {
+    meaning: "a British lawyer qualified to represent clients in higher courts",
+    example: "The barrister represented the defendant in court."
+},
+
+barrow: {
+    meaning: "a small cart or wheelbarrow",
+    example: "The gardener pushed a barrow full of soil."
+},
+
+barter: {
+    meaning: "to exchange goods or services without using money",
+    example: "The villagers used to barter food for tools."
+},
+
+bash: {
+    meaning: "to hit something or someone hard; a heavy blow",
+    example: "He accidentally bashed his knee against the table."
+},
+
+bashful: {
+    meaning: "shy and easily embarrassed",
+    example: "The bashful child hid behind her mother."
+},
+
+bask: {
+    meaning: "to enjoy warmth or sunshine in a relaxed way",
+    example: "The cat basked in the afternoon sun."
+},
+
+bastion: {
+    meaning: "a fortified place; a strong center of support for something",
+    example: "The castle was once an important bastion of defense."
+},
+
+baton: {
+    meaning: "a short stick used by a conductor or as a symbol of authority; a relay-race stick",
+    example: "The runner passed the baton to her teammate."
+},
+
+battalion: {
+    meaning: "a large military unit; a large group of people or things",
+    example: "The battalion was sent to the border."
+},
+
+bawl: {
+    meaning: "to shout or cry very loudly",
+    example: "The baby began to bawl loudly."
+},
+
+bay: {
+    meaning: "the loud bark of a dog or hound",
+    example: "We heard the bay of a hunting dog in the distance."
+},
+
+bayonet: {
+    meaning: "a blade attached to the end of a rifle",
+    example: "The soldier fixed a bayonet to his rifle."
+},
+
+bazaar: {
+    meaning: "a market or a sale of goods, especially in an Eastern country",
+    example: "We bought spices at the local bazaar."
+},
+
+bearing: {
+    meaning: "a person's manner or posture; direction; a machine part that reduces friction",
+    example: "His calm bearing impressed everyone in the room."
+},
+
+beastly: {
+    meaning: "very unpleasant, bad, or cruel",
+    example: "The travelers complained about the beastly weather."
+},
+
+beckon: {
+    meaning: "to signal someone to come closer or follow",
+    example: "The teacher beckoned the student to come forward."
+},
+
+befall: {
+    meaning: "to happen to someone, especially something unpleasant",
+    example: "No one knew what might befall them on the journey."
+},
+
+beeper: {
+    meaning: "a small electronic device that receives short messages or signals",
+    example: "Doctors once commonly carried beepers in hospitals."
+},
+
+befit: {
+    meaning: "to be suitable or appropriate for someone or something",
+    example: "Such behavior does not befit a professional."
+},
+
+begrudge: {
+    meaning: "to resent someone for having or doing something; to give unwillingly",
+    example: "I do not begrudge her success."
+},
+
+beguile: {
+    meaning: "to charm or fascinate someone; to deceive or trick",
+    example: "The beautiful music beguiled the audience."
+},
+
+behead: {
+    meaning: "to cut off someone's head",
+    example: "The historical account describes how the prisoner was beheaded."
+},
+
+beige: {
+    meaning: "light brown or yellowish-gray in color",
+    example: "She bought a beige jacket."
+},
+
+being: {
+    meaning: "existence; a living creature or person",
+    example: "Every human being deserves respect."
+},
+
+belie: {
+    meaning: "to give a false impression of something; to contradict",
+    example: "Her cheerful smile belied her sadness."
+},
+
+bemoan: {
+    meaning: "to complain or express sadness about something",
+    example: "The residents bemoaned the loss of the old library."
+},
+
+bemused: {
+    meaning: "confused or puzzled",
+    example: "He looked bemused by the unexpected question."
+},
+
+benchmark: {
+    meaning: "a standard or point of reference used for comparison",
+    example: "The test provides a useful benchmark for measuring progress."
+},
+
+benediction: {
+    meaning: "a blessing or prayer asking for divine protection",
+    example: "The priest gave a benediction at the end of the service."
+},
+
+beneficiary: {
+    meaning: "a person who receives money, property, or another benefit",
+    example: "She was the main beneficiary of her uncle's will."
+},
+
+benevolence: {
+    meaning: "kindness, generosity, or a desire to help others",
+    example: "The charity depends on the benevolence of donors."
+},
+
+benevolent: {
+    meaning: "kind, generous, and willing to help others",
+    example: "The benevolent donor funded the new library."
+},
+
+benign: {
+    meaning: "gentle and kind; not harmful, especially not cancerous",
+    example: "The doctor confirmed that the tumor was benign."
+},
+
+bequest: {
+    meaning: "property or money left to someone in a will",
+    example: "The museum received a large bequest from a collector."
+},
+
+bequeath: {
+    meaning: "to leave property or money to someone in a will",
+    example: "She bequeathed her collection of books to the university."
+},
+
+bereaved: {
+    meaning: "having lost a close relative or friend through death",
+    example: "The organization offers support to bereaved families."
+},
+
+beset: {
+    meaning: "to trouble or attack someone repeatedly",
+    example: "The project was beset by financial difficulties."
+},
+
+bewitch: {
+    meaning: "to enchant or fascinate someone; to put a spell on someone",
+    example: "The mysterious performance bewitched the audience."
+},
+
+bicker: {
+    meaning: "to argue about unimportant things",
+    example: "The children were constantly bickering over small matters."
+},
+
+bifocals: {
+    meaning: "glasses with lenses containing two different optical powers",
+    example: "My grandfather wears bifocals for reading and distance."
+},
+
+bigot: {
+    meaning: "a person who is intolerant of people with different beliefs or backgrounds",
+    example: "A bigot may refuse to accept people who are different from him."
+},
+
+bilateral: {
+    meaning: "involving two sides, countries, or groups",
+    example: "The two countries signed a bilateral agreement."
+},
+
+bile: {
+    meaning: "a bitter digestive fluid produced by the liver; bitterness or bad temper",
+    example: "The liver produces bile to help digest fats."
+},
+
+billiards: {
+    meaning: "a game played on a table with balls and cues",
+    example: "They spent the evening playing billiards."
+},
+
+billow: {
+    meaning: "a large wave or mass of something such as smoke; to rise or move like a wave",
+    example: "Clouds of smoke billowed from the building."
+},
+
+binge: {
+    meaning: "a period of excessive eating, drinking, or other activity",
+    example: "He went on a drinking binge over the weekend."
+},
+
+bingo: {
+    meaning: "a game in which players mark numbers on cards as they are called",
+    example: "The residents played bingo every Friday evening."
+},
+
+bipartisan: {
+    meaning: "involving or supported by two political parties",
+    example: "The proposal received bipartisan support."
+},
+
+bisect: {
+    meaning: "to divide something into two usually equal parts",
+    example: "The line bisects the circle."
+},
+
+bitch: {
+    meaning: "a female dog; an offensive term for a woman",
+    example: "The farmer's bitch gave birth to six puppies."
+},
+
+bizarre: {
+    meaning: "very strange or unusual",
+    example: "The artist is known for his bizarre sculptures."
+},
+
+blackmail: {
+    meaning: "the crime of demanding money or another benefit by threatening someone",
+    example: "The businessman was arrested for attempting to blackmail his rival."
+},
+
+blare: {
+    meaning: "to make a loud, unpleasant sound",
+    example: "The car horn began to blare."
+},
+
+blanch: {
+    meaning: "to become or make pale or white",
+    example: "She blanched when she heard the shocking news."
+},
+
+bleep: {
+    meaning: "a short electronic sound; to make such a sound",
+    example: "The machine gave a loud bleep."
+},
+
+blemish: {
+    meaning: "a small mark or flaw; to damage or spoil",
+    example: "There was a small blemish on the surface of the table."
+},
+
+bliss: {
+    meaning: "perfect happiness or great joy",
+    example: "They spent the afternoon in complete bliss."
+},
+
+blitz: {
+    meaning: "a sudden and intense attack or campaign",
+    example: "The company launched a blitz of advertising before the product release."
+},
+
+blizzard: {
+    meaning: "a severe snowstorm with strong winds",
+    example: "The blizzard forced the airport to close."
+},
+
+blob: {
+    meaning: "a small lump, drop, or shapeless mass",
+    example: "A blob of paint fell onto the floor."
+},
+
+blotter: {
+    meaning: "absorbent paper used for drying ink; a book or record containing brief notes",
+    example: "The secretary wrote the information in the office blotter."
+},
+
+blunder: {
+    meaning: "a careless or serious mistake",
+    example: "The manager admitted that the decision was a serious blunder."
+},
+
+blur: {
+    meaning: "something unclear or indistinct; to make unclear",
+    example: "The rain blurred the view through the window."
+},
+
+blurb: {
+    meaning: "a short description or advertisement of a book",
+    example: "The blurb on the back cover made the novel sound exciting."
+},
+
+blurt: {
+    meaning: "to say something suddenly and without thinking",
+    example: "He blurted out the answer before the teacher finished the question."
+},
+
+bobsled: {
+    meaning: "a long narrow sled used in a racing sport on an ice track",
+    example: "The team trained for the bobsled competition."
+},
+
+bog: {
+    meaning: "wet, soft ground; to become stuck or trapped",
+    example: "The hikers became bogged down in the muddy ground."
+},
+
+boggle: {
+    meaning: "to be shocked, confused, or unable to understand something",
+    example: "The cost of the project made everyone's mind boggle."
+},
+
+bogus: {
+    meaning: "false, fake, or not genuine",
+    example: "The website was selling bogus products."
+},
+
+boisterous: {
+    meaning: "noisy, energetic, and difficult to control",
+    example: "The boisterous children ran around the playground."
+},
+
+bombard: {
+    meaning: "to attack continuously with bombs, questions, or other things",
+    example: "The soldiers bombarded the city for several hours."
+},
+
+"bona fide": {
+    meaning: "genuine, real, or sincere",
+    example: "She is a bona fide expert in the field."
+},
+
+bonfire: {
+    meaning: "a large outdoor fire",
+    example: "The students gathered around the bonfire at night."
+},
+
+bonnet: {
+    meaning: "a type of hat; the hood covering the engine of a car",
+    example: "He lifted the bonnet to check the engine."
+},
+
+boo: {
+    meaning: "a shout showing disapproval; to make such a sound",
+    example: "The audience began to boo the performer."
+},
+
+"booby trap": {
+    meaning: "a hidden trap designed to surprise or harm someone",
+    example: "The soldiers discovered a booby trap near the entrance."
+},
+boon: {
+    meaning: "something that is very helpful or beneficial",
+    example: "The new technology has been a boon to small businesses."
+},
+
+bountiful: {
+    meaning: "generous or plentiful",
+    example: "The region enjoyed a bountiful harvest."
+},
+
+boost: {
+    meaning: "to increase, improve, or encourage",
+    example: "The new campaign helped boost sales."
+},
+
+bounty: {
+    meaning: "a generous gift or reward; something provided in large amounts",
+    example: "The farmer shared the bounty of the harvest with his neighbors."
+},
+
+booze: {
+    meaning: "alcoholic drinks; to drink alcohol heavily",
+    example: "They were warned not to drive after drinking booze."
+},
+
+bootleg: {
+    meaning: "to make, transport, or sell something illegally, especially alcohol",
+    example: "The gang was involved in bootlegging alcohol."
+},
+
+bout: {
+    meaning: "a period or occurrence of something; a boxing or wrestling match",
+    example: "He had a bout of illness last winter."
+},
+
+boutique: {
+    meaning: "a small fashionable shop, especially one selling clothes",
+    example: "She bought the dress at a small boutique."
+},
+
+brace: {
+    meaning: "a support; a pair of things; to support or strengthen; to prepare oneself",
+    example: "The workers used a brace to support the damaged wall."
+},
+
+braid: {
+    meaning: "a length of hair or material woven into a pattern; to weave together",
+    example: "She wore her hair in a long braid."
+},
+
+brainstorming: {
+    meaning: "a process of generating many ideas through group discussion",
+    example: "The team held a brainstorming session before starting the project."
+},
+
+brainwash: {
+    meaning: "to force someone to accept certain beliefs through repeated pressure",
+    example: "The group was accused of trying to brainwash its members."
+},
+
+brash: {
+    meaning: "too confident, rude, or impulsive",
+    example: "His brash behavior annoyed his colleagues."
+},
+
+bravado: {
+    meaning: "a show of confidence or courage intended to impress others",
+    example: "His confidence was partly an act of bravado."
+},
+
+brevity: {
+    meaning: "shortness in time or in the use of words",
+    example: "The report is effective because of its clarity and brevity."
+},
+
+bridal: {
+    meaning: "relating to a bride or wedding",
+    example: "She chose a beautiful bridal dress."
+},
+
+bridle: {
+    meaning: "equipment used to control a horse; to control or become angry",
+    example: "The rider tightened the horse's bridle."
+},
+
+brittle: {
+    meaning: "easily broken, cracked, or damaged",
+    example: "The old plastic had become brittle."
+},
+
+broccoli: {
+    meaning: "a green vegetable with a thick stem and small flower heads",
+    example: "She steamed some broccoli for dinner."
+},
+
+broke: {
+    meaning: "having no money; bankrupt",
+    example: "After losing his job, he was completely broke."
+},
+
+broker: {
+    meaning: "a person who arranges transactions between buyers and sellers",
+    example: "The stockbroker advised her to diversify her investments."
+},
+
+brokerage: {
+    meaning: "the business of buying and selling on behalf of others; a broker's fee",
+    example: "The company charges a small brokerage fee."
+},
+
+bronchitis: {
+    meaning: "an illness in which the air passages in the lungs become inflamed",
+    example: "The doctor diagnosed him with bronchitis."
+},
+
+brothel: {
+    meaning: "a building where prostitutes work",
+    example: "The novel describes life around a nineteenth-century brothel."
+},
+
+browser: {
+    meaning: "a computer program used to access and view websites",
+    example: "I opened the page in my web browser."
+},
+
+brunette: {
+    meaning: "a woman or girl with dark brown hair",
+    example: "The actress is a tall brunette."
+},
+
+brunt: {
+    meaning: "the main or worst part of something unpleasant",
+    example: "The coastal towns bore the brunt of the storm."
+},
+
+brusque: {
+    meaning: "very brief and direct, often in a way that seems rude",
+    example: "His brusque reply surprised everyone."
+},
+
+brutish: {
+    meaning: "like a wild animal; cruel, rough, or insensitive",
+    example: "The prisoners suffered under the brutish treatment of their guards."
+},
+
+buddy: {
+    meaning: "a friend or companion; a friendly form of address",
+    example: "He went hiking with an old buddy."
+},
+
+budge: {
+    meaning: "to move slightly or cause something to move slightly",
+    example: "The heavy box would not budge."
+},
+
+buff: {
+    meaning: "a yellowish-brown color; yellowish-brown",
+    example: "He wore a buff-colored jacket."
+},
+
+buffer: {
+    meaning: "something or someone that reduces the effect of a shock; to protect from impact",
+    example: "Trees can act as a buffer against strong winds."
+},
+
+buggy: {
+    meaning: "a small lightweight carriage; a small vehicle or baby carriage",
+    example: "The parents pushed the baby in a buggy."
+},
+
+bulge: {
+    meaning: "a rounded swelling or outward projection; to swell outward",
+    example: "The box bulged with books."
+},
+
+bulk: {
+    meaning: "the large size, volume, or amount of something",
+    example: "The bulk of the work was completed before Friday."
+},
+
+bulky: {
+    meaning: "large and difficult to carry or store",
+    example: "The bulky furniture was difficult to move."
+},
+
+bullheaded: {
+    meaning: "stubborn and unwilling to change one's mind",
+    example: "His bullheaded attitude caused unnecessary problems."
+},
+
+bum: {
+    meaning: "the buttocks; a homeless person or lazy person",
+    example: "He fell and landed on his bum."
+},
+
+bumper: {
+    meaning: "a protective bar on the front or back of a vehicle; unusually large",
+    example: "The farmer had a bumper crop of apples."
+},
+
+bungalow: {
+    meaning: "a house with one main floor",
+    example: "They bought a small bungalow near the beach."
+},
+
+bunk: {
+    meaning: "a narrow bed, especially one fixed above another",
+    example: "The children slept in bunk beds."
+},
+
+bunker: {
+    meaning: "a protected underground shelter; a storage compartment; a sand-filled area on a golf course",
+    example: "The soldiers hid in a concrete bunker."
+},
+
+buoyancy: {
+    meaning: "the ability to float; a cheerful and optimistic quality",
+    example: "The material has enough buoyancy to remain on the surface."
+},
+
+burrow: {
+    meaning: "a hole or tunnel made by an animal; to dig or search through",
+    example: "The rabbit disappeared into its burrow."
+},
+
+bustle: {
+    meaning: "busy and noisy activity; to move around quickly and busily",
+    example: "The market was full of bustle and excitement."
+},
+
+buttock: {
+    meaning: "one of the two rounded parts of the body at the back below the waist",
+    example: "He injured his buttock while playing football."
+},
+
+bypass: {
+    meaning: "a road that goes around a town; to avoid or go around something",
+    example: "The new road allows drivers to bypass the city center."
+},
+
+cabaret: {
+    meaning: "entertainment involving music, dancing, or singing in a restaurant or nightclub",
+    example: "The hotel hosted a cabaret show."
+},
+
+cache: {
+    meaning: "a hidden store of things",
+    example: "The explorers discovered a cache of food."
+},
+
+cackle: {
+    meaning: "the harsh sound made by a hen; to laugh in a harsh or unpleasant way",
+    example: "The old woman began to cackle with laughter."
+},
+
+cajole: {
+    meaning: "to persuade someone to do something by gentle encouragement or flattery",
+    example: "She managed to cajole him into helping her."
+},
+
+calamity: {
+    meaning: "a serious disaster or event causing great suffering",
+    example: "The earthquake was a national calamity."
+},
+
+calligraphy: {
+    meaning: "the art of producing beautiful handwriting",
+    example: "She studies Chinese calligraphy."
+},
+
+callous: {
+    meaning: "not caring about other people's feelings or suffering",
+    example: "His callous remarks upset the victim."
+},
+
+cameo: {
+    meaning: "a small carved image; a small but noticeable appearance in a performance",
+    example: "The famous actor made a cameo in the film."
+},
+
+callow: {
+    meaning: "young and inexperienced",
+    example: "The callow young man had much to learn."
+},
+
+camouflage: {
+    meaning: "a way of hiding by making someone or something look like its surroundings",
+    example: "The soldiers wore camouflage uniforms."
+},
+
+candid: {
+    meaning: "honest, direct, and truthful",
+    example: "She gave a candid account of what had happened."
+},
+
+cannibal: {
+    meaning: "a person or animal that eats members of its own species",
+    example: "The documentary examined the behavior of cannibal animals."
+},
+
+canny: {
+    meaning: "clever, careful, and good at judging situations",
+    example: "She is a canny businesswoman."
+},
+
+canoe: {
+    meaning: "a narrow boat moved by a paddle",
+    example: "They spent the afternoon paddling a canoe."
+},
+
+canon: {
+    meaning: "a set of rules or principles; an accepted collection of important works",
+    example: "The novel has become part of the literary canon."
+},
+
+canopy: {
+    meaning: "a covering or roof; a cover over the passenger area of an aircraft",
+    example: "We walked beneath the forest canopy."
+},
+
+canvass: {
+    meaning: "to ask people for support or opinions; to examine or discuss thoroughly",
+    example: "The volunteers canvassed the neighborhood before the election."
+},
+
+canter: {
+    meaning: "a horse's easy three-beat running pace",
+    example: "The horse moved into a gentle canter."
+},
+
+capillary: {
+    meaning: "a very small blood vessel or tube",
+    example: "Blood flows from arteries into tiny capillaries."
+},
+
+capitulate: {
+    meaning: "to surrender or stop resisting",
+    example: "The army was forced to capitulate after a long siege."
+},
+
+caprice: {
+    meaning: "a sudden and unpredictable change of mood or behavior",
+    example: "The decision seemed to be based on a whim or caprice."
+},
+
+capricious: {
+    meaning: "changing suddenly and unpredictably",
+    example: "The weather in the mountains is notoriously capricious."
+},
+
+carat: {
+    meaning: "a unit used to measure the purity of gold; a unit of weight for precious stones",
+    example: "She bought an eighteen-carat gold ring."
+},
+
+capsize: {
+    meaning: "to overturn a boat or ship",
+    example: "The small boat capsized in the rough water."
+},
+
+carbohydrate: {
+    meaning: "a substance such as sugar or starch that provides energy",
+    example: "Rice is a major source of carbohydrates."
+},
+
+cardiac: {
+    meaning: "relating to the heart",
+    example: "The patient was taken to the cardiac unit."
+},
+
+cardigan: {
+    meaning: "a knitted jacket that opens at the front",
+    example: "She wore a warm cardigan over her shirt."
+},
+
+caress: {
+    meaning: "a gentle touch or kiss; to touch or stroke gently",
+    example: "She gently caressed the baby's cheek."
+},
+
+caricature: {
+    meaning: "a drawing or description that exaggerates distinctive features for humorous effect",
+    example: "The artist drew a caricature of the politician."
+},
+
+carnage: {
+    meaning: "the killing of many people, especially in a violent event",
+    example: "The battlefield was a scene of terrible carnage."
+},
+
+carnal: {
+    meaning: "relating to the body or physical desires",
+    example: "The novel explores both spiritual and carnal desires."
+},
+
+carnation: {
+    meaning: "a flowering plant with pink, red, or white flowers",
+    example: "She wore a red carnation on her jacket."
+},
+
+carnival: {
+    meaning: "a festival with music, dancing, entertainment, and public celebrations",
+    example: "Thousands of people attended the annual carnival."
+},
+
+carnivore: {
+    meaning: "an animal that eats mainly or entirely meat",
+    example: "The lion is a well-known carnivore."
+},
+
+carp: {
+    meaning: "a freshwater fish; to complain repeatedly about small things",
+    example: "The pond contains several large carp."
+},
+
+cartridge: {
+    meaning: "a container holding ammunition, ink, or other material",
+    example: "The printer needs a new ink cartridge."
+},
+
+cascade: {
+    meaning: "a waterfall or a large amount falling or flowing quickly",
+    example: "Water cascaded down the mountain."
+},
+
+caste: {
+    meaning: "a social class in a system of hereditary status; a rigid social group",
+    example: "The novel examines the effects of the caste system."
+},
+
+catalyst: {
+    meaning: "a substance that speeds up a chemical reaction; something that causes change",
+    example: "The new policy became a catalyst for reform."
+},
+
+catchy: {
+    meaning: "easy to remember, especially because of a pleasant tune or phrase",
+    example: "The song has a catchy melody."
+},
+
+categorical: {
+    meaning: "absolute and without conditions or exceptions",
+    example: "She gave a categorical denial of the accusation."
+},
+
+catcall: {
+    meaning: "a loud whistle or shout expressing approval, disapproval, or sexual interest",
+    example: "The performer ignored the catcalls from the crowd."
+},
+
+cathode: {
+    meaning: "the electrode through which electric current flows in certain devices",
+    example: "The electrons move toward the cathode."
+},
+
+causal: {
+    meaning: "relating to a cause or showing a cause-and-effect relationship",
+    example: "The study found no clear causal relationship between the two factors."
+},
+
+cavern: {
+    meaning: "a large cave or underground chamber",
+    example: "The explorers entered a vast cavern."
+},
+
+cedar: {
+    meaning: "a tall evergreen tree with fragrant wood",
+    example: "The house was surrounded by old cedar trees."
+},
+
+celestial: {
+    meaning: "relating to the sky, stars, or heaven",
+    example: "The telescope revealed several celestial objects."
+},
+
+censor: {
+    meaning: "an official who examines material; to examine and suppress unacceptable material",
+    example: "The authorities censored parts of the newspaper."
+},
+
+censorious: {
+    meaning: "very critical and inclined to find faults",
+    example: "His censorious attitude made discussion difficult."
+},
+
+censorship: {
+    meaning: "the practice of examining and suppressing material considered unacceptable",
+    example: "The government imposed strict censorship on the press."
+},
+
+censure: {
+    meaning: "to criticize severely and formally",
+    example: "The committee voted to censure the official."
+},
+
+centenary: {
+    meaning: "the hundredth anniversary of an event",
+    example: "The university celebrated its centenary."
+},
+
+centralize: {
+    meaning: "to bring activities or control into one central place",
+    example: "The company decided to centralize its administrative services."
+},
+
+centrist: {
+    meaning: "a person who supports moderate political positions; moderate",
+    example: "The candidate described herself as a centrist."
+},
+
+cerebral: {
+    meaning: "relating to the brain; intellectual rather than emotional",
+    example: "The book is a highly cerebral work."
+},
+
+ceremonious: {
+    meaning: "very formal and careful about manners or ceremonies",
+    example: "His ceremonious manner made the meeting feel unusually formal."
+},
+
+certify: {
+    meaning: "to officially confirm that something is true or meets a standard",
+    example: "The laboratory certified that the product was safe."
+},
+
+certitude: {
+    meaning: "complete certainty or confidence",
+    example: "She spoke with absolute certitude."
+},
+
+cesspit: {
+    meaning: "a pit for sewage or waste",
+    example: "The old building had a cesspit beneath it."
+},
+
+chalet: {
+    meaning: "a wooden house, especially in the Swiss mountains",
+    example: "They stayed in a small chalet near the ski resort."
+},
+
+chant: {
+    meaning: "a repeated rhythmic phrase or song; to repeat rhythmically",
+    example: "The crowd began to chant the team's name."
+},
+
+chaplain: {
+    meaning: "a religious person who provides spiritual support in an institution",
+    example: "The hospital chaplain visited the patients."
+},
+
+charisma: {
+    meaning: "a powerful personal quality that attracts and inspires others",
+    example: "The leader's charisma attracted thousands of supporters."
+},
+
+charismatic: {
+    meaning: "having a powerful and attractive personality",
+    example: "The charismatic speaker quickly won the audience's attention."
+},
+
+chaste: {
+    meaning: "sexually pure or modest",
+    example: "The novel presents her as a chaste and disciplined character."
+},
+
+chastity: {
+    meaning: "the state of avoiding sexual activity",
+    example: "The religious order requires a vow of chastity."
+},
+
+chauvinism: {
+    meaning: "excessive or aggressive loyalty to one's own group or country",
+    example: "The writer criticized the chauvinism of the period."
+},
+
+chic: {
+    meaning: "stylish, fashionable, and sophisticated",
+    example: "She wore a chic black dress."
+},
+
+chieftain: {
+    meaning: "a leader of a tribe or group",
+    example: "The tribal chieftain addressed the gathering."
+},
+
+chime: {
+    meaning: "a ringing sound; to make a ringing sound; to agree or correspond",
+    example: "The new policy does not chime with our original plan."
+},
+
+chimpanzee: {
+    meaning: "an intelligent African ape closely related to humans",
+    example: "The chimpanzee used a stick to obtain food."
+},
+
+chirp: {
+    meaning: "a short high sound made by a bird or insect",
+    example: "Birds chirped in the trees outside the window."
+},
+
+chisel: {
+    meaning: "a tool with a sharp edge used for cutting wood or stone; to cut with such a tool",
+    example: "The sculptor used a chisel to shape the stone."
+},
+
+chivalry: {
+    meaning: "the medieval system and ideals of knights; courteous behavior toward women",
+    example: "The story celebrates the traditional ideals of chivalry."
+},
+
+chloroplast: {
+    meaning: "a structure in plant cells where photosynthesis takes place",
+    example: "Chloroplasts contain chlorophyll and absorb light energy."
+},
+
+cholera: {
+    meaning: "a serious infectious disease causing severe diarrhea and dehydration",
+    example: "The outbreak of cholera was linked to contaminated water."
+},
+
+cholesterol: {
+    meaning: "a fatty substance in the blood and body tissues",
+    example: "Regular exercise can help control cholesterol levels."
+},
+
+choppy: {
+    meaning: "having many small rough waves",
+    example: "The boat struggled in the choppy sea."
+},
+
+choral: {
+    meaning: "relating to a choir or singing by a group",
+    example: "The students performed several choral pieces."
+},
+
+choreography: {
+    meaning: "the art of designing and arranging dance movements",
+    example: "The choreography for the performance was highly complex."
+},
+
+christen: {
+    meaning: "to give a person a name in a Christian ceremony; to give a name to something",
+    example: "The baby was christened in the village church."
+},
+
+chrome: {
+    meaning: "a hard shiny metal used to coat or decorate objects",
+    example: "The car has shiny chrome wheels."
+},
+
+chromosome: {
+    meaning: "a structure in a cell containing genetic information",
+    example: "Humans normally have 23 pairs of chromosomes."
+},
+
+chronology: {
+    meaning: "the arrangement of events in the order in which they happened",
+    example: "The book presents the events in chronological order."
+},
+
+chubby: {
+    meaning: "slightly fat in an attractive or healthy-looking way",
+    example: "The baby had chubby cheeks."
+},
+
+chuck: {
+    meaning: "to throw something; to abandon or get rid of something",
+    example: "He chucked the old papers into the bin."
+},
+
+chum: {
+    meaning: "a close friend",
+    example: "He went fishing with an old school chum."
+},
+
+churlish: {
+    meaning: "rude, unfriendly, or bad-tempered",
+    example: "His churlish response surprised his guests."
+},
+
+churn: {
+    meaning: "a container for making butter; to stir violently or move turbulently",
+    example: "The waves churned around the boat."
+},
+
+cinder: {
+    meaning: "a small piece of partly burned coal or wood",
+    example: "Hot cinders fell from the fire."
+},
+
+circumstantial: {
+    meaning: "relating to details or circumstances rather than direct evidence",
+    example: "The case was based mainly on circumstantial evidence."
+},
+
+circumvent: {
+    meaning: "to avoid a problem, rule, or restriction by finding another way",
+    example: "They tried to circumvent the regulations."
+},
+
+clad: {
+    meaning: "dressed or covered in a particular way",
+    example: "The walls were clad in wood."
+},
+
+claimant: {
+    meaning: "a person who makes a claim for something, especially money or property",
+    example: "The claimant provided documents to support her case."
+},
+
+clamber: {
+    meaning: "to climb awkwardly using both hands and feet",
+    example: "The children clambered over the rocks."
+},
+
+clamour: {
+    meaning: "a loud mixture of voices or noises; to demand loudly",
+    example: "There was a growing clamour for change."
+},
+
+clandestine: {
+    meaning: "secret and carefully hidden",
+    example: "The two groups held a clandestine meeting."
+},
+
+clang: {
+    meaning: "to make a loud metallic ringing sound",
+    example: "The gates clang shut behind them."
+},
+
+clatter: {
+    meaning: "to make a series of loud rattling or banging sounds",
+    example: "The dishes clattered onto the floor."
+},
+
+claustrophobia: {
+    meaning: "an extreme fear of being in a small enclosed space",
+    example: "He avoids elevators because he suffers from claustrophobia."
+},
+
+cleanse: {
+    meaning: "to clean thoroughly; to remove impurities",
+    example: "The treatment is designed to cleanse the skin."
+},
+
+cleavage: {
+    meaning: "a crack, division, or separation",
+    example: "The conflict revealed a deep cleavage within the organization."
+},
+
+cleave: {
+    meaning: "to split or cut something apart",
+    example: "The axe cleaved the log in two."
+},
+
+cliché: {
+    meaning: "an idea or expression that has been used so often that it is no longer interesting",
+    example: "The speech was full of familiar clichés."
+},
+
+climactic: {
+    meaning: "forming the most exciting or important point of something",
+    example: "The film ends with a climactic battle."
+},
+
+clinch: {
+    meaning: "to secure or settle something; to hold tightly; to grip an opponent",
+    example: "The final goal clinched the victory."
+},
+
+clog: {
+    meaning: "a blockage; a wooden shoe; to block or fill a space",
+    example: "Leaves clogged the drain."
+},
+
+clone: {
+    meaning: "an exact genetic copy; to produce a genetic copy",
+    example: "Scientists successfully cloned the animal."
+},
+
+clot: {
+    meaning: "a thick mass of blood or another liquid",
+    example: "The doctor was concerned about a blood clot."
+},
+
+clump: {
+    meaning: "a group of things growing or gathered closely together; to walk heavily",
+    example: "A clump of trees stood in the middle of the field."
+},
+
+clutter: {
+    meaning: "a collection of things lying around in a messy way; to fill with unnecessary things",
+    example: "Too much furniture can clutter a small room."
+},
+
+coax: {
+    meaning: "to persuade someone gently; to obtain something by gentle persuasion",
+    example: "She coaxed the child into eating some vegetables."
+},
+
+cobble: {
+    meaning: "a rounded stone used for paving; to make or repair something roughly",
+    example: "The old street was paved with cobbles."
+},
+
+cobra: {
+    meaning: "a poisonous snake that can raise the front of its body and spread its hood",
+    example: "The cobra raised its head when threatened."
+},
+
+cocaine: {
+    meaning: "an illegal drug that produces strong stimulation and is highly addictive",
+    example: "The police seized a large quantity of cocaine."
+},
+
+coddle: {
+    meaning: "to treat someone too gently or protectively",
+    example: "Parents should support children without coddling them."
+},
+
+coed: {
+    meaning: "a female student at a school or college attended by both men and women",
+    example: "She was one of the first coeds at the university."
+},
+
+coefficient: {
+    meaning: "a number or quantity multiplying another quantity in mathematics",
+    example: "The coefficient of x is three."
+},
+
+coerce: {
+    meaning: "to force someone to do something by using threats or pressure",
+    example: "The witness claimed that he had been coerced into signing the document."
+},
+
+coercion: {
+    meaning: "the use of force or threats to make someone do something",
+    example: "The agreement was obtained through coercion."
+},
+
+coexist: {
+    meaning: "to exist together at the same time or in the same place",
+    example: "Different cultures can coexist peacefully."
+},
+
+cog: {
+    meaning: "a tooth on a wheel; a person who is a small but necessary part of a system",
+    example: "Every employee is an important cog in the organization."
+},
+
+cognitive: {
+    meaning: "relating to thinking, understanding, or learning",
+    example: "Reading can improve cognitive skills."
+},
+
+coherent: {
+    meaning: "logical, clear, and well organized",
+    example: "She gave a coherent explanation of the problem."
+},
+
+cohesive: {
+    meaning: "closely united or sticking together",
+    example: "The team worked as a cohesive unit."
+},
+
+collaborate: {
+    meaning: "to work together; to cooperate with an enemy",
+    example: "The two universities collaborated on the research project."
+},
+
+collate: {
+    meaning: "to compare and organize information carefully",
+    example: "The researchers collated the results from several studies."
+},
+
+collude: {
+    meaning: "to secretly cooperate with someone for an illegal or dishonest purpose",
+    example: "The companies were accused of colluding to fix prices."
+},
+
+collusion: {
+    meaning: "secret cooperation for an illegal or dishonest purpose",
+    example: "The investigation found evidence of collusion."
+},
+
+colon: {
+    meaning: "the main part of the large intestine",
+    example: "The colon absorbs water from digested food."
+},
+
+colossal: {
+    meaning: "extremely large",
+    example: "The project required a colossal amount of money."
+},
+
+colossus: {
+    meaning: "a person or thing of enormous size or importance",
+    example: "The company became an industrial colossus."
+},
+
+colt: {
+    meaning: "a young male horse",
+    example: "The colt followed its mother across the field."
+},
+
+coma: {
+    meaning: "a deep state of unconsciousness from which a person cannot easily be awakened",
+    example: "The patient remained in a coma for several days."
+},
+
+combustible: {
+    meaning: "able to burn or catch fire",
+    example: "Keep combustible materials away from the heater."
+},
+
+commandant: {
+    meaning: "an officer in charge of a military unit or institution",
+    example: "The commandant addressed the new recruits."
+},
+
+commensurate: {
+    meaning: "equal or appropriate in size, degree, or proportion",
+    example: "The salary should be commensurate with experience."
+},
+
+commentate: {
+    meaning: "to describe an event as it happens, especially on television or radio",
+    example: "He was invited to commentate on the football match."
+},
+
+communion: {
+    meaning: "the sharing of thoughts or feelings; a Christian religious ceremony",
+    example: "The ceremony included Holy Communion."
+},
+
+communiqué: {
+    meaning: "an official announcement or statement",
+    example: "The government issued a communiqué after the meeting."
+},
+
+compassionate: {
+    meaning: "showing sympathy and concern for people who are suffering",
+    example: "The compassionate doctor listened carefully to the patient."
+},
+
+compatible: {
+    meaning: "able to exist or work together without problems",
+    example: "The new software is compatible with older computers."
+},
+
+compatriot: {
+    meaning: "a person from the same country as another person",
+    example: "He met several compatriots while studying abroad."
+},
+
+complementary: {
+    meaning: "combining well with something else; completing or enhancing it",
+    example: "The two colors are complementary."
+},
+
+composite: {
+    meaning: "made of several different parts or materials; a combination of parts",
+    example: "The bridge is made from a composite material."
+},
+
+composure: {
+    meaning: "calmness and self-control",
+    example: "She maintained her composure during the difficult interview."
+},
+
+compulsion: {
+    meaning: "a strong force or pressure to do something; an irresistible urge",
+    example: "He felt a compulsion to check the door repeatedly."
+},
+
+compunction: {
+    meaning: "a feeling of guilt or regret about doing something wrong",
+    example: "He showed no compunction about lying."
+},
+
+con: {
+    meaning: "to trick or deceive someone",
+    example: "The man conned several people out of their savings."
+},
+
+concede: {
+    meaning: "to admit that something is true; to allow or give something",
+    example: "She finally conceded that he was right."
+},
+
+concentric: {
+    meaning: "having the same center",
+    example: "The target consists of several concentric circles."
+},
+
+concerto: {
+    meaning: "a musical composition for a solo instrument and orchestra",
+    example: "The pianist performed a Mozart concerto."
+},
+
+conciliate: {
+    meaning: "to make someone less angry or hostile; to restore friendly relations",
+    example: "The manager tried to conciliate the dissatisfied customers."
+},
+
+concord: {
+    meaning: "agreement, harmony, or peaceful relationship",
+    example: "The treaty brought a period of concord between the two nations."
+},
+
+concur: {
+    meaning: "to agree; to happen at the same time",
+    example: "I concur with your assessment of the situation."
+},
+
+condescend: {
+    meaning: "to behave as if one is superior; to do something one considers beneath oneself",
+    example: "He refused to condescend to his critics."
+},
+
+condolence: {
+    meaning: "an expression of sympathy for someone who has suffered a loss",
+    example: "We sent our condolences to the bereaved family."
+},
+
+condom: {
+    meaning: "a thin protective covering used during sexual intercourse to prevent pregnancy or infection",
+    example: "The doctor explained how condoms help prevent sexually transmitted infections."
+},
+
+confection: {
+    meaning: "a sweet food, especially a candy or dessert",
+    example: "The bakery specializes in delicate confection."
+},
+
+confederacy: {
+    meaning: "an alliance or union of groups or states",
+    example: "The states formed a loose confederacy."
+},
+
+confederate: {
+    meaning: "an ally or partner; a person involved with others in a secret plan",
+    example: "The thief was arrested along with his confederate."
+},
+
+confer: {
+    meaning: "to discuss something; to officially give a degree, title, or honor",
+    example: "The university conferred an honorary degree on the scientist."
+},
+
+confetti: {
+    meaning: "small pieces of colored paper thrown during celebrations",
+    example: "Confetti filled the air after the wedding ceremony."
+},
+
+confide: {
+    meaning: "to tell someone a secret; to entrust something to someone",
+    example: "She confided her worries to her closest friend."
+},
+
+confidant: {
+    meaning: "a trusted person to whom private matters are told",
+    example: "He became the president's closest confidant."
+},
+
+configuration: {
+    meaning: "the arrangement or structure of parts",
+    example: "The software allows users to change the system configuration."
+},
+
+confinement: {
+    meaning: "the state of being imprisoned or restricted; the period of giving birth",
+    example: "The prisoner spent years in confinement."
+},
+
+conflate: {
+    meaning: "to combine two or more things into one",
+    example: "The article tends to conflate two very different issues."
+},
+
+congenial: {
+    meaning: "pleasant and friendly; compatible in character or interests",
+    example: "She found her new colleagues congenial."
+},
+
+congenital: {
+    meaning: "existing from birth",
+    example: "The child was born with a congenital heart condition."
+},
+
+congested: {
+    meaning: "blocked or overcrowded",
+    example: "The roads are heavily congested during rush hour."
+},
+
+conjecture: {
+    meaning: "an opinion or conclusion based on incomplete information; to guess",
+    example: "His explanation was based on conjecture rather than evidence."
+},
+
+conjure: {
+    meaning: "to perform magic; to produce or imagine something as if by magic",
+    example: "The magician seemed to conjure a bird from nowhere."
+},
+
+connoisseur: {
+    meaning: "an expert who understands and appreciates art, food, wine, or another subject",
+    example: "He is a connoisseur of fine wines."
+},
+
+connotation: {
+    meaning: "an additional meaning or feeling associated with a word",
+    example: "The word has negative connotations."
+},
+
+connote: {
+    meaning: "to suggest or imply a particular meaning",
+    example: "The word can connote both wealth and power."
+},
+
+conscript: {
+    meaning: "to force someone to join the military; a person forced into military service",
+    example: "Thousands of young men were conscripted into the army."
+},
+
+consecrate: {
+    meaning: "to make something sacred; to dedicate something to a religious purpose",
+    example: "The church was consecrated in the twelfth century."
+},
+
+consensus: {
+    meaning: "general agreement among a group of people",
+    example: "The committee reached a consensus on the proposal."
+},
+
+consign: {
+    meaning: "to send goods somewhere; to entrust something to someone",
+    example: "The goods were consigned to a local dealer."
+},
+
+consignment: {
+    meaning: "goods sent to someone for sale or delivery; the act of entrusting something",
+    example: "The store received a consignment of imported furniture."
+},
+
+console: {
+    meaning: "to comfort someone; a control panel or electronic system",
+    example: "She tried to console her friend after the loss."
+},
+
+consortium: {
+    meaning: "an association of several organizations working together",
+    example: "A consortium of universities conducted the research."
+},
+
+conspiracy: {
+    meaning: "a secret plan by a group to do something harmful or illegal",
+    example: "The police uncovered a conspiracy to steal the documents."
+},
+
+conspire: {
+    meaning: "to secretly plan with others to do something harmful or illegal",
+    example: "The criminals conspired to rob the bank."
+},
+
+constituent: {
+    meaning: "a person represented by an elected official; a component or part",
+    example: "The representative met with her constituents."
+},
+
+constrain: {
+    meaning: "to force someone to do something; to restrict or limit",
+    example: "Limited funding constrained the research."
+},
+
+constraint: {
+    meaning: "a limitation or restriction",
+    example: "Time was the main constraint on the project."
+},
+
+consummate: {
+    meaning: "complete, perfect, or highly skilled",
+    example: "She is a consummate professional."
+},
+
+containerization: {
+    meaning: "the process of transporting goods in standardized containers",
+    example: "Containerization transformed international shipping."
+},
+
+contend: {
+    meaning: "to struggle or compete; to claim or argue",
+    example: "Several teams will contend for the championship."
+},
+
+contingency: {
+    meaning: "an unexpected event or situation that may happen",
+    example: "The emergency plan covers several possible contingencies."
+},
+
+contingent: {
+    meaning: "depending on something else; occurring by chance; a group representing others",
+    example: "The agreement is contingent on further negotiations."
+},
+
+continuum: {
+    meaning: "a continuous series in which no clear divisions exist",
+    example: "Language exists on a continuum between formal and informal styles."
+},
+
+contour: {
+    meaning: "the outline or shape of something; a line showing equal height on a map",
+    example: "The map shows the contours of the mountain."
+},
+
+contraception: {
+    meaning: "the deliberate prevention of pregnancy",
+    example: "The doctor discussed different methods of contraception."
+},
+
+contraceptive: {
+    meaning: "a method, drug, or device used to prevent pregnancy",
+    example: "The doctor explained several contraceptive options."
+},
+
+contrive: {
+    meaning: "to invent, design, or manage to do something, often with difficulty",
+    example: "They contrived a clever way to solve the problem."
+},
+
+conurbation: {
+    meaning: "a large urban area formed when several towns and suburbs grow together",
+    example: "The city is part of a large conurbation."
+},
+
+convene: {
+    meaning: "to call people together for a meeting; to meet",
+    example: "The committee will convene next Monday."
+},
+
+converge: {
+    meaning: "to move toward the same point or become more similar",
+    example: "The two roads converge near the village."
+},
+
+conversant: {
+    meaning: "familiar with or knowledgeable about something",
+    example: "She is conversant with modern teaching methods."
+},
+
+convertible: {
+    meaning: "able to be changed into another form; able to be exchanged",
+    example: "The currency is freely convertible."
+},
+
+convoy: {
+    meaning: "a group of vehicles or ships traveling together for protection; to escort",
+    example: "The trucks traveled in a military convoy."
+},
+
+convulse: {
+    meaning: "to shake violently; to cause violent shaking",
+    example: "The child began to convulse during the seizure."
+},
+
+coop: {
+    meaning: "a cage or small enclosure for birds; to confine in a small space",
+    example: "The chickens were kept in a wooden coop."
+},
+
+cornet: {
+    meaning: "a brass musical instrument; a cone-shaped container for ice cream",
+    example: "He plays the cornet in the school band."
+},
+
+coronation: {
+    meaning: "a ceremony at which a king or queen is formally crowned",
+    example: "Millions watched the coronation on television."
+},
+
+corollary: {
+    meaning: "a result or consequence that naturally follows from something",
+    example: "Higher productivity is often a corollary of better training."
+},
+
+coroner: {
+    meaning: "an official who investigates deaths that are sudden or unexplained",
+    example: "The coroner ordered an autopsy."
+},
+
+corps: {
+    meaning: "a military unit; a group of people working together",
+    example: "He joined the medical corps."
+},
+
+corpulent: {
+    meaning: "fat or overweight",
+    example: "The corpulent man moved slowly across the room."
+},
+
+corpus: {
+    meaning: "a collection of written or spoken texts used for study",
+    example: "The researchers analyzed a large corpus of English texts."
+},
+
+corroborate: {
+    meaning: "to provide evidence that supports a statement or theory",
+    example: "The witness's story was corroborated by the evidence."
+},
+
+corrode: {
+    meaning: "to gradually destroy or wear away by chemical action",
+    example: "Salt water can corrode metal."
+},
+
+corrosion: {
+    meaning: "the gradual destruction of a material by chemical reaction",
+    example: "The bridge showed signs of severe corrosion."
+},
+
+corrugated: {
+    meaning: "having a surface made of alternating ridges and grooves",
+    example: "The roof was made of corrugated metal."
+},
+
+countenance: {
+    meaning: "a person's face or facial expression; approval or support",
+    example: "His serious countenance made the students nervous."
+},
+
+counterfeit: {
+    meaning: "made to look like something genuine in order to deceive; a fake",
+    example: "The police seized a large quantity of counterfeit money."
+},
+
+coup: {
+    meaning: "a sudden successful action that achieves an advantage; a sudden seizure of power",
+    example: "The company considered the deal a major coup."
+},
+
+"coup d'état": {
+    meaning: "a sudden and illegal seizure of political power, especially by the military",
+    example: "The government was overthrown in a military coup d'état."
+},
+
+courier: {
+    meaning: "a person who delivers messages or packages; a guide or travel representative",
+    example: "The courier delivered the documents before noon."
+},
+
+courtship: {
+    meaning: "the period during which two people develop a romantic relationship",
+    example: "Their courtship lasted several years."
+},
+
+covenant: {
+    meaning: "a formal agreement or promise between people or groups",
+    example: "The two communities entered into a covenant."
+},
+
+coverage: {
+    meaning: "the reporting of an event; the amount protected by insurance; the extent of something",
+    example: "The newspaper provided extensive coverage of the event."
+},
+
+covert: {
+    meaning: "secret or hidden",
+    example: "The agents carried out a covert operation."
+},
+
+covet: {
+    meaning: "to strongly desire something that belongs to someone else",
+    example: "He secretly coveted his neighbor's expensive car."
+},
+
+cowardice: {
+    meaning: "lack of courage",
+    example: "Running away was considered an act of cowardice."
+},
+
+coy: {
+    meaning: "shy or pretending to be shy in order to attract attention",
+    example: "She gave a coy smile."
+},
+
+crackle: {
+    meaning: "to make a series of small sharp sounds",
+    example: "The fire began to crackle."
+},
+
+cram: {
+    meaning: "to fill something tightly; to study intensively in a short time",
+    example: "He stayed up late to cram for the examination."
+},
+
+cramp: {
+    meaning: "a painful muscle contraction; to restrict or hinder",
+    example: "A sudden cramp stopped him from running."
+},
+
+cranky: {
+    meaning: "strange or eccentric; unreliable; bad-tempered",
+    example: "The child became cranky after missing his nap."
+},
+
+crap: {
+    meaning: "nonsense or worthless material",
+    example: "He said that the article was complete crap."
+},
+
+crater: {
+    meaning: "a large hole in the ground caused by an explosion or volcanic activity",
+    example: "The spacecraft landed near a large lunar crater."
+},
+
+crave: {
+    meaning: "to have a very strong desire for something",
+    example: "She began to crave chocolate."
+},
+
+craven: {
+    meaning: "cowardly and lacking courage",
+    example: "His craven behavior disappointed his friends."
+},
+
+creak: {
+    meaning: "to make a long, high-pitched sound; such a sound",
+    example: "The old wooden floor began to creak."
+},
+
+crease: {
+    meaning: "a line or fold in something; to make a fold or wrinkle",
+    example: "There was a crease in his shirt."
+},
+
+credentials: {
+    meaning: "qualifications or documents proving someone's identity, ability, or status",
+    example: "The applicant presented excellent academic credentials."
+},
+
+cremate: {
+    meaning: "to burn a dead body until it becomes ashes",
+    example: "The family decided to cremate the body."
+},
+
+crematorium: {
+    meaning: "a building where dead bodies are cremated",
+    example: "The funeral procession went to the crematorium."
+},
+
+crescent: {
+    meaning: "a curved shape like a new moon; a new or partly illuminated moon",
+    example: "A thin crescent appeared in the evening sky."
+},
+
+cringe: {
+    meaning: "to move back or shrink because of fear or embarrassment; to behave submissively",
+    example: "He cringed when he heard the criticism."
+},
+
+crinkle: {
+    meaning: "a small wrinkle or fold; to become wrinkled",
+    example: "The paper began to crinkle in her hands."
+},
+
+critique: {
+    meaning: "a detailed evaluation or review of something",
+    example: "The professor gave a detailed critique of the essay."
+},
+
+croak: {
+    meaning: "the deep rough sound made by a frog; to speak in a rough voice",
+    example: "The frog began to croak near the pond."
+},
+
+crockery: {
+    meaning: "plates, cups, and other dishes made from baked clay",
+    example: "The restaurant uses traditional crockery."
+},
+
+crook: {
+    meaning: "a dishonest person or criminal; a bend or curved part",
+    example: "The police arrested the notorious crook."
+},
+
+crooked: {
+    meaning: "bent or twisted; dishonest or illegal",
+    example: "The picture was hanging crooked on the wall."
+},
+
+crucify: {
+    meaning: "to kill someone by fastening them to a cross; to severely criticize or punish",
+    example: "The historical account describes how the prisoner was crucified."
+},
+
+crotch: {
+    meaning: "the area where the legs join the lower part of the body",
+    example: "The trousers were torn at the crotch."
+},
+
+crunch: {
+    meaning: "to crush or chew with a loud sound; a loud crushing sound",
+    example: "She could hear the crunch of leaves under her feet."
+},
+
+crux: {
+    meaning: "the most important or difficult part of a problem",
+    example: "The crux of the problem is the lack of funding."
+},
+
+crypt: {
+    meaning: "an underground room beneath a church, often used for burial",
+    example: "The ancient church has a crypt beneath it."
+},
+
+cryptic: {
+    meaning: "mysterious or difficult to understand",
+    example: "He gave a cryptic answer to the question."
+},
+
+cub: {
+    meaning: "a young animal, especially a lion, bear, or fox",
+    example: "The lioness watched over her cubs."
+},
+
+cuckoo: {
+    meaning: "a bird known for laying its eggs in the nests of other birds",
+    example: "We heard a cuckoo calling from the woods."
+}
+};
+
+
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+function getVocabularySignature() {
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+}
+function saveQuizProgress() {
+
+localStorage.setItem(
+    QUIZ_STORAGE_KEY,
+    JSON.stringify({
+
+        vocabularySignature: getVocabularySignature(),
+
+        questions: questions,
+        currentQuestion: currentQuestion,
+        correctAnswers: correctAnswers,
+        score: score,
+        questionResults: questionResults
+
+    })
+);
+}
+
+function loadQuizProgress() {
+
+const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
+
+if (!saved) {
+    return false;
+}
+
+try {
+
+    const data = JSON.parse(saved);
+
+    // Vocabulary has changed
+    if (
+        data.vocabularySignature !==
+        getVocabularySignature()
+    ) {
+
+        localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+        return false;
+    }
+
+    // Restore saved questions
+    questions.length = 0;
+
+    questions.push(...data.questions);
+
+    currentQuestion =
+        data.currentQuestion || 0;
+
+    correctAnswers =
+        data.correctAnswers || 0;
+
+    score =
+        data.score || 0;
+
+    questionResults =
+        data.questionResults || [];
+
+    return true;
+
+} catch (error) {
+
+    console.error(
+        "Could not load quiz progress:",
+        error
+    );
+
+    localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+    return false;
+}
+}
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY = "englishQuizStarredWords";
+
+function getStarredWords() {
+    try {
+        return JSON.parse(localStorage.getItem(STARRED_WORDS_KEY) || "[]");
+    } catch (error) {
+        return [];
+    }
+}
+
+function saveStarredWords(words) {
+    localStorage.setItem(STARRED_WORDS_KEY, JSON.stringify(words));
+}
+
+function getCorrectWord(question) {
+    return question.options[question.answer - 1];
+}
+
+function isStarred(question) {
+    return getStarredWords().includes(getCorrectWord(question));
+}
+
+function updateStarButton() {
+    const button = document.getElementById("starButton");
+
+    if (!button || !questions[currentQuestion]) return;
+
+    if (isStarred(questions[currentQuestion])) {
+        button.textContent = "★ Difficult";
+        button.classList.add("starred");
+    } else {
+        button.textContent = "☆ Difficult";
+        button.classList.remove("starred");
+    }
+
+    updateReviewButton();
+}
+
+function updateReviewButton() {
+    document.getElementById("reviewStarredButton").textContent =
+        "★ Review (" + getStarredWords().length + ")";
+}
+
+function toggleStar() {
+    const question = questions[currentQuestion];
+    if (!question) return;
+
+    const word = getCorrectWord(question);
+    const starred = getStarredWords();
+    const index = starred.indexOf(word);
+
+    if (index === -1) {
+        starred.push(word);
+    } else {
+        starred.splice(index, 1);
+    }
+
+    saveStarredWords(starred);
+    updateStarButton();
+}
+
+function reviewStarred() {
+    const starred = getStarredWords();
+
+    if (starred.length === 0) {
+        alert("You have not marked any difficult words yet.");
+        return;
+    }
+
+    questions = allQuestions.filter(function(question) {
+        return starred.includes(getCorrectWord(question));
+    });
+
+    currentQuestion = 0;
+    correctAnswers = 0;
+    score = 0;
+    questionResults = [];
+
+    localStorage.removeItem(QUIZ_STORAGE_KEY);
+    displayQuestion();
+}
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+    document.querySelector(".navigation").style.display =
+        "flex";
+
+    const question = questions[currentQuestion];
+
+    // Question number
+    document.getElementById("progress").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+    // Current score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+
+    // Display question
+    document.getElementById("question").textContent =
+        question.question;
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    // Clear feedback
+    document.getElementById("feedback").textContent = "";
+
+    // Create buttons
+    question.options.forEach(function(option, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        button.addEventListener(
+            "click",
+            function() {
+                checkAnswer(index, button);
+            }
+        );
+
+        optionsDiv.appendChild(button);
+    });
+
+    // Previous button
+    document.getElementById("prevButton").disabled =
+        currentQuestion === 0;
+
+    updateStarButton();
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(selectedIndex, button) {
+
+const question =
+    questions[currentQuestion];
+
+// Prevent answering the same question twice
+const buttons =
+    document.querySelectorAll(".option");
+
+buttons.forEach(function(btn) {
+    btn.disabled = true;
+});
+
+
+// ==========================================
+// CORRECT ANSWER
+// ==========================================
+
+if (selectedIndex + 1 === question.answer) {
+
+    questionResults[currentQuestion] = 1;
+
+    score = questionResults.reduce(
+        (total, mark) => total + mark,
+        0
+    );
+
+    correctAnswers = questionResults.filter(
+        mark => mark === 1
+    ).length;
+
+    saveQuizProgress();
+
+    button.classList.add("correct");
+
+    document.getElementById("feedback").textContent =
+        "Correct!";
+
+    setTimeout(goToNextOrFinish, 900);
+}
+
+
+// ==========================================
+// WRONG ANSWER
+// ==========================================
+
+else {
+
+    questionResults[currentQuestion] = 0;
+
+    score = questionResults.reduce(
+        (total, mark) => total + mark,
+        0
+    );
+
+    correctAnswers = questionResults.filter(
+        mark => mark === 1
+    ).length;
+
+    saveQuizProgress();
+
+    button.classList.add("wrong");
+
+    buttons[
+        question.answer - 1
+    ].classList.add("correct");
+
+    document.getElementById("feedback").textContent =
+        "Wrong.";
+
+    showInfo(question);
+}
+
+
+// Update displayed score
+document.getElementById("score").textContent =
+    "Score: " +
+    score;
+}
+   
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[question.answer - 1];
+
+    document.getElementById("infoWord").textContent =
+        correctOption;
+
+    document.getElementById("infoMeaning").innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" + question.meaning
+            : "";
+
+    document.getElementById("infoExample").innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" + question.example
+            : "";
+
+    document.getElementById("infoOverlay").classList.add("visible");
+}
+
+
+function closeInfo() {
+
+    document.getElementById("infoOverlay").classList.remove("visible");
+
+    // Automatically move on once the popup is dismissed
+    goToNextOrFinish();
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+currentQuestion--;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+}
+
+document.getElementById("prevButton").addEventListener("click", previousQuestion);
+// ======================================================
+// GO TO NEXT QUESTION (OR FINISH)
+// ======================================================
+
+function goToNextOrFinish() {
+
+    if (currentQuestion < questions.length - 1) {
+
+currentQuestion++;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+
+    else {
+
+        showResult();
+    }
+}
+
+// ======================================================
+// RESTART QUIZ
+// ======================================================
+
+function restartQuiz() {
+
+localStorage.removeItem(QUIZ_STORAGE_KEY);
+currentQuestion = 0;
+
+correctAnswers = 0;
+
+score = 0;
+questionResults = [];
+
+
+document.getElementById("result").innerHTML = "";
+
+document.getElementById("restartButton").style.display =
+    "none";
+
+displayQuestion();
+}
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+const totalQuestions = questions.length;
+
+const percentage =
+    (correctAnswers / totalQuestions) * 100;
+
+const mark =
+    percentage.toFixed(2);
+
+// Clear quiz
+document.getElementById("progress").textContent = "";
+document.getElementById("score").textContent = "";
+document.getElementById("question").textContent = "";
+document.getElementById("options").innerHTML = "";
+document.getElementById("feedback").textContent = "";
+
+document.querySelector(".navigation").style.display =
+    "none";
+
+document.getElementById("restartButton").style.display =
+    "block";
+
+// Display result
+document.getElementById("result").innerHTML =
+
+    "Quiz Finished!<br><br>" +
+
+    "Correct answers: " +
+    correctAnswers +
+    " / " +
+    totalQuestions +
+
+    "<br><br>" +
+
+    "Score: " +
+    score +
+    " / " +
+totalQuestions +
+
+    "<br><br>" +
+
+    "Mark: " +
+    mark +
+    " / 100";
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function(error) {
+            console.log("Fullscreen request failed:", error);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+document.addEventListener("fullscreenchange", function() {
+    const button = document.getElementById("fullscreenButton");
+
+    if (document.fullscreenElement) {
+        button.textContent = "⛶ Exit Full Screen";
+    } else {
+        button.textContent = "⛶ Full Screen";
+    }
+});
+
+// ======================================================
+// START QUIZ
+// ======================================================
+if (questions.length > 0) {
+
+loadQuizProgress();
+
+displayQuestion();
+}
+else {
+
+    document.getElementById("question").textContent =
+        "No questions found.";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

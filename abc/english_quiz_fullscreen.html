@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full Screen
+</button>
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+
+<script>
+
+const vocabulary = {
+
+abacus: {
+    meaning: "a device with rows of sliding beads used for counting and calculating",
+    example: "The students learned how to use an abacus to perform simple calculations."
+},
+
+abase: {
+    meaning: "to lower in dignity or self-respect; to humble",
+    example: "He refused to abase himself by apologizing for something he had not done."
+},
+
+
+cuckoo: {
+    meaning: "a bird known for laying its eggs in the nests of other birds",
+    example: "We heard a cuckoo calling from the woods."
+}
+
+};
+
+
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+
+const questions =
+    parseQuestions(questionText);
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+function getVocabularySignature() {
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+}
+function saveQuizProgress() {
+
+localStorage.setItem(
+    QUIZ_STORAGE_KEY,
+    JSON.stringify({
+
+        vocabularySignature: getVocabularySignature(),
+
+        questions: questions,
+        currentQuestion: currentQuestion,
+        correctAnswers: correctAnswers,
+        score: score,
+        questionResults: questionResults
+
+    })
+);
+}
+
+function loadQuizProgress() {
+
+const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
+
+if (!saved) {
+    return false;
+}
+
+try {
+
+    const data = JSON.parse(saved);
+
+    // Vocabulary has changed
+    if (
+        data.vocabularySignature !==
+        getVocabularySignature()
+    ) {
+
+        localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+        return false;
+    }
+
+    // Restore saved questions
+    questions.length = 0;
+
+    questions.push(...data.questions);
+
+    currentQuestion =
+        data.currentQuestion || 0;
+
+    correctAnswers =
+        data.correctAnswers || 0;
+
+    score =
+        data.score || 0;
+
+    questionResults =
+        data.questionResults || [];
+
+    return true;
+
+} catch (error) {
+
+    console.error(
+        "Could not load quiz progress:",
+        error
+    );
+
+    localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+    return false;
+}
+}
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+    document.querySelector(".navigation").style.display =
+        "flex";
+
+    const question = questions[currentQuestion];
+
+    // Question number
+    document.getElementById("progress").textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+    // Current score
+    document.getElementById("score").textContent =
+        "Score: " +
+        score;
+
+    // Display question
+    document.getElementById("question").textContent =
+        question.question;
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+    // Clear feedback
+    document.getElementById("feedback").textContent = "";
+
+    // Create buttons
+    question.options.forEach(function(option, index) {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.textContent =
+            String.fromCharCode(65 + index) +
+            ". " +
+            option;
+
+        button.addEventListener(
+            "click",
+            function() {
+                checkAnswer(index, button);
+            }
+        );
+
+        optionsDiv.appendChild(button);
+    });
+
+    // Previous button
+    document.getElementById("prevButton").disabled =
+        currentQuestion === 0;
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(selectedIndex, button) {
+
+const question =
+    questions[currentQuestion];
+
+// Prevent answering the same question twice
+const buttons =
+    document.querySelectorAll(".option");
+
+buttons.forEach(function(btn) {
+    btn.disabled = true;
+});
+
+
+// ==========================================
+// CORRECT ANSWER
+// ==========================================
+
+if (selectedIndex + 1 === question.answer) {
+
+    questionResults[currentQuestion] = 1;
+
+    score = questionResults.reduce(
+        (total, mark) => total + mark,
+        0
+    );
+
+    correctAnswers = questionResults.filter(
+        mark => mark === 1
+    ).length;
+
+    saveQuizProgress();
+
+    button.classList.add("correct");
+
+    document.getElementById("feedback").textContent =
+        "Correct!";
+
+    setTimeout(goToNextOrFinish, 900);
+}
+
+
+// ==========================================
+// WRONG ANSWER
+// ==========================================
+
+else {
+
+    questionResults[currentQuestion] = 0;
+
+    score = questionResults.reduce(
+        (total, mark) => total + mark,
+        0
+    );
+
+    correctAnswers = questionResults.filter(
+        mark => mark === 1
+    ).length;
+
+    saveQuizProgress();
+
+    button.classList.add("wrong");
+
+    buttons[
+        question.answer - 1
+    ].classList.add("correct");
+
+    document.getElementById("feedback").textContent =
+        "Wrong.";
+
+    showInfo(question);
+}
+
+
+// Update displayed score
+document.getElementById("score").textContent =
+    "Score: " +
+    score;
+}
+   
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[question.answer - 1];
+
+    document.getElementById("infoWord").textContent =
+        correctOption;
+
+    document.getElementById("infoMeaning").innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" + question.meaning
+            : "";
+
+    document.getElementById("infoExample").innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" + question.example
+            : "";
+
+    document.getElementById("infoOverlay").classList.add("visible");
+}
+
+
+function closeInfo() {
+
+    document.getElementById("infoOverlay").classList.remove("visible");
+
+    // Automatically move on once the popup is dismissed
+    goToNextOrFinish();
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+    if (currentQuestion > 0) {
+
+currentQuestion--;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+}
+
+document.getElementById("prevButton").addEventListener("click", previousQuestion);
+// ======================================================
+// GO TO NEXT QUESTION (OR FINISH)
+// ======================================================
+
+function goToNextOrFinish() {
+
+    if (currentQuestion < questions.length - 1) {
+
+currentQuestion++;
+
+saveQuizProgress();
+
+displayQuestion();
+}
+
+    else {
+
+        showResult();
+    }
+}
+
+// ======================================================
+// RESTART QUIZ
+// ======================================================
+
+function restartQuiz() {
+
+localStorage.removeItem(QUIZ_STORAGE_KEY);
+currentQuestion = 0;
+
+correctAnswers = 0;
+
+score = 0;
+questionResults = [];
+
+
+document.getElementById("result").innerHTML = "";
+
+document.getElementById("restartButton").style.display =
+    "none";
+
+displayQuestion();
+}
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+const totalQuestions = questions.length;
+
+const percentage =
+    (correctAnswers / totalQuestions) * 100;
+
+const mark =
+    percentage.toFixed(2);
+
+// Clear quiz
+document.getElementById("progress").textContent = "";
+document.getElementById("score").textContent = "";
+document.getElementById("question").textContent = "";
+document.getElementById("options").innerHTML = "";
+document.getElementById("feedback").textContent = "";
+
+document.querySelector(".navigation").style.display =
+    "none";
+
+document.getElementById("restartButton").style.display =
+    "block";
+
+// Display result
+document.getElementById("result").innerHTML =
+
+    "Quiz Finished!<br><br>" +
+
+    "Correct answers: " +
+    correctAnswers +
+    " / " +
+    totalQuestions +
+
+    "<br><br>" +
+
+    "Score: " +
+    score +
+    " / " +
+totalQuestions +
+
+    "<br><br>" +
+
+    "Mark: " +
+    mark +
+    " / 100";
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(function(error) {
+            console.log("Fullscreen request failed:", error);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+document.addEventListener("fullscreenchange", function() {
+    const button = document.getElementById("fullscreenButton");
+
+    if (document.fullscreenElement) {
+        button.textContent = "⛶ Exit Full Screen";
+    } else {
+        button.textContent = "⛶ Full Screen";
+    }
+});
+
+// ======================================================
+// START QUIZ
+// ======================================================
+if (questions.length > 0) {
+
+loadQuizProgress();
+
+displayQuestion();
+}
+else {
+
+    document.getElementById("question").textContent =
+        "No questions found.";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
