@@ -514,7 +514,7 @@ body {
    DIFFICULT WORD / STAR BUTTONS
    ========================================== */
 
-#starButton,
+   #starButton,
 #reviewStarredButton {
     position: fixed;
     right: 20px;
@@ -4086,7 +4086,6 @@ function parseQuestions(text) {
 // ======================================================
 // CREATE QUESTION ARRAY
 // ======================================================
-
 let questions =
     parseQuestions(questionText);
 
@@ -4101,12 +4100,29 @@ let currentQuestion = 0;
 let correctAnswers = 0;
 let score = 0;
 let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+
 // ======================================================
 // SAVE / LOAD QUIZ PROGRESS
 // ======================================================
 
 const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
 function getVocabularySignature() {
+
     return JSON.stringify(
         Object.keys(vocabulary)
             .sort()
@@ -4116,164 +4132,382 @@ function getVocabularySignature() {
                 vocabulary[word].example
             ])
     );
+
 }
+
+
 function saveQuizProgress() {
 
-localStorage.setItem(
-    QUIZ_STORAGE_KEY,
-    JSON.stringify({
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
 
-        vocabularySignature: getVocabularySignature(),
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
 
-        questions: questions,
-        currentQuestion: currentQuestion,
-        correctAnswers: correctAnswers,
-        score: score,
-        questionResults: questionResults
+            vocabularySignature:
+                getVocabularySignature(),
 
-    })
-);
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
 }
+
 
 function loadQuizProgress() {
 
-const saved = localStorage.getItem(QUIZ_STORAGE_KEY);
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
 
-if (!saved) {
-    return false;
-}
+    if (!saved) {
+        return false;
+    }
 
-try {
+    try {
 
-    const data = JSON.parse(saved);
+        const data =
+            JSON.parse(saved);
 
-    // Vocabulary has changed
-    if (
-        data.vocabularySignature !==
-        getVocabularySignature()
-    ) {
 
-        localStorage.removeItem(QUIZ_STORAGE_KEY);
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
 
         return false;
     }
 
-    // Restore saved questions
-    questions.length = 0;
-
-    questions.push(...data.questions);
-
-    currentQuestion =
-        data.currentQuestion || 0;
-
-    correctAnswers =
-        data.correctAnswers || 0;
-
-    score =
-        data.score || 0;
-
-    questionResults =
-        data.questionResults || [];
-
-    return true;
-
-} catch (error) {
-
-    console.error(
-        "Could not load quiz progress:",
-        error
-    );
-
-    localStorage.removeItem(QUIZ_STORAGE_KEY);
-
-    return false;
 }
-}
+
+
 // ======================================================
 // DIFFICULT WORDS / STARRED QUESTIONS
 // ======================================================
 
-const STARRED_WORDS_KEY = "englishQuizStarredWords";
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
 
 function getStarredWords() {
+
     try {
-        return JSON.parse(localStorage.getItem(STARRED_WORDS_KEY) || "[]");
-    } catch (error) {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
         return [];
     }
+
 }
+
 
 function saveStarredWords(words) {
-    localStorage.setItem(STARRED_WORDS_KEY, JSON.stringify(words));
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
 }
+
 
 function getCorrectWord(question) {
-    return question.options[question.answer - 1];
+
+    return question.options[
+        question.answer - 1
+    ];
+
 }
+
 
 function isStarred(question) {
-    return getStarredWords().includes(getCorrectWord(question));
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
 }
+
 
 function updateStarButton() {
-    const button = document.getElementById("starButton");
 
-    if (!button || !questions[currentQuestion]) return;
+    const button =
+        document.getElementById("starButton");
 
-    if (isStarred(questions[currentQuestion])) {
-        button.textContent = "★ Difficult";
-        button.classList.add("starred");
-    } else {
-        button.textContent = "☆ Difficult";
-        button.classList.remove("starred");
-    }
-
-    updateReviewButton();
-}
-
-function updateReviewButton() {
-    document.getElementById("reviewStarredButton").textContent =
-        "★ Review (" + getStarredWords().length + ")";
-}
-
-function toggleStar() {
-    const question = questions[currentQuestion];
-    if (!question) return;
-
-    const word = getCorrectWord(question);
-    const starred = getStarredWords();
-    const index = starred.indexOf(word);
-
-    if (index === -1) {
-        starred.push(word);
-    } else {
-        starred.splice(index, 1);
-    }
-
-    saveStarredWords(starred);
-    updateStarButton();
-}
-
-function reviewStarred() {
-    const starred = getStarredWords();
-
-    if (starred.length === 0) {
-        alert("You have not marked any difficult words yet.");
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
         return;
     }
 
-    questions = allQuestions.filter(function(question) {
-        return starred.includes(getCorrectWord(question));
-    });
 
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
     currentQuestion = 0;
+
     correctAnswers = 0;
+
     score = 0;
+
     questionResults = [];
 
-    localStorage.removeItem(QUIZ_STORAGE_KEY);
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
     displayQuestion();
+
 }
+
 
 // ======================================================
 // DISPLAY QUESTION
@@ -4281,26 +4515,39 @@ function reviewStarred() {
 
 function displayQuestion() {
 
-    document.querySelector(".navigation").style.display =
-        "flex";
+    document.querySelector(
+        ".navigation"
+    ).style.display = "flex";
 
-    const question = questions[currentQuestion];
+
+    const question =
+        questions[currentQuestion];
+
 
     // Question number
-    document.getElementById("progress").textContent =
+    document.getElementById(
+        "progress"
+    ).textContent =
         "Question " +
         (currentQuestion + 1) +
         " / " +
         questions.length;
 
+
     // Current score
-    document.getElementById("score").textContent =
+    document.getElementById(
+        "score"
+    ).textContent =
         "Score: " +
         score;
 
+
     // Display question
-    document.getElementById("question").textContent =
+    document.getElementById(
+        "question"
+    ).textContent =
         question.question;
+
 
     // Clear old options
     const optionsDiv =
@@ -4308,37 +4555,65 @@ function displayQuestion() {
 
     optionsDiv.innerHTML = "";
 
+
     // Clear feedback
-    document.getElementById("feedback").textContent = "";
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
 
-    // Create buttons
-    question.options.forEach(function(option, index) {
 
-        const button =
-            document.createElement("button");
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
 
-        button.className = "option";
+            const button =
+                document.createElement(
+                    "button"
+                );
 
-        button.textContent =
-            String.fromCharCode(65 + index) +
-            ". " +
-            option;
 
-        button.addEventListener(
-            "click",
-            function() {
-                checkAnswer(index, button);
-            }
-        );
+            button.className =
+                "option";
 
-        optionsDiv.appendChild(button);
-    });
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
 
     // Previous button
-    document.getElementById("prevButton").disabled =
+    document.getElementById(
+        "prevButton"
+    ).disabled =
         currentQuestion === 0;
 
+
     updateStarButton();
+
 }
 
 
@@ -4346,86 +4621,145 @@ function displayQuestion() {
 // CHECK ANSWER
 // ======================================================
 
-function checkAnswer(selectedIndex, button) {
+function checkAnswer(
+    selectedIndex,
+    button
+) {
 
-const question =
-    questions[currentQuestion];
-
-// Prevent answering the same question twice
-const buttons =
-    document.querySelectorAll(".option");
-
-buttons.forEach(function(btn) {
-    btn.disabled = true;
-});
+    const question =
+        questions[currentQuestion];
 
 
-// ==========================================
-// CORRECT ANSWER
-// ==========================================
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
 
-if (selectedIndex + 1 === question.answer) {
 
-    questionResults[currentQuestion] = 1;
+    buttons.forEach(
+        function(btn) {
 
-    score = questionResults.reduce(
-        (total, mark) => total + mark,
-        0
+            btn.disabled = true;
+
+        }
     );
 
-    correctAnswers = questionResults.filter(
-        mark => mark === 1
-    ).length;
 
-    saveQuizProgress();
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
 
-    button.classList.add("correct");
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
 
-    document.getElementById("feedback").textContent =
-        "Correct!";
+        questionResults[
+            currentQuestion
+        ] = 1;
 
-    setTimeout(goToNextOrFinish, 900);
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+        setTimeout(
+            goToNextOrFinish,
+            900
+        );
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
 }
 
-
-// ==========================================
-// WRONG ANSWER
-// ==========================================
-
-else {
-
-    questionResults[currentQuestion] = 0;
-
-    score = questionResults.reduce(
-        (total, mark) => total + mark,
-        0
-    );
-
-    correctAnswers = questionResults.filter(
-        mark => mark === 1
-    ).length;
-
-    saveQuizProgress();
-
-    button.classList.add("wrong");
-
-    buttons[
-        question.answer - 1
-    ].classList.add("correct");
-
-    document.getElementById("feedback").textContent =
-        "Wrong.";
-
-    showInfo(question);
-}
-
-
-// Update displayed score
-document.getElementById("score").textContent =
-    "Score: " +
-    score;
-}
-   
 
 // ======================================================
 // SHOW / CLOSE INFO POPUP
@@ -4434,31 +4768,57 @@ document.getElementById("score").textContent =
 function showInfo(question) {
 
     const correctOption =
-        question.options[question.answer - 1];
+        question.options[
+            question.answer - 1
+        ];
 
-    document.getElementById("infoWord").textContent =
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
         correctOption;
 
-    document.getElementById("infoMeaning").innerHTML =
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
         question.meaning
-            ? "<span class='label'>Meaning: </span>" + question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
             : "";
 
-    document.getElementById("infoExample").innerHTML =
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
         question.example
-            ? "<span class='label'>Example: </span>" + question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
             : "";
 
-    document.getElementById("infoOverlay").classList.add("visible");
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
 }
 
 
 function closeInfo() {
 
-    document.getElementById("infoOverlay").classList.remove("visible");
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
 
-    // Automatically move on once the popup is dismissed
+
+    // Automatically move on once
+    // the popup is dismissed
     goToNextOrFinish();
+
 }
 
 
@@ -4470,35 +4830,118 @@ function previousQuestion() {
 
     if (currentQuestion > 0) {
 
-currentQuestion--;
+        currentQuestion--;
 
-saveQuizProgress();
 
-displayQuestion();
+        // During starred review, do not overwrite
+        // the main quiz progress.
+        saveQuizProgress();
+
+
+        displayQuestion();
+
+    }
+
 }
-}
 
-document.getElementById("prevButton").addEventListener("click", previousQuestion);
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
 // ======================================================
-// GO TO NEXT QUESTION (OR FINISH)
+// GO TO NEXT QUESTION OR FINISH
 // ======================================================
 
 function goToNextOrFinish() {
 
-    if (currentQuestion < questions.length - 1) {
+    // ------------------------------------------
+    // More questions remain
+    // ------------------------------------------
 
-currentQuestion++;
+    if (
+        currentQuestion <
+        questions.length - 1
+    ) {
 
-saveQuizProgress();
+        currentQuestion++;
 
-displayQuestion();
-}
 
-    else {
+        // This saves only when we are in the
+        // normal main quiz.
+        saveQuizProgress();
 
-        showResult();
+
+        displayQuestion();
+
+        return;
     }
+
+
+    // ------------------------------------------
+    // STARRED REVIEW HAS FINISHED
+    // ------------------------------------------
+
+    if (isReviewingStarred) {
+
+        // Restore the original main quiz
+        questions =
+            [...savedQuizState.questions];
+
+
+        // Return to the exact question where
+        // the user started the review
+        currentQuestion =
+            savedQuizState.currentQuestion;
+
+
+        // Restore previous score
+        correctAnswers =
+            savedQuizState.correctAnswers;
+
+
+        // Restore previous score value
+        score =
+            savedQuizState.score;
+
+
+        // Restore previous question results
+        questionResults =
+            [...savedQuizState.questionResults];
+
+
+        // Leave starred-review mode
+        isReviewingStarred = false;
+
+
+        // Clear saved temporary state
+        savedQuizState = null;
+
+
+        // Save the restored main-quiz state
+        saveQuizProgress();
+
+
+        // Return directly to the original question
+        displayQuestion();
+
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // NORMAL QUIZ HAS FINISHED
+    // ------------------------------------------
+
+    showResult();
+
 }
+
 
 // ======================================================
 // RESTART QUIZ
@@ -4506,22 +4949,45 @@ displayQuestion();
 
 function restartQuiz() {
 
-localStorage.removeItem(QUIZ_STORAGE_KEY);
-currentQuestion = 0;
-
-correctAnswers = 0;
-
-score = 0;
-questionResults = [];
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
 
 
-document.getElementById("result").innerHTML = "";
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
 
-document.getElementById("restartButton").style.display =
-    "none";
+    savedQuizState = null;
 
-displayQuestion();
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
 }
+
 
 // ======================================================
 // SHOW FINAL RESULT
@@ -4529,49 +4995,81 @@ displayQuestion();
 
 function showResult() {
 
-const totalQuestions = questions.length;
+    const totalQuestions =
+        questions.length;
 
-const percentage =
-    (correctAnswers / totalQuestions) * 100;
 
-const mark =
-    percentage.toFixed(2);
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
 
-// Clear quiz
-document.getElementById("progress").textContent = "";
-document.getElementById("score").textContent = "";
-document.getElementById("question").textContent = "";
-document.getElementById("options").innerHTML = "";
-document.getElementById("feedback").textContent = "";
 
-document.querySelector(".navigation").style.display =
-    "none";
+    const mark =
+        percentage.toFixed(2);
 
-document.getElementById("restartButton").style.display =
-    "block";
 
-// Display result
-document.getElementById("result").innerHTML =
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
 
-    "Quiz Finished!<br><br>" +
 
-    "Correct answers: " +
-    correctAnswers +
-    " / " +
-    totalQuestions +
+    document.getElementById(
+        "score"
+    ).textContent = "";
 
-    "<br><br>" +
 
-    "Score: " +
-    score +
-    " / " +
-totalQuestions +
+    document.getElementById(
+        "question"
+    ).textContent = "";
 
-    "<br><br>" +
 
-    "Mark: " +
-    mark +
-    " / 100";
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
 }
 
 
@@ -4580,42 +5078,81 @@ totalQuestions +
 // ======================================================
 
 function toggleFullScreen() {
+
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(function(error) {
-            console.log("Fullscreen request failed:", error);
-        });
-    } else {
-        document.exitFullscreen();
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
     }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
 }
 
-document.addEventListener("fullscreenchange", function() {
-    const button = document.getElementById("fullscreenButton");
 
-    if (document.fullscreenElement) {
-        button.textContent = "⛶Exit";
-    } else {
-        button.textContent = "⛶Full";
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
     }
-});
+);
+
 
 // ======================================================
 // START QUIZ
 // ======================================================
+
 if (questions.length > 0) {
 
-loadQuizProgress();
+    loadQuizProgress();
 
-displayQuestion();
+    displayQuestion();
+
 }
+
 else {
 
-    document.getElementById("question").textContent =
+    document.getElementById(
+        "question"
+    ).textContent =
         "No questions found.";
 
 }
-
-
 </script>
 
 
