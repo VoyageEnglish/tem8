@@ -1,0 +1,3837 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+   #starButton,
+#reviewStarredButton {
+    position: fixed;
+    right: 20px;
+    z-index: 900;
+
+    min-height: 32px;
+    padding: 4px 8px;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    bottom: 60px;
+}
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full 
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+    <button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+        ★ Review (0)
+    </button>
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+
+<script>
+
+const vocabulary = {
+
+dab: {
+meaning: "to touch or press lightly; a small amount of something; a light touch or press",
+example: "She dabbed some paint onto the canvas."
+},
+daffodil: {
+meaning: "a yellow or white spring flower with a trumpet-shaped center",
+example: "The garden was full of bright yellow daffodils."
+},
+daft: {
+meaning: "silly or foolish",
+example: "It was a daft idea to go out without a coat."
+},
+dainty: {
+meaning: "delicately beautiful or finely made; a small amount of delicious food; a delicacy",
+example: "She wore a dainty necklace around her neck."
+},
+dais: {
+meaning: "a raised platform at the front of a room, especially for speakers",
+example: "The guest speaker walked onto the dais."
+},
+daisy: {
+meaning: "a small flower with white petals and a yellow center",
+example: "The children picked daisies in the field."
+},
+dampen: {
+meaning: "to make something slightly wet; to reduce or weaken something",
+example: "The rain dampened our clothes and dampened our enthusiasm."
+},
+damper: {
+meaning: "a device that controls the flow of air, gas, or liquid",
+example: "The technician adjusted the damper to control the airflow."
+},
+damsel: {
+meaning: "a young unmarried woman",
+example: "The story tells of a damsel who lives in a distant castle."
+},
+
+dandelion: {
+meaning: "a common wild plant with a yellow flower and white seeds that blow away in the wind",
+example: "The children blew the dandelion seeds into the air."
+},
+dandy: {
+meaning: "a man who pays excessive attention to his clothes and appearance; excellent",
+example: "He was dressed like a dandy in an elegant suit."
+},
+dangle: {
+meaning: "to hang or swing loosely",
+example: "Her earrings dangled from her ears."
+},
+dank: {
+meaning: "unpleasantly damp and cold",
+example: "The basement was dark, dank, and uncomfortable."
+},
+dapper: {
+meaning: "neatly and stylishly dressed",
+example: "He looked very dapper in his new suit."
+},
+dappled: {
+meaning: "marked with spots or patches of different colors or shades",
+example: "We walked under the dappled shade of the trees."
+},
+daredevil: {
+meaning: "a person who takes dangerous risks and is not afraid",
+example: "The daredevil performed a dangerous stunt on his motorcycle."
+},
+darn: {
+meaning: "to repair a hole in cloth by sewing; a place repaired in this way",
+example: "She darned the hole in her old sweater."
+},
+daunt: {
+meaning: "to make someone feel afraid or less confident",
+example: "The difficult task did not daunt him."
+},
+dauntless: {
+meaning: "brave and determined; showing no fear",
+example: "The dauntless explorer continued into the unknown."
+},
+dawdle: {
+meaning: "to move or act slowly and waste time",
+example: "Stop dawdling and get ready for class."
+},
+deacon: {
+meaning: "a person who assists a priest or minister in some Christian churches",
+example: "The deacon helped organize the church's community activities."
+},
+deadline: {
+meaning: "the latest time by which something must be completed",
+example: "We must finish the report before the deadline."
+},
+deadlock: {
+meaning: "a situation in which no progress can be made because opposing sides cannot agree",
+example: "The negotiations reached a deadlock after several hours."
+},
+debase: {
+meaning: "to reduce the value or dignity of something or someone",
+example: "He refused to debase himself by lying to his colleagues."
+},
+debilitate: {
+meaning: "to make someone or something weak",
+example: "The disease severely debilitated the patient."
+},
+debit: {
+meaning: "an amount taken from a bank account; to take money from an account",
+example: "The bank debited the payment from her account."
+},
+debris: {
+meaning: "scattered pieces of waste or remains left after something has been destroyed",
+example: "Workers cleared the debris from the road."
+},
+debug: {
+meaning: "to find and remove errors from a computer program",
+example: "The programmer spent the afternoon debugging the code."
+},
+decadent: {
+meaning: "showing moral decline or excessive luxury",
+example: "The novel describes the decadent lifestyle of the wealthy."
+},
+decease: {
+meaning: "death; to die",
+example: "The estate was divided among his relatives after his decease."
+},
+decelerate: {
+meaning: "to become slower or make something slower",
+example: "The driver decelerated as he approached the intersection."
+},
+decency: {
+meaning: "acceptable standards of behavior; respect for others; modesty",
+example: "He treated everyone with decency and respect."
+},
+decimate: {
+meaning: "to destroy or kill a large part of something",
+example: "The disease decimated the local population."
+},
+decipher: {
+meaning: "to succeed in understanding something difficult or written in code",
+example: "She finally deciphered the message."
+},
+declaim: {
+meaning: "to speak or read aloud in an impressive or dramatic way",
+example: "The actor declaimed the famous speech with great emotion."
+},
+decompose: {
+meaning: "to decay or break down into simpler parts",
+example: "Leaves decompose naturally and enrich the soil."
+},
+decor: {
+meaning: "the style and arrangement of the furniture and decoration in a room",
+example: "The restaurant has simple but elegant decor."
+},
+decorous: {
+meaning: "polite, proper, and socially acceptable",
+example: "The students maintained a decorous manner during the ceremony."
+},
+decorum: {
+meaning: "proper and polite behavior",
+example: "The guests were expected to observe the decorum of the formal occasion."
+},
+decoy: {
+meaning: "a person or thing used to attract someone into a trap",
+example: "The hunters used a fake bird as a decoy."
+},
+decry: {
+meaning: "to publicly criticize or condemn something",
+example: "The organization decried the unfair treatment of workers."
+},
+deductible: {
+meaning: "able to be subtracted from an amount, especially for tax purposes",
+example: "Some medical expenses are deductible from taxable income."
+},
+deem: {
+meaning: "to consider or regard someone or something as being a particular thing",
+example: "The committee deemed the proposal acceptable."
+},
+deface: {
+meaning: "to damage the appearance or surface of something",
+example: "Someone defaced the wall with graffiti."
+},
+defame: {
+meaning: "to damage someone's reputation by making false statements",
+example: "The newspaper was accused of trying to defame the politician."
+},
+defer: {
+meaning: "to delay something until a later time",
+example: "The committee decided to defer the decision until next week."
+},
+defer_to: {
+meaning: "to accept someone's opinion or authority and follow their judgment",
+example: "I usually defer to my doctor on medical matters."
+},
+defile: {
+meaning: "to make something dirty or spoil its purity or sacred character",
+example: "The attackers were accused of defiling the ancient temple."
+},
+definitive: {
+meaning: "certain and authoritative; serving as the final answer or decision",
+example: "The study provides definitive evidence of the problem."
+},
+deflate: {
+meaning: "to let air out of something; to make someone feel less confident; to reduce something",
+example: "The bad news deflated his enthusiasm."
+},
+defoliate: {
+meaning: "to remove the leaves from a plant or tree",
+example: "The insects defoliated many of the trees."
+},
+deformation: {
+meaning: "a change in the shape or form of something, usually caused by damage or pressure",
+example: "The accident caused deformation of the metal frame."
+},
+defraud: {
+meaning: "to illegally obtain money or property from someone by deception",
+example: "The businessman was accused of defrauding his customers."
+},
+deft: {
+meaning: "skillful, quick, and clever",
+example: "With a deft movement, she caught the falling glass."
+},
+defunct: {
+meaning: "no longer existing or operating",
+example: "The company is now defunct."
+},
+defuse: {
+meaning: "to remove the danger from something; to make a difficult situation less tense",
+example: "The manager tried to defuse the argument."
+},
+degenerate: {
+meaning: "to become worse in quality, condition, or behavior; morally corrupt",
+example: "The discussion gradually degenerated into an argument."
+},
+degrade: {
+meaning: "to lower in rank, quality, or dignity",
+example: "Such treatment can degrade a person's sense of dignity."
+},
+dehydrate: {
+meaning: "to remove water from something or cause someone to lose too much water",
+example: "You can become dehydrated if you do not drink enough water."
+},
+deify: {
+meaning: "to treat someone or something as a god",
+example: "Fans sometimes deify famous athletes."
+},
+deity: {
+meaning: "a god or goddess",
+example: "The ancient people worshipped the deity as a protector."
+},
+deliberation: {
+meaning: "careful consideration or discussion before making a decision",
+example: "After much deliberation, the committee reached a decision."
+},
+delimit: {
+meaning: "to set or determine the limits of something",
+example: "The agreement clearly delimits the two countries' responsibilities."
+},
+delineate: {
+meaning: "to describe or show something clearly and precisely",
+example: "The report delineates the main causes of the problem."
+},
+delirious: {
+meaning: "confused and unable to think clearly, often because of illness; extremely excited",
+example: "The patient became delirious with a high fever."
+},
+deliverance: {
+meaning: "rescue or freedom from danger or suffering",
+example: "The prisoners prayed for deliverance."
+},
+delude: {
+meaning: "to make someone believe something that is not true",
+example: "He deluded himself into thinking that everything was fine."
+},
+deluge: {
+meaning: "a large amount of rain or water; to overwhelm with a large amount of something",
+example: "The town was hit by a deluge of rain."
+},
+deluxe: {
+meaning: "more luxurious or expensive than usual",
+example: "They stayed in a deluxe hotel room."
+},
+delve: {
+meaning: "to search deeply for information; to investigate something thoroughly",
+example: "The researcher delved into the history of the region."
+},
+demagogue: {
+meaning: "a political leader who gains support by appealing to emotions and prejudices",
+example: "The demagogue used fear to gain public support."
+},
+demagoguery: {
+meaning: "the use of emotional appeals and prejudices to gain political support",
+example: "The speech was criticized as an example of political demagoguery."
+},
+demean: {
+meaning: "to make someone lose dignity or respect; to lower oneself",
+example: "He would never demean himself by begging for approval."
+},
+demeanour: {
+meaning: "a person's outward behavior, manner, or appearance",
+example: "Her calm demeanour impressed the interviewers."
+},
+demented: {
+meaning: "mentally confused or behaving in an irrational way",
+example: "The old man seemed confused and demented."
+},
+demoralize: {
+meaning: "to make someone lose confidence, hope, or the desire to continue",
+example: "Repeated failures demoralized the team."
+},
+demote: {
+meaning: "to move someone to a lower position or rank",
+example: "The manager was demoted after the company performed poorly."
+},
+denim: {
+meaning: "a strong cotton cloth used especially for making jeans",
+example: "He wore a denim jacket to the concert."
+},
+denizen: {
+meaning: "a person or animal that lives in a particular place",
+example: "The forest is home to many denizens of the wild."
+},
+denominate: {
+meaning: "to give a name to something; to express an amount in a particular unit",
+example: "The bonds are denominated in US dollars."
+},
+dent: {
+meaning: "a hollow or depression in a surface; to damage something by making such a hollow",
+example: "The accident left a dent in the car door."
+},
+dentistry: {
+meaning: "the profession or study of treating people's teeth",
+example: "She decided to study dentistry at university."
+},
+deodorant: {
+meaning: "a substance used to prevent or hide unpleasant body odor",
+example: "He applied deodorant before going to work."
+},
+deplete: {
+meaning: "to greatly reduce the amount or supply of something",
+example: "The long drought depleted the water supply."
+},
+deplore: {
+meaning: "to strongly disapprove of or regret something",
+example: "The organization deplored the violence."
+},
+depopulate: {
+meaning: "to reduce the population of a place",
+example: "The war depopulated many rural areas."
+},
+depose: {
+meaning: "to remove someone from a position of power; to give evidence under oath",
+example: "The king was deposed after the rebellion."
+},
+depository: {
+meaning: "a place where something is stored",
+example: "The library serves as a depository for rare documents."
+},
+deprecate: {
+meaning: "to express strong disapproval of something",
+example: "The professor deprecated the use of unreliable sources."
+},
+depreciate: {
+meaning: "to decrease in value; to belittle or make something seem less important",
+example: "Cars usually depreciate rapidly after they are purchased."
+},
+deputation: {
+meaning: "a group of people chosen to represent others",
+example: "A deputation of students met with the university president."
+},
+derail: {
+meaning: "to cause a train to leave its tracks; to prevent a plan from succeeding",
+example: "The scandal threatened to derail the entire project."
+},
+derby: {
+meaning: "a major horse race; a competition between local sports teams",
+example: "Thousands of people watched the famous horse derby."
+},
+deregulate: {
+meaning: "to remove government rules or controls from an industry",
+example: "The government decided to deregulate the telecommunications industry."
+},
+deride: {
+meaning: "to make fun of someone or something in a cruel way",
+example: "His classmates derided him for his unusual accent."
+},
+derision: {
+meaning: "cruel or mocking laughter or criticism",
+example: "His proposal was greeted with derision."
+},
+derogatory: {
+meaning: "showing a negative or disrespectful attitude",
+example: "He was criticized for making derogatory remarks."
+},
+derrick: {
+meaning: "a tall structure used for lifting heavy objects or drilling for oil",
+example: "The workers used a derrick to lift the heavy equipment."
+},
+desegregate: {
+meaning: "to end the separation of people based on race",
+example: "The school system was ordered to desegregate."
+},
+desiccate: {
+meaning: "to remove moisture from something and make it very dry",
+example: "The hot sun desiccated the soil."
+},
+desirous: {
+meaning: "wanting or wishing for something",
+example: "She was desirous of greater independence."
+},
+despicable: {
+meaning: "deserving strong dislike or contempt because of very bad behavior",
+example: "Stealing from vulnerable people is a despicable act."
+},
+despoil: {
+meaning: "to steal valuable things from a place; to damage or ruin something",
+example: "The invaders despoiled the ancient city."
+},
+despotism: {
+meaning: "government by a ruler who has unlimited power and uses it cruelly",
+example: "The people eventually rebelled against the despotism."
+},
+destitute: {
+meaning: "extremely poor and lacking basic necessities",
+example: "The charity provides food for destitute families."
+},
+detachable: {
+meaning: "able to be separated or removed",
+example: "The laptop has a detachable keyboard."
+},
+deterrent: {
+meaning: "something that prevents or discourages an action",
+example: "The high cost acts as a deterrent to unnecessary travel."
+},
+detest: {
+meaning: "to dislike someone or something intensely",
+example: "She detests dishonesty."
+},
+detonate: {
+meaning: "to cause an explosive to explode",
+example: "The bomb was detonated remotely."
+},
+detour: {
+meaning: "a longer or different route taken to avoid a problem or reach a destination",
+example: "We had to take a detour because the road was closed."
+},
+detract: {
+meaning: "to reduce the value, importance, or quality of something",
+example: "The minor errors do not detract from the overall quality of the work."
+},
+devastate: {
+meaning: "to destroy or severely damage something; to make someone extremely upset",
+example: "The earthquake devastated the region."
+},
+deviant: {
+meaning: "different from what is considered normal or acceptable",
+example: "The study examined deviant behavior in society."
+},
+devious: {
+meaning: "indirect and often dishonest",
+example: "He used a devious method to obtain the information."
+},
+deviate: {
+meaning: "to move or develop away from what is usual or expected",
+example: "The car deviated from its normal route."
+},
+deviation: {
+meaning: "a difference or departure from what is usual or expected",
+example: "There was a slight deviation from the original plan."
+},
+devoid: {
+meaning: "completely lacking something",
+example: "The room was devoid of furniture."
+},
+devolve: {
+meaning: "to transfer power, responsibility, or duties to someone else",
+example: "The central government devolved some powers to local authorities."
+},
+devout: {
+meaning: "deeply religious or sincerely devoted to a belief or cause",
+example: "She is a devout Christian."
+},
+dexterous: {
+meaning: "skillful and quick in using the hands or body",
+example: "The dexterous surgeon completed the operation successfully."
+},
+dexterity: {
+meaning: "skill and quickness in using the hands or body",
+example: "The job requires considerable manual dexterity."
+},
+dialectic: {
+meaning: "the method of examining opposing ideas in order to reach a deeper understanding",
+example: "The course introduces students to the dialectic between freedom and responsibility."
+},
+diametrically: {
+meaning: "completely and directly opposite",
+example: "The two candidates have diametrically opposed views."
+},
+diarrhea: {
+meaning: "a medical condition in which a person frequently passes loose or watery stools",
+example: "The child developed diarrhea after eating contaminated food."
+},
+dice: {
+meaning: "small cubes marked with numbers used in games; to cut food into small cubes",
+example: "Dice the carrots before adding them to the soup."
+},
+dichotomy: {
+meaning: "a division or contrast between two completely different things",
+example: "The article presents a false dichotomy between work and family."
+},
+dictum: {
+meaning: "a formal statement or authoritative saying",
+example: "The judge repeated the famous dictum that everyone is equal before the law."
+},
+didactic: {
+meaning: "intended to teach, especially in a way that seems too moralistic",
+example: "The novel is entertaining without becoming overly didactic."
+},
+diddle: {
+meaning: "to cheat or deceive someone",
+example: "The dishonest seller tried to diddle his customers."
+},
+diehard: {
+meaning: "a person who strongly refuses to change their beliefs or habits",
+example: "He is a diehard supporter of the old system."
+},
+dietitian: {
+meaning: "a specialist who advises people about food and nutrition",
+example: "The dietitian helped him develop a healthier eating plan."
+},
+differentiate: {
+meaning: "to recognize or show the difference between people or things",
+example: "It is difficult to differentiate the two products."
+},
+diffident: {
+meaning: "lacking confidence in oneself; shy",
+example: "The diffident student rarely spoke in class."
+},
+dignitary: {
+meaning: "an important person because of their rank or position",
+example: "Several foreign dignitaries attended the ceremony."
+},
+distress: {
+meaning: "extreme anxiety, sadness, or suffering",
+example: "The news caused great distress among the residents."
+},
+dilapidated: {
+meaning: "in very poor condition because of age or lack of care",
+example: "They lived in a dilapidated old house."
+},
+dilate: {
+meaning: "to become or make something wider or larger",
+example: "The pupils dilate in the dark."
+},
+dilettante: {
+meaning: "a person who has a superficial interest in a subject rather than serious expertise",
+example: "He was dismissed as a dilettante rather than a serious scholar."
+},
+dimple: {
+meaning: "a small hollow in the cheek or another surface",
+example: "She has a charming dimple in her left cheek."
+},
+din: {
+meaning: "a loud unpleasant mixture of sounds; to repeatedly teach or tell something",
+example: "The din of traffic made it difficult to concentrate."
+},
+dinghy: {
+meaning: "a small boat, usually carried by a larger boat",
+example: "They used a dinghy to reach the shore."
+},
+dingy: {
+meaning: "dark, dirty, and unattractive",
+example: "They rented a small, dingy apartment."
+},
+diocese: {
+meaning: "an area controlled by a bishop in a Christian church",
+example: "The bishop visited several churches in the diocese."
+},
+diode: {
+meaning: "an electronic device that allows electric current to flow mainly in one direction",
+example: "The circuit contains a diode to control the current."
+},
+diphthong: {
+meaning: "a vowel sound that changes from one vowel sound to another within one syllable",
+example: "The vowel sound in 'coin' is a diphthong."
+},
+dipper: {
+meaning: "a small container with a handle used for scooping; a group of stars shaped like a ladle",
+example: "She used a dipper to take water from the bucket."
+},
+dire: {
+meaning: "extremely serious, urgent, or terrible",
+example: "The country is facing a dire shortage of food."
+},
+disarray: {
+meaning: "a state of disorder or confusion",
+example: "The office was left in complete disarray."
+},
+disassociate: {
+meaning: "to separate oneself or something from another person or thing",
+example: "The company tried to disassociate itself from the controversial statement."
+},
+disavow: {
+meaning: "to say that you do not accept or support something",
+example: "He publicly disavowed the extremist group's actions."
+},
+disband: {
+meaning: "to break up a group or organization",
+example: "The committee was disbanded after the project ended."
+},
+discernible: {
+meaning: "able to be recognized or noticed",
+example: "There was no discernible difference between the two versions."
+},
+discerning: {
+meaning: "having good judgment and the ability to recognize differences",
+example: "She is a discerning reader who notices subtle details."
+},
+disclaim: {
+meaning: "to deny responsibility for something or refuse to acknowledge it",
+example: "The company disclaimed responsibility for the damage."
+},
+disconcert: {
+meaning: "to make someone confused, embarrassed, or worried",
+example: "The unexpected question disconcerted him."
+},
+discredit: {
+meaning: "to damage someone's reputation or make something seem untrue",
+example: "The evidence discredited his explanation."
+},
+discreet: {
+meaning: "careful and tactful, especially in avoiding embarrassment or attracting attention",
+example: "Please be discreet about the matter."
+},
+discrete: {
+meaning: "separate and distinct",
+example: "The machine is made up of several discrete components."
+},
+discus: {
+meaning: "a heavy flat circular object thrown in a sports competition",
+example: "She trained every day for the discus event."
+},
+disenchant: {
+meaning: "to make someone lose their belief or enthusiasm because something is disappointing",
+example: "The experience disenchanted him with politics."
+},
+disentangle: {
+meaning: "to separate things that are twisted or confused",
+example: "She carefully disentangled the wires."
+},
+disinterested: {
+meaning: "not influenced by personal advantage; impartial",
+example: "We need a disinterested person to settle the dispute."
+},
+disjointed: {
+meaning: "lacking a clear connection or order",
+example: "His explanation was disjointed and difficult to follow."
+},
+disjunctive: {
+meaning: "expressing an alternative or separation between things",
+example: "The sentence contains a disjunctive conjunction."
+},
+dislocate: {
+meaning: "to force a bone out of its normal position; to disrupt or move something",
+example: "He dislocated his shoulder during the game."
+},
+dislodge: {
+meaning: "to force someone or something out of a position",
+example: "The wind dislodged several roof tiles."
+},
+dismantle: {
+meaning: "to take something apart",
+example: "Workers dismantled the old machine."
+},
+disparate: {
+meaning: "very different from each other",
+example: "The report brings together several disparate sources of information."
+},
+disparity: {
+meaning: "a great difference or inequality",
+example: "There is a significant disparity between the incomes of the two groups."
+},
+dispensable: {
+meaning: "not necessary or important",
+example: "These extra features are dispensable."
+},
+dispensation: {
+meaning: "special permission to be free from a rule; an arrangement or system",
+example: "The students received a special dispensation to submit their work late."
+},
+dispirited: {
+meaning: "having lost confidence, enthusiasm, or hope",
+example: "The team was dispirited after the unexpected defeat."
+},
+disposed: {
+meaning: "willing or inclined to do something",
+example: "She is favorably disposed toward the proposal."
+},
+disqualify: {
+meaning: "to prevent someone from taking part because they do not meet the requirements",
+example: "The violation may disqualify him from the competition."
+},
+disrepute: {
+meaning: "the state of having a bad reputation",
+example: "The scandal brought the organization into disrepute."
+},
+disseminate: {
+meaning: "to spread information, ideas, or knowledge widely",
+example: "The organization disseminates health information to the public."
+},
+dissension: {
+meaning: "disagreement or conflict within a group",
+example: "Dissension within the party weakened its position."
+},
+dissipated: {
+meaning: "wasteful or self-indulgent; having been scattered or dispersed",
+example: "He spent years living a dissipated lifestyle."
+},
+dissociate: {
+meaning: "to separate or disconnect something from something else",
+example: "She tried to dissociate herself from the decision."
+},
+dissolute: {
+meaning: "morally uncontrolled and devoted to pleasure",
+example: "The novel portrays the dissolute lifestyle of the wealthy."
+},
+dissonance: {
+meaning: "a lack of harmony or agreement",
+example: "There was a noticeable dissonance between his words and actions."
+},
+dissuade: {
+meaning: "to persuade someone not to do something",
+example: "Her parents tried to dissuade her from quitting school."
+},
+distraught: {
+meaning: "extremely upset and worried",
+example: "The parents were distraught when their child disappeared."
+},
+dither: {
+meaning: "to hesitate because you cannot decide what to do",
+example: "Stop dithering and make a decision."
+},
+ditto: {
+meaning: "the same as previously stated; a copy",
+example: "The second report contained the same information, so he simply wrote 'ditto.'"
+},
+ditty: {
+meaning: "a short simple song or poem",
+example: "He sang a cheerful little ditty."
+},
+divergent: {
+meaning: "developing in different directions; differing from each other",
+example: "The two researchers reached divergent conclusions."
+},
+dividend: {
+meaning: "a number to be divided; a payment made by a company to its shareholders",
+example: "The company announced a higher dividend for its shareholders."
+},
+divine: {
+meaning: "relating to God or a god; extremely good or beautiful",
+example: "The ancient people believed the king had divine power."
+},
+divinity: {
+meaning: "the state or quality of being divine; a god or goddess; theology",
+example: "She studied divinity at university."
+},
+divulge: {
+meaning: "to reveal secret or private information",
+example: "He refused to divulge the details of the agreement."
+},
+docile: {
+meaning: "quiet and easy to control or teach",
+example: "The normally docile dog suddenly became aggressive."
+},
+dogma: {
+meaning: "a belief or set of beliefs accepted without question",
+example: "The scientist refused to accept the theory as unquestionable dogma."
+},
+dogmatic: {
+meaning: "expressing opinions as if they were certainly correct and refusing to consider other views",
+example: "He can be too dogmatic about his political beliefs."
+},
+doldrums: {
+meaning: "a state of low energy, depression, or inactivity",
+example: "The economy has been in the doldrums for months."
+},
+dole: {
+meaning: "a small amount given to someone; money given as government assistance; to distribute in small amounts",
+example: "The charity doled out food to the homeless."
+},
+doleful: {
+meaning: "very sad or unhappy",
+example: "He gave me a doleful look."
+},
+dollop: {
+meaning: "a small amount of a soft substance",
+example: "Add a dollop of cream to the dessert."
+},
+domesticate: {
+meaning: "to tame an animal or make someone accustomed to domestic life",
+example: "Humans domesticated dogs thousands of years ago."
+},
+domesticity: {
+meaning: "home and family life",
+example: "She enjoyed the quiet routines of domesticity."
+},
+domicile: {
+meaning: "a person's home or permanent place of residence",
+example: "The document requires your current domicile."
+},
+domineer: {
+meaning: "to try to control others in an unpleasant and aggressive way",
+example: "He tends to domineer over his colleagues."
+},
+domineering: {
+meaning: "trying to control other people in an unpleasant way",
+example: "Her domineering personality made cooperation difficult."
+},
+donator: {
+meaning: "a person who gives money, goods, or something else to support a cause",
+example: "Each donator received a thank-you letter."
+},
+doodle: {
+meaning: "to draw pictures or patterns absent-mindedly",
+example: "She doodled in the margin while listening to the lecture."
+},
+dope: {
+meaning: "an illegal drug; a stupid person",
+example: "The athlete was banned after testing positive for dope."
+},
+dormant: {
+meaning: "inactive but capable of becoming active again",
+example: "The volcano has been dormant for centuries."
+},
+dosage: {
+meaning: "the amount of medicine that should be taken at one time or during a period",
+example: "The doctor reduced the dosage of the medicine."
+},
+dossier: {
+meaning: "a collection of documents containing information about a person or subject",
+example: "The journalist examined the dossier carefully."
+},
+dote: {
+meaning: "to love someone excessively",
+example: "Grandparents often dote on their grandchildren."
+},
+doting: {
+meaning: "showing excessive love or attention",
+example: "The doting father bought his daughter everything she wanted."
+},
+dowager: {
+meaning: "a wealthy or titled widow, especially an older woman",
+example: "The dowager lived in a large country house."
+},
+dowry: {
+meaning: "money or property traditionally given by a bride's family at marriage",
+example: "The custom required the bride's family to provide a dowry."
+},
+drab: {
+meaning: "dull and lacking brightness or interest",
+example: "The room looked drab and depressing."
+},
+draughtsman: {
+meaning: "a person who prepares technical drawings or designs",
+example: "The draughtsman prepared the engineering plans."
+},
+drape: {
+meaning: "to hang or arrange cloth loosely over something",
+example: "She draped a blanket over the chair."
+},
+drapery: {
+meaning: "cloth used for curtains or decoration",
+example: "The heavy drapery covered the windows."
+},
+draught: {
+meaning: "a current of air; a measured amount of liquid; beer served from a barrel",
+example: "A cold draught came through the open window."
+},
+drafty: {
+meaning: "having cold air moving through a room",
+example: "The old house is very drafty in winter."
+},
+drawl: {
+meaning: "to speak slowly and stretch the sounds of words",
+example: "He drawled the words in a slow Southern accent."
+},
+dredge: {
+meaning: "to remove mud or material from the bottom of a river or other body of water",
+example: "Workers dredged the river to make it deeper."
+},
+dregs: {
+meaning: "the unwanted remains at the bottom of a liquid; the least valuable part of something",
+example: "Only the dregs of the coffee remained in the cup."
+},
+drench: {
+meaning: "to make someone or something completely wet",
+example: "The sudden storm drenched us."
+},
+dressy: {
+meaning: "suitable for formal or special occasions; stylishly dressed",
+example: "The restaurant is quite dressy, so wear something elegant."
+},
+dribble: {
+meaning: "to fall or flow in small drops; to move a ball by repeatedly bouncing it",
+example: "The player dribbled the ball toward the basket."
+},
+drily: {
+meaning: "in a dry or unemotional manner, often humorously",
+example: "He drily commented that the plan had failed again."
+},
+dripping: {
+meaning: "a small amount of liquid falling in drops",
+example: "Water was dripping from the wet clothes."
+},
+"drive-in": {
+    meaning: "a place where customers can receive a service without leaving their cars",
+    example: "We watched the movie at a drive-in theater."
+},
+drone: {
+meaning: "to make a continuous low sound; to speak in a monotonous way",
+example: "The professor droned on for nearly an hour."
+},
+drool: {
+meaning: "to let saliva run out of the mouth; to show excessive desire for something",
+example: "The baby began to drool while eating."
+},
+drowse: {
+meaning: "to sleep lightly or be half asleep",
+example: "He began to drowse during the long lecture."
+},
+drummer: {
+meaning: "a person who plays the drums",
+example: "The drummer kept the rhythm for the band."
+},
+drunk: {
+meaning: "affected by alcohol",
+example: "He was too drunk to drive."
+},
+drunken: {
+meaning: "affected by alcohol or characterized by excessive drinking",
+example: "They got into a drunken argument outside the bar."
+},
+dryer: {
+meaning: "a machine or substance used for drying something",
+example: "Put the clothes in the dryer."
+},
+dub: {
+meaning: "to give someone a nickname; to provide a translated soundtrack for a film",
+example: "The reporters dubbed him the 'King of Comedy.'"
+},
+duchy: {
+meaning: "a territory ruled by a duke or duchess",
+example: "The duke inherited a small duchy."
+},
+duct: {
+meaning: "a tube or passage used to carry air, liquid, or other substances",
+example: "Warm air flows through the building's ducts."
+},
+duet: {
+meaning: "a performance by two singers or musicians",
+example: "The two singers performed a beautiful duet."
+},
+duff: {
+meaning: "worthless or useless; to fail to hit something",
+example: "The golfer duffed his first shot."
+},
+dumbfound: {
+meaning: "to surprise someone so much that they cannot speak",
+example: "The unexpected result dumbfounded everyone."
+},
+dumpy: {
+meaning: "short and somewhat fat in an unattractive way",
+example: "The character was described as a dumpy little man."
+},
+dunce: {
+meaning: "a person who is slow to learn or lacks intelligence",
+example: "He was treated as a dunce because he struggled with mathematics."
+},
+dune: {
+meaning: "a hill of sand formed by the wind",
+example: "We climbed the sand dune to watch the sunset."
+},
+dungarees: {
+meaning: "strong cotton work clothes or trousers",
+example: "The workers wore dungarees while repairing the building."
+},
+dungeon: {
+meaning: "a dark underground prison or room",
+example: "The prisoner was locked in a dungeon."
+},
+duo: {
+meaning: "a pair of people who perform or work together",
+example: "The musical duo released a new album."
+},
+dupe: {
+meaning: "to deceive someone; a person who has been deceived",
+example: "The salesman duped the customer into paying too much."
+},
+duplicity: {
+meaning: "dishonest behavior involving pretending to have one intention while having another",
+example: "The investigation revealed his duplicity."
+},
+dusky: {
+meaning: "dark or somewhat dark in color",
+example: "The mountains looked dusky in the evening light."
+},
+duster: {
+meaning: "a cloth or tool used for removing dust",
+example: "She used a duster to clean the shelves."
+},
+dynamism: {
+meaning: "energy, enthusiasm, and the ability to make things happen",
+example: "Her dynamism brought new energy to the organization."
+},
+earl: {
+meaning: "a British nobleman ranking below a marquess and above a viscount",
+example: "The earl owned a large estate in the countryside."
+},
+easel: {
+meaning: "a stand used by an artist to hold a painting or canvas",
+example: "She placed the canvas on the easel."
+},
+eaves: {
+meaning: "the edges of a roof that extend beyond the walls of a building",
+example: "Rainwater dripped from the eaves."
+},
+eavesdrop: {
+meaning: "to secretly listen to a private conversation",
+example: "He was caught eavesdropping outside the office."
+},
+ebony: {
+meaning: "a very dark black wood; dark black in color",
+example: "The piano has beautiful ebony keys."
+},
+eccentricity: {
+meaning: "unusual or strange behavior or characteristics",
+example: "His eccentricity made him a memorable professor."
+},
+eclectic: {
+meaning: "combining ideas, styles, or things from many different sources",
+example: "She has an eclectic taste in music."
+},
+ecstasy: {
+meaning: "a state of extreme happiness or excitement",
+example: "The fans screamed in ecstasy when the team won."
+},
+ecstatic: {
+meaning: "extremely happy and excited",
+example: "She was ecstatic about being accepted into the program."
+},
+eczema: {
+meaning: "a skin condition that causes dry, itchy, and inflamed skin",
+example: "The doctor prescribed a cream for his eczema."
+},
+eddy: {
+meaning: "a circular movement of water, air, or another fluid",
+example: "The boat was caught in a small eddy."
+},
+edgy: {
+meaning: "nervous or tense; sharp or cutting",
+example: "He felt edgy before the important interview."
+},
+edict: {
+meaning: "an official order or proclamation",
+example: "The king issued an edict banning the practice."
+},
+edifice: {
+meaning: "a large and impressive building",
+example: "The university's main edifice dates back to the nineteenth century."
+},
+eerie: {
+meaning: "strange and frightening",
+example: "The empty house had an eerie atmosphere."
+},
+efface: {
+meaning: "to erase or remove something",
+example: "Time had effaced most traces of the old building."
+},
+effeminate: {
+meaning: "having characteristics traditionally regarded as feminine, especially in a man",
+example: "The word is sometimes used in a derogatory way to describe a man's manner."
+},
+efficacy: {
+meaning: "the ability of something to produce the desired result",
+example: "Researchers are studying the efficacy of the new treatment."
+},
+effluent: {
+meaning: "liquid waste discharged from a factory or other source",
+example: "The factory was fined for releasing polluted effluent into the river."
+},
+egalitarian: {
+meaning: "believing that everyone should have equal rights and opportunities",
+example: "The organization promotes an egalitarian approach to education."
+},
+egocentric: {
+meaning: "thinking mainly about oneself and one's own interests",
+example: "His egocentric behavior made teamwork difficult."
+},
+egoism: {
+meaning: "the belief that one's own interests are more important than others' interests",
+example: "His egoism prevented him from considering other people's needs."
+},
+egoist: {
+meaning: "a person who is excessively concerned with their own interests",
+example: "The egoist rarely showed concern for other people."
+},
+egotism: {
+meaning: "excessive belief in one's own importance or abilities",
+example: "His egotism annoyed everyone around him."
+},
+ejaculate: {
+meaning: "to suddenly say something briefly and loudly",
+example: "She ejaculated a cry of surprise."
+},
+eject: {
+meaning: "to force someone or something out; to throw or push something out",
+example: "The security guards ejected the troublemaker from the building."
+},
+elated: {
+meaning: "extremely happy and excited",
+example: "She felt elated after receiving the good news."
+},
+electioneering: {
+meaning: "activities intended to persuade people to vote for a particular candidate",
+example: "The candidates spent weeks electioneering before the vote."
+},
+electrify: {
+meaning: "to supply with electricity; to excite or thrill someone",
+example: "The performance electrified the audience."
+},
+electrocute: {
+meaning: "to kill or seriously injure someone by electric shock",
+example: "The worker was nearly electrocuted by the damaged cable."
+},
+electrode: {
+meaning: "a conductor through which electricity enters or leaves a device",
+example: "The technician attached an electrode to the patient's skin."
+},
+electroplate: {
+meaning: "to cover an object with a thin layer of metal using electricity",
+example: "The company electroplates the parts with nickel."
+},
+electroscope: {
+meaning: "an instrument used to detect electric charge",
+example: "The students used an electroscope in the physics experiment."
+},
+electrostatic: {
+meaning: "relating to electric charges that are not moving",
+example: "The experiment demonstrated electrostatic attraction."
+},
+elemental: {
+meaning: "basic or fundamental; powerful and natural like the forces of nature",
+example: "The storm displayed an elemental power."
+},
+elf: {
+meaning: "a small imaginary creature in traditional stories",
+example: "The children dressed as elves for the Christmas play."
+},
+elicit: {
+meaning: "to obtain a reaction, answer, or piece of information from someone",
+example: "The question elicited a strong response from the students."
+},
+eligible: {
+meaning: "having the necessary qualifications or being entitled to something",
+example: "Students over eighteen are eligible to apply."
+},
+elite: {
+meaning: "a group of people considered the best or most powerful in a society",
+example: "The university attracts students from the academic elite."
+},
+elope: {
+meaning: "to secretly run away with someone in order to get married",
+example: "The young couple decided to elope."
+},
+elucidate: {
+meaning: "to explain something clearly",
+example: "The professor used an example to elucidate the theory."
+},
+elude: {
+meaning: "to escape from or avoid someone or something; to fail to be understood",
+example: "The answer continued to elude the researchers."
+},
+elusive: {
+meaning: "difficult to find, catch, achieve, or understand",
+example: "A clear explanation remained elusive."
+},
+emaciated: {
+meaning: "extremely thin and weak because of illness or lack of food",
+example: "The rescued animal was emaciated."
+},
+emanate: {
+meaning: "to come or spread out from a source",
+example: "A pleasant smell emanated from the kitchen."
+},
+embankment: {
+meaning: "a raised bank of earth or other material, especially beside a road or railway",
+example: "The train traveled along the embankment."
+},
+embattled: {
+meaning: "surrounded by enemies or facing serious difficulties",
+example: "The embattled company struggled to survive."
+},
+embed: {
+meaning: "to fix something firmly into another substance or place",
+example: "The image was embedded in the webpage."
+},
+embellish: {
+meaning: "to decorate something or add details to make it more attractive",
+example: "He embellished the story with unnecessary details."
+},
+embezzle: {
+meaning: "to secretly take money that has been entrusted to you",
+example: "The accountant was arrested for embezzling company funds."
+},
+emblem: {
+meaning: "a symbol representing an idea, organization, or quality",
+example: "The dove is an emblem of peace."
+},
+embody: {
+meaning: "to represent an idea or quality in a clear or visible form",
+example: "She embodies the spirit of determination."
+},
+emboss: {
+meaning: "to create a raised design or pattern on a surface",
+example: "The company's logo was embossed on the leather cover."
+},
+embroil: {
+meaning: "to involve someone in a difficult or unpleasant situation",
+example: "The scandal embroiled several senior officials."
+},
+emend: {
+meaning: "to correct or improve a written text",
+example: "The editor emended several errors in the manuscript."
+},
+emir: {
+meaning: "a ruler or prince in some Muslim countries",
+example: "The emir welcomed the visiting delegation."
+},
+emissary: {
+meaning: "a person sent to represent someone or deliver a message",
+example: "The president sent an emissary to negotiate the agreement."
+},
+empathy: {
+meaning: "the ability to understand and share another person's feelings",
+example: "A good teacher needs empathy for students who are struggling."
+},
+empiricism: {
+meaning: "the belief that knowledge comes mainly from observation and experience",
+example: "Empiricism emphasizes evidence obtained through experience."
+},
+emulate: {
+meaning: "to imitate someone because you want to equal or surpass them",
+example: "Young athletes often emulate successful professionals."
+},
+encampment: {
+meaning: "a place where people live temporarily in tents or camps",
+example: "The soldiers established an encampment near the river."
+},
+encase: {
+meaning: "to cover or surround something completely",
+example: "The fossils were encased in rock."
+},
+enclave: {
+meaning: "a territory surrounded by another territory",
+example: "The small country is an enclave within a larger nation."
+},
+encompass: {
+meaning: "to include or contain a wide range of things",
+example: "The course encompasses history, literature, and culture."
+},
+encore: {
+meaning: "an additional performance given at the request of an audience",
+example: "The audience shouted for an encore."
+},
+encroach: {
+meaning: "to gradually take more of someone's space, rights, or authority",
+example: "New buildings are encroaching on the surrounding farmland."
+},
+encumber: {
+meaning: "to burden or hinder someone or something",
+example: "Heavy equipment encumbered the workers."
+},
+endemic: {
+meaning: "regularly found in a particular place or among a particular group",
+example: "The disease is endemic to the region."
+},
+endorse: {
+meaning: "to publicly support or approve something; to sign a document",
+example: "The organization endorsed the new policy."
+},
+enfeeble: {
+meaning: "to make someone or something weak",
+example: "Years of illness had enfeebled him."
+},
+enfold: {
+meaning: "to surround or cover something completely; to embrace",
+example: "The darkness enfolded the village."
+},
+engender: {
+meaning: "to cause or produce a feeling, situation, or condition",
+example: "The policy may engender public concern."
+},
+engross: {
+meaning: "to occupy someone's complete attention",
+example: "The novel engrossed her for several hours."
+},
+enhance: {
+meaning: "to improve or increase the quality, value, or effectiveness of something",
+example: "The new features enhance the user experience."
+},
+enigma: {
+meaning: "a person or thing that is mysterious or difficult to understand",
+example: "His sudden disappearance remains an enigma."
+},
+enigmatic: {
+meaning: "mysterious and difficult to understand",
+example: "She gave him an enigmatic smile."
+},
+enliven: {
+meaning: "to make something more interesting, lively, or exciting",
+example: "The teacher used games to enliven the lesson."
+},
+enmity: {
+meaning: "a strong feeling of hatred or hostility",
+example: "The two families have lived in enmity for generations."
+},
+ennoble: {
+meaning: "to make someone or something noble or morally better",
+example: "Great literature can ennoble the human spirit."
+},
+enormity: {
+meaning: "the great size or seriousness of something; extreme wickedness",
+example: "He finally understood the enormity of the disaster."
+},
+enrage: {
+meaning: "to make someone extremely angry",
+example: "The unfair decision enraged the workers."
+},
+ensconce: {
+meaning: "to settle someone or yourself comfortably or securely in a place",
+example: "He ensconced himself in a comfortable chair."
+},
+ensemble: {
+meaning: "a group of performers; the complete effect of a group of things",
+example: "The musicians performed as an ensemble."
+},
+enshrine: {
+meaning: "to preserve or honor something as very important",
+example: "The constitution enshrines the principle of equality."
+},
+ensign: {
+meaning: "a flag or banner; a naval officer of junior rank in the US Navy",
+example: "The national ensign flew from the ship."
+},
+enslave: {
+meaning: "to make someone a slave or completely control them",
+example: "Millions of people were enslaved throughout history."
+},
+ensue: {
+meaning: "to happen afterward, especially as a result of something",
+example: "A heated argument ensued."
+},
+entail: {
+meaning: "to involve something as a necessary part or consequence",
+example: "The job entails working long hours."
+},
+entangle: {
+meaning: "to cause something to become twisted or involved in a complicated situation",
+example: "The fishing line became entangled in the weeds."
+},
+enthrall: {
+meaning: "to hold someone's attention completely because something is fascinating",
+example: "The children were enthralled by the magician."
+},
+enthrone: {
+meaning: "to place a king or queen on a throne",
+example: "The prince was enthroned after his father's death."
+},
+entice: {
+meaning: "to attract or persuade someone by offering something desirable",
+example: "The store offered discounts to entice customers."
+},
+entity: {
+meaning: "a person, organization, or thing that exists as a separate unit",
+example: "The company is a separate legal entity."
+},
+entourage: {
+meaning: "a group of people who travel with and assist an important person",
+example: "The actor arrived with a large entourage."
+},
+entreat: {
+meaning: "to ask someone very seriously or urgently for something",
+example: "She entreated him to reconsider his decision."
+},
+entree: {
+meaning: "the right to enter a place; a main dish in American English",
+example: "The restaurant offers several excellent entrees."
+},
+entrepreneur: {
+meaning: "a person who starts and manages a business",
+example: "The young entrepreneur launched an online company."
+},
+entwine: {
+meaning: "to twist or wind things together",
+example: "The vines entwined around the tree."
+},
+enumerate: {
+meaning: "to list things one by one",
+example: "The report enumerates the main causes of the problem."
+},
+enviable: {
+meaning: "deserving envy because it is attractive or desirable",
+example: "She has an enviable reputation as a researcher."
+},
+eon: {
+meaning: "an extremely long period of time",
+example: "It seemed to take an eon for the results to arrive."
+},
+ephemeral: {
+meaning: "lasting for only a very short time",
+example: "Fame can be ephemeral."
+},
+epigram: {
+meaning: "a short witty saying or poem",
+example: "The book begins with an amusing epigram."
+},
+epilogue: {
+meaning: "a section at the end of a book or play that gives additional information",
+example: "The epilogue describes what happened to the characters years later."
+},
+epitaph: {
+meaning: "words written on a person's gravestone",
+example: "His epitaph was a simple expression of gratitude."
+},
+epitome: {
+meaning: "a perfect example of a particular quality or type; a brief summary",
+example: "She is the epitome of elegance."
+},
+epitomize: {
+meaning: "to be a perfect example of something; to summarize",
+example: "The building epitomizes modern architecture."
+},
+equable: {
+meaning: "calm, steady, and not easily disturbed",
+example: "His equable temperament made him a good mediator."
+},
+equate: {
+meaning: "to consider or treat two things as equal",
+example: "We should not equate wealth with happiness."
+},
+equiangular: {
+meaning: "having equal angles",
+example: "An equiangular triangle has three equal angles."
+},
+equidistant: {
+meaning: "at an equal distance from two or more places",
+example: "The village is equidistant from the two cities."
+},
+equilateral: {
+meaning: "having all sides and angles equal",
+example: "An equilateral triangle has three equal sides."
+},
+equilibrium: {
+meaning: "a state of balance between opposing forces or influences",
+example: "The ecosystem depends on a delicate equilibrium."
+},
+equinox: {
+meaning: "one of the two times each year when day and night are approximately equal in length",
+example: "The spring equinox usually occurs in March."
+},
+equitable: {
+meaning: "fair and reasonable",
+example: "The agreement provides an equitable solution."
+},
+equivocal: {
+meaning: "having more than one possible meaning; unclear or ambiguous",
+example: "His answer was deliberately equivocal."
+},
+erotic: {
+meaning: "relating to or causing sexual desire",
+example: "The novel contains some erotic scenes."
+},
+errant: {
+meaning: "wandering from the correct path or behaving wrongly",
+example: "The knight searched for the errant traveler."
+},
+erratic: {
+meaning: "unpredictable, irregular, or inconsistent",
+example: "His erratic behavior worried his colleagues."
+},
+erudite: {
+meaning: "having or showing extensive knowledge",
+example: "The professor gave an erudite lecture on ancient history."
+},
+escalate: {
+meaning: "to become or make something more serious or intense",
+example: "The disagreement quickly escalated into a major conflict."
+},
+eschew: {
+meaning: "to deliberately avoid something",
+example: "She tries to eschew unnecessary spending."
+},
+esoteric: {
+meaning: "understood by only a small group of people with specialized knowledge",
+example: "The book contains many esoteric references."
+},
+espionage: {
+meaning: "the practice of secretly obtaining information for political or military purposes",
+example: "The novel is about international espionage."
+},
+espouse: {
+meaning: "to publicly support or accept an idea, belief, or cause",
+example: "The organization espouses equal opportunities for all."
+},
+estancia: {
+meaning: "a large estate or ranch in Latin America",
+example: "They spent a week on a remote estancia."
+},
+estimable: {
+meaning: "worthy of respect and admiration",
+example: "She is an estimable scholar and teacher."
+},
+estrange: {
+meaning: "to cause someone to become distant or unfriendly",
+example: "His behavior gradually estranged him from his family."
+},
+etcetera: {
+meaning: "additional things of the same kind; and so on",
+example: "The list includes books, magazines, newspapers, etcetera."
+},
+etch: {
+meaning: "to cut or mark a design into a surface",
+example: "Her name was etched into the metal."
+},
+ethereal: {
+meaning: "extremely delicate, light, or heavenly",
+example: "The singer's ethereal voice filled the hall."
+},
+ethic: {
+meaning: "a moral principle or set of principles",
+example: "The company has a strong work ethic."
+},
+ethical: {
+meaning: "relating to moral principles or morally correct behavior",
+example: "The researchers faced several ethical questions."
+},
+ethics: {
+meaning: "moral principles governing behavior",
+example: "Business ethics is an important part of the course."
+},
+ethnic: {
+meaning: "relating to a group of people with a shared cultural or national tradition",
+example: "The city has a diverse ethnic population."
+},
+etiquette: {
+meaning: "the customary rules of polite behavior",
+example: "Students should learn basic email etiquette."
+},
+ethos: {
+meaning: "the beliefs and attitudes that characterize a group or society",
+example: "The school has a strong ethos of cooperation."
+},
+eulogy: {
+meaning: "a speech or piece of writing praising someone who has died",
+example: "Her son delivered a moving eulogy at the funeral."
+},
+euphemism: {
+meaning: "a mild expression used instead of a more direct or unpleasant one",
+example: "'Passed away' is a common euphemism for 'died.'"
+},
+euphemistic: {
+meaning: "using a mild or indirect expression instead of a direct one",
+example: "The report used euphemistic language to describe the layoffs."
+},
+euphoria: {
+meaning: "an intense feeling of happiness or excitement",
+example: "The victory produced a wave of euphoria."
+},
+euthanasia: {
+meaning: "the practice of intentionally ending a person's life to relieve suffering",
+example: "The ethics of euthanasia remain widely debated."
+},
+evacuate: {
+meaning: "to move people away from a dangerous place; to leave a dangerous place",
+example: "Residents were ordered to evacuate the building."
+},
+evade: {
+meaning: "to avoid or escape something, especially a responsibility or difficulty",
+example: "He tried to evade the question."
+},
+evanescent: {
+meaning: "disappearing quickly and lasting only a short time",
+example: "The beauty of the sunset was evanescent."
+},
+evangelical: {
+meaning: "relating to or emphasizing the Christian gospel; strongly enthusiastic about spreading beliefs",
+example: "He belongs to an evangelical church."
+},
+evangelist: {
+meaning: "a person who preaches the Christian gospel",
+example: "The evangelist traveled from town to town preaching."
+},
+evasive: {
+meaning: "avoiding giving a direct answer or dealing directly with something",
+example: "The witness gave an evasive answer."
+},
+evict: {
+meaning: "to legally force someone to leave a property",
+example: "The landlord threatened to evict the tenants."
+},
+eviction: {
+meaning: "the act of legally forcing someone to leave a property",
+example: "The family faced eviction after failing to pay the rent."
+},
+evince: {
+meaning: "to show or express a feeling or quality",
+example: "Her actions evinced great courage."
+},
+evocative: {
+meaning: "bringing strong memories, feelings, or images to mind",
+example: "The music is highly evocative of his childhood."
+},
+evoke: {
+meaning: "to cause a feeling, memory, or image to come into the mind",
+example: "The photograph evoked memories of his childhood."
+},
+ewe: {
+meaning: "a female sheep",
+example: "The farmer separated the ewe from the lambs."
+},
+exacerbate: {
+meaning: "to make a problem or situation worse",
+example: "Lack of sleep can exacerbate stress."
+},
+exalt: {
+meaning: "to praise highly; to raise in rank or status",
+example: "The poem exalts the beauty of nature."
+},
+exaltation: {
+meaning: "a feeling of great happiness or pride",
+example: "She experienced a moment of exaltation after winning the prize."
+},
+exalted: {
+meaning: "of high rank or noble character; extremely proud or happy",
+example: "He held an exalted position in the organization."
+},
+exasperate: {
+meaning: "to make someone extremely annoyed",
+example: "The constant delays exasperated the passengers."
+},
+excavate: {
+meaning: "to dig out and remove earth; to uncover something buried",
+example: "Archaeologists excavated the ancient ruins."
+},
+excellency: {
+meaning: "a title used when addressing certain high-ranking officials",
+example: "The ambassador was addressed as Your Excellency."
+},
+excerpt: {
+meaning: "a short part taken from a longer text",
+example: "The teacher read an excerpt from the novel."
+},
+excise: {
+meaning: "a tax on certain goods; to cut out or remove something",
+example: "The editor decided to excise the unnecessary paragraph."
+},
+excusable: {
+meaning: "able to be forgiven or accepted as reasonable",
+example: "His mistake was understandable and excusable."
+},
+execrable: {
+meaning: "extremely bad or unpleasant",
+example: "The hotel provided execrable service."
+},
+exemplary: {
+meaning: "serving as an excellent example",
+example: "Her dedication to her students is exemplary."
+},
+exemplify: {
+meaning: "to be a typical example of something; to illustrate with an example",
+example: "Her career exemplifies the value of perseverance."
+},
+exhibition: {
+meaning: "a public display of works or objects; the act of showing something",
+example: "The museum is holding an exhibition of modern art."
+},
+exhilarate: {
+meaning: "to make someone extremely happy, excited, or energetic",
+example: "The fast ride exhilarated the children."
+},
+exhilarating: {
+meaning: "making someone feel extremely excited and happy",
+example: "The final match was exhilarating."
+},
+exhort: {
+meaning: "to strongly encourage or advise someone to do something",
+example: "The teacher exhorted the students to work harder."
+},
+existential: {
+meaning: "relating to human existence or the nature of being",
+example: "The novel raises several existential questions."
+},
+existentialist: {
+meaning: "a person who follows or studies existentialist philosophy",
+example: "The philosopher was an influential existentialist."
+},
+exodus: {
+meaning: "a situation in which many people leave a place at the same time",
+example: "The economic crisis caused an exodus of young workers."
+},
+exonerate: {
+meaning: "to officially state that someone is not responsible for a crime or wrongdoing",
+example: "New evidence exonerated the accused man."
+},
+exorcise: {
+meaning: "to drive out an evil spirit from a person or place",
+example: "The priest was asked to exorcise the spirit."
+},
+exotic: {
+meaning: "unusual or exciting because it comes from a distant or foreign place",
+example: "The restaurant serves exotic fruits from Southeast Asia."
+},
+expansive: {
+meaning: "friendly and willing to talk; covering a large area or capable of expanding",
+example: "She became expansive and talkative after dinner."
+},
+expectancy: {
+meaning: "a feeling or belief that something will happen",
+example: "There was a sense of expectancy before the announcement."
+},
+expectant: {
+meaning: "waiting with excitement or hope for something; pregnant",
+example: "The expectant mother prepared the baby's room."
+},
+expedient: {
+meaning: "convenient and practical for achieving a particular purpose",
+example: "It was expedient to postpone the meeting."
+},
+expedite: {
+meaning: "to make a process happen more quickly",
+example: "We paid extra to expedite the delivery."
+},
+expiry: {
+meaning: "the end of the period during which something is valid",
+example: "Check the expiry date before using the medicine."
+},
+explicable: {
+meaning: "able to be explained or understood",
+example: "Her reaction was completely explicable given the circumstances."
+},
+exponent: {
+meaning: "a person who supports or represents an idea or belief",
+example: "He is a leading exponent of environmental reform."
+},
+expulsion: {
+meaning: "the act of forcing someone to leave a place or organization",
+example: "The student's repeated misconduct resulted in expulsion."
+},
+expropriate: {
+meaning: "to take someone's property for public use, usually with compensation",
+example: "The government expropriated the land for the new highway."
+},
+expound: {
+meaning: "to explain an idea or theory in detail",
+example: "The professor expounded his theory during the lecture."
+},
+expunge: {
+meaning: "to remove something completely from a record or text",
+example: "The court ordered the criminal record to be expunged."
+},
+expurgate: {
+meaning: "to remove offensive or inappropriate material from a text",
+example: "The publisher expurgated several passages from the original book."
+},
+extant: {
+meaning: "still existing, especially something that has survived from the past",
+example: "Only a few extant copies of the manuscript remain."
+},
+exterminate: {
+meaning: "to destroy or kill all of a group of people, animals, or pests",
+example: "The company was hired to exterminate the insects."
+},
+extol: {
+meaning: "to praise someone or something very highly",
+example: "The article extols the benefits of regular exercise."
+},
+extort: {
+meaning: "to obtain money or something else by using threats or force",
+example: "The criminals tried to extort money from the business owner."
+},
+extradite: {
+meaning: "to officially send someone to another country to face criminal charges",
+example: "The suspect was extradited to face trial."
+},
+extraneous: {
+meaning: "not relevant or necessary to something",
+example: "Please remove any extraneous information from the report."
+},
+extrapolate: {
+meaning: "to estimate or predict something by using known information",
+example: "Scientists extrapolated future temperatures from the available data."
+},
+extraterrestrial: {
+meaning: "coming from or existing outside the Earth",
+example: "Scientists continue to search for extraterrestrial life."
+},
+extremism: {
+meaning: "belief in or support for extreme political or social ideas",
+example: "The government introduced measures to combat violent extremism."
+},
+extremities: {
+meaning: "the hands and feet; the outermost parts or limits of something",
+example: "The cold affected the extremities of his body."
+},
+extremity: {
+meaning: "the furthest point or limit of something; an extreme condition",
+example: "The village lies at the extremity of the valley."
+},
+extricate: {
+meaning: "to free someone or something from a difficult situation or entanglement",
+example: "The firefighters extricated the driver from the damaged car."
+},
+extrovert: {
+meaning: "a person who is energetic and comfortable around other people",
+example: "As an extrovert, she enjoys meeting new people."
+},
+exuberant: {
+meaning: "full of energy, excitement, and happiness",
+example: "The children were exuberant after winning the game."
+},
+exude: {
+meaning: "to produce or release a liquid, smell, or quality slowly",
+example: "The flowers exuded a sweet fragrance."
+},
+exult: {
+meaning: "to feel and show great happiness because of a success",
+example: "The players exulted after winning the championship."
+}
+};
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+let navigationTimer = null;
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
+function getVocabularySignature() {
+
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+
+}
+
+
+function saveQuizProgress() {
+
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
+
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+
+            vocabularySignature:
+                getVocabularySignature(),
+
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
+}
+
+
+function loadQuizProgress() {
+
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
+
+    if (!saved) {
+        return false;
+    }
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
+
+        return false;
+    }
+
+}
+
+
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
+
+function getStarredWords() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+    }
+
+}
+
+
+function saveStarredWords(words) {
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
+}
+
+
+function getCorrectWord(question) {
+
+    return question.options[
+        question.answer - 1
+    ];
+
+}
+
+
+function isStarred(question) {
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
+}
+
+
+function updateStarButton() {
+
+    const button =
+        document.getElementById("starButton");
+
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
+
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+ // Cancel any pending automatic navigation
+ if (navigationTimer !== null) {
+        clearTimeout(navigationTimer);
+        navigationTimer = null;
+    }
+
+    if (isReviewingStarred) return;
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+if (!isReviewingStarred) {
+    saveQuizProgress();
+}
+
+document.querySelector(".navigation").style.display = "flex";
+
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Question number
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    // Current score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+
+    // Display question
+    document.getElementById(
+        "question"
+    ).textContent =
+        question.question;
+
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+
+    // Clear feedback
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    // Previous button
+    document.getElementById(
+        "prevButton"
+    ).disabled =
+        currentQuestion === 0;
+
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(
+    selectedIndex,
+    button
+) {
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.disabled = true;
+
+        }
+    );
+
+
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
+
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
+
+        questionResults[
+            currentQuestion
+        ] = 1;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+            navigationTimer = setTimeout(() => {
+    navigationTimer = null;
+    goToNextOrFinish();
+}, 900);
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+}
+
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[
+            question.answer - 1
+        ];
+
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
+        correctOption;
+
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
+            : "";
+
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
+            : "";
+
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
+
+
+    // Automatically move on once
+    // the popup is dismissed
+    goToNextOrFinish();
+
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+if (currentQuestion > 0) {
+
+    currentQuestion--;
+
+    if (!isReviewingStarred) {
+        saveQuizProgress();
+    }
+
+    displayQuestion();
+}
+}
+
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+function goToNextOrFinish() {
+
+// More questions remain
+if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Starred review has finished
+if (isReviewingStarred) {
+
+    questions = [...savedQuizState.questions];
+
+    currentQuestion = savedQuizState.currentQuestion;
+
+    correctAnswers = savedQuizState.correctAnswers;
+
+    score = savedQuizState.score;
+
+    questionResults = [...savedQuizState.questionResults];
+
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Normal quiz has finished
+showResult();
+}
+function restartQuiz() {
+
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
+
+
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+    const totalQuestions =
+        questions.length;
+
+
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
+
+
+    const mark =
+        percentage.toFixed(2);
+
+
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "score"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "question"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
+    }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    loadQuizProgress();
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        "No questions found.";
+
+}
+</script>
+
+
+</body>
+
+</html>
