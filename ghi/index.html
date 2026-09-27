@@ -1,0 +1,3246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+   #starButton,
+#reviewStarredButton {
+    position: fixed;
+    right: 20px;
+    z-index: 900;
+
+    min-height: 32px;
+    padding: 6px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    bottom: 60px;
+}
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full 
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+    <button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+        ★ Review (0)
+    </button>
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+<button onclick="exportStarredWords()">
+    Save Difficult Words
+</button>
+<script>
+const vocabulary = {
+    "habitue": {
+        meaning: "a regular customer or visitor",
+        example: "He was a habitue of the small neighborhood café."
+    },
+    "hack": {
+        meaning: "to cut roughly; to gain unauthorized access to a computer system",
+        example: "Someone tried to hack the company's computer system."
+    },
+    "hackneyed": {
+        meaning: "overused and no longer interesting or original",
+        example: "The article was full of hackneyed expressions."
+    },
+    "hacksaw": {
+        meaning: "a saw with a narrow metal blade, used for cutting metal",
+        example: "He used a hacksaw to cut through the metal pipe."
+    },
+    "haggard": {
+        meaning: "looking very tired, worried, or ill",
+        example: "After several sleepless nights, he looked haggard."
+    },
+    "haggle": {
+        meaning: "to argue about the price of something in order to get a lower price",
+        example: "She likes to haggle with street vendors."
+    },
+    "hairdo": {
+        meaning: "a particular style in which someone's hair is arranged",
+        example: "She changed her hairdo for the wedding."
+    },
+    "hairpiece": {
+        meaning: "a piece of artificial hair worn on the head",
+        example: "He wore a hairpiece to cover the bald area."
+    },
+    "hale": {
+        meaning: "healthy and strong, especially despite being old",
+        example: "His grandfather is still hale and hearty at eighty."
+    },
+    "hallmark": {
+        meaning: "a typical quality or feature that identifies something",
+        example: "Attention to detail is a hallmark of her work."
+    },
+    "hallowed": {
+        meaning: "regarded as holy or sacred",
+        example: "The soldiers returned to the hallowed ground."
+    },
+    "hallucinate": {
+        meaning: "to see or hear something that is not actually present",
+        example: "The patient began to hallucinate after several days without sleep."
+    },
+    "hallucination": {
+        meaning: "a perception of something that is not actually present",
+        example: "The medication caused temporary hallucinations."
+    },
+    "halo": {
+        meaning: "a circle of light around the sun, moon, or a person's head",
+        example: "A bright halo appeared around the moon."
+    },
+    "hamlet": {
+        meaning: "a very small village",
+        example: "The family lived in a quiet hamlet in the countryside."
+    },
+    "hammock": {
+        meaning: "a bed made of cloth or rope that hangs between two supports",
+        example: "He relaxed in a hammock under the trees."
+    },
+    "hamper": {
+        meaning: "to make it difficult for someone or something to progress",
+        example: "Heavy traffic hampered our progress."
+    },
+    "hamstring": {
+        meaning: "to make someone or something unable to act effectively",
+        example: "The lack of funding hamstrung the project."
+    },
+    "handpicked": {
+        meaning: "carefully selected",
+        example: "The manager chose a handpicked team for the project."
+    },
+    "handstand": {
+        meaning: "a position in which you balance on your hands with your legs in the air",
+        example: "The gymnast held a handstand for several seconds."
+    },
+    "handyman": {
+        meaning: "a person skilled at repairing or making things around a house",
+        example: "We hired a handyman to fix the broken door."
+    },
+    "hangar": {
+        meaning: "a large building where aircraft are kept",
+        example: "The plane was stored in a hangar overnight."
+    },
+    "haphazard": {
+        meaning: "not planned or organized; done randomly",
+        example: "The books had been placed on the shelves in a haphazard way."
+    },
+    "hapless": {
+        meaning: "unlucky or unfortunate",
+        example: "The hapless traveler missed three trains in one day."
+    },
+    "harangue": {
+        meaning: "a long and angry speech or lecture",
+        example: "The coach gave the players a long harangue after the defeat."
+    },
+    "harass": {
+        meaning: "to repeatedly annoy, trouble, or threaten someone",
+        example: "The company has rules against harassing employees."
+    },
+    "harbinger": {
+        meaning: "a sign that something is going to happen",
+        example: "Dark clouds were a harbinger of the coming storm."
+    },
+    "hard-bitten": {
+        meaning: "made tough by difficult experiences",
+        example: "The hard-bitten journalist had covered many wars."
+    },
+    "hardheaded": {
+        meaning: "practical and not easily influenced by emotions",
+        example: "She is a hardheaded businesswoman who focuses on results."
+    },
+    "harebrained": {
+        meaning: "silly, impractical, or poorly thought out",
+        example: "It was a harebrained plan that was bound to fail."
+    },
+    "harness": {
+        meaning: "to control and use something effectively",
+        example: "Scientists are trying to harness solar energy."
+    },
+    "harp": {
+        meaning: "to talk repeatedly about the same subject, especially a complaint",
+        example: "He keeps harping on the same old problem."
+    },
+    "harrowing": {
+        meaning: "extremely painful, frightening, or distressing",
+        example: "She described her harrowing experience during the accident."
+    },
+    "hassle": {
+        meaning: "a difficult or annoying situation; to bother or annoy someone",
+        example: "Finding a parking space was a real hassle."
+    },
+    "haven": {
+        meaning: "a safe or peaceful place",
+        example: "The small village became a haven for refugees."
+    },
+    "havoc": {
+        meaning: "great destruction or damage",
+        example: "The storm caused havoc across the region."
+    },
+    "haywire": {
+        meaning: "out of control or not working correctly",
+        example: "The computer system suddenly went haywire."
+    },
+    "headstrong": {
+        meaning: "determined to do what you want without considering other people's advice",
+        example: "The headstrong teenager refused to listen to his parents."
+    },
+    "headway": {
+        meaning: "progress, especially when a situation is difficult",
+        example: "The researchers are finally making headway."
+    },
+    "hearsay": {
+        meaning: "information heard from other people rather than known directly",
+        example: "The court cannot rely solely on hearsay."
+    },
+    "hearten": {
+        meaning: "to make someone feel more hopeful or encouraged",
+        example: "The good news heartened the entire team."
+    },
+    "heartless": {
+        meaning: "showing no sympathy or kindness",
+        example: "It was heartless to ignore the family's suffering."
+    },
+    "heartrending": {
+        meaning: "causing great sadness or emotional pain",
+        example: "The film tells a heartrending story of separation."
+    },
+    "heartwarming": {
+        meaning: "making you feel happy and emotionally moved",
+        example: "It was a heartwarming story about an old man and his dog."
+    },
+    "heed": {
+        meaning: "to pay attention to advice or a warning",
+        example: "You should heed the doctor's advice."
+    },
+    "hefty": {
+        meaning: "large, heavy, or considerable",
+        example: "The company had to pay a hefty fine."
+    },
+    "hegemony": {
+        meaning: "dominance or leadership by one group or country",
+        example: "The country sought to maintain its economic hegemony."
+    },
+    "heinous": {
+        meaning: "extremely evil or morally shocking",
+        example: "The crime was described as a heinous act."
+    },
+    "heirloom": {
+        meaning: "a valuable object passed down through a family",
+        example: "The necklace is a family heirloom."
+    },
+    "henceforth": {
+        meaning: "from this time onward",
+        example: "Henceforth, all employees must wear identification badges."
+    },
+    "hepatitis": {
+        meaning: "inflammation of the liver",
+        example: "The doctor tested him for hepatitis."
+    },
+    "herbivore": {
+        meaning: "an animal that eats plants",
+        example: "The elephant is a large herbivore."
+    },
+    "hereditary": {
+        meaning: "passed from parents to children through genes",
+        example: "The disease may be hereditary."
+    },
+    "heresy": {
+        meaning: "a belief that strongly disagrees with established religious beliefs",
+        example: "The idea was once considered heresy."
+    },
+    "heretic": {
+        meaning: "a person whose beliefs are considered heretical",
+        example: "He was accused of being a heretic."
+    },
+    "hermetic": {
+        meaning: "completely sealed so that air or gas cannot enter or escape",
+        example: "The chemicals were kept in a hermetic container."
+    },
+    "heyday": {
+        meaning: "the period when someone or something was most successful",
+        example: "The theater was famous during its heyday."
+    },
+    "hiatus": {
+        meaning: "a period when something stops or is interrupted",
+        example: "The band returned after a five-year hiatus."
+    },
+    "hibernate": {
+        meaning: "to spend the winter in a state of reduced activity",
+        example: "Some animals hibernate during the winter."
+    },
+    "hideaway": {
+        meaning: "a place where someone can hide or stay privately",
+        example: "They found a quiet hideaway in the mountains."
+    },
+    "hidebound": {
+        meaning: "unwilling to accept new ideas or change",
+        example: "The hidebound institution resisted technological change."
+    },
+    "hierarchy": {
+        meaning: "a system in which people or things are ranked by importance",
+        example: "There is a clear hierarchy within the organization."
+    },
+    "highbrow": {
+        meaning: "intellectual or intended for highly educated people",
+        example: "He enjoys highbrow literature and classical music."
+    },
+    "highhanded": {
+        meaning: "using power in an unreasonable or arrogant way",
+        example: "The manager was criticized for his highhanded behavior."
+    },
+    "high-pitched": {
+        meaning: "having a very high sound or tone",
+        example: "She heard a high-pitched scream."
+    },
+    "hilarious": {
+        meaning: "extremely funny",
+        example: "The comedian told a hilarious story."
+    },
+    "hindsight": {
+        meaning: "understanding a situation only after it has happened",
+        example: "In hindsight, we should have checked the contract more carefully."
+    },
+    "histrionic": {
+        meaning: "overly dramatic or theatrical",
+        example: "His histrionic reaction surprised everyone."
+    },
+    "hoard": {
+        meaning: "to collect and store large amounts of something",
+        example: "Some people hoard food during emergencies."
+    },
+    "hoax": {
+        meaning: "a deliberately false story or trick intended to deceive people",
+        example: "The report turned out to be a hoax."
+    },
+    "hobble": {
+        meaning: "to walk with difficulty because of an injury",
+        example: "He hobbled home after hurting his ankle."
+    },
+    "hobnob": {
+        meaning: "to spend time socializing with important or influential people",
+        example: "He spent the evening hobnobbing with business leaders."
+    },
+    "hoggish": {
+        meaning: "selfish and greedy",
+        example: "His hoggish behavior annoyed everyone at the dinner table."
+    },
+    "homage": {
+        meaning: "great respect or admiration shown publicly",
+        example: "The film pays homage to classic westerns."
+    },
+    "homey": {
+        meaning: "comfortable and pleasant like a home",
+        example: "The small café has a warm, homey atmosphere."
+    },
+    "homicide": {
+        meaning: "the crime of killing another person",
+        example: "The police are investigating the case as a homicide."
+    },
+    "homogeneous": {
+        meaning: "consisting of things or people that are similar",
+        example: "The population is relatively homogeneous."
+    },
+    "hoodwink": {
+        meaning: "to deceive or trick someone",
+        example: "The salesman tried to hoodwink the customer."
+    },
+    "hooligan": {
+        meaning: "a violent or disorderly person, especially at public events",
+        example: "Several hooligans were arrested after the match."
+    },
+    "horticulture": {
+        meaning: "the study and practice of growing plants and vegetables",
+        example: "She studied horticulture at university."
+    },
+    "hotbed": {
+        meaning: "a place where something develops or grows quickly",
+        example: "The city became a hotbed of technological innovation."
+    },
+    "hotfoot": {
+        meaning: "very quickly or immediately",
+        example: "He left the office hotfoot after receiving the message."
+    },
+    "hothead": {
+        meaning: "a person who becomes angry very easily",
+        example: "The coach warned the young hothead to control his temper."
+    },
+    "housebound": {
+        meaning: "unable to leave home, usually because of illness",
+        example: "Her illness left her housebound for several months."
+    },
+    "hovel": {
+        meaning: "a small, dirty, poorly built place to live",
+        example: "The family was living in a miserable hovel."
+    },
+    "howler": {
+        meaning: "a very obvious and embarrassing mistake",
+        example: "I made a howler in the final paragraph."
+    },
+    "hubbub": {
+        meaning: "a loud mixture of voices and noises",
+        example: "The children created a terrible hubbub."
+    },
+    "huddle": {
+        meaning: "to gather closely together",
+        example: "The players huddled together before the game."
+    },
+    "hue": {
+        meaning: "a particular color or shade",
+        example: "The walls were painted a soft blue hue."
+    },
+    "hulk": {
+        meaning: "a very large, heavy, or awkward person or thing",
+        example: "A huge hulk of a man stood by the door."
+    },
+    "hulking": {
+        meaning: "very large and heavy-looking",
+        example: "A hulking figure blocked the doorway."
+    },
+    "humdrum": {
+        meaning: "boring and lacking excitement or variety",
+        example: "He was tired of his humdrum routine."
+    },
+    "humility": {
+        meaning: "the quality of not thinking that you are better than other people",
+        example: "Despite his success, he showed great humility."
+    },
+    "hunch": {
+        meaning: "a feeling or idea based on intuition rather than evidence",
+        example: "I had a hunch that something was wrong."
+    },
+    "hurdle": {
+        meaning: "an obstacle or difficulty that must be overcome",
+        example: "Lack of funding is the biggest hurdle facing the project."
+    },
+    "hurtle": {
+        meaning: "to move very fast, often in an uncontrolled way",
+        example: "The car hurtled down the hill."
+    },
+    "husbandry": {
+        meaning: "the care and management of farm animals",
+        example: "The course covers modern animal husbandry."
+    },
+    "hustle": {
+        meaning: "to hurry or push someone; busy activity",
+        example: "We had to hustle to catch the last train."
+    },
+    "hustle and bustle": {
+        meaning: "a lot of busy activity and noise",
+        example: "She enjoys the hustle and bustle of city life."
+    },
+    "hybrid": {
+        meaning: "something made by combining two different types",
+        example: "The car is a hybrid of a gasoline engine and an electric motor."
+    },
+    "hydroelectricity": {
+        meaning: "electricity produced using the energy of moving water",
+        example: "The region generates much of its power from hydroelectricity."
+    },
+    "hype": {
+        meaning: "excessive or misleading publicity; to promote something excessively",
+        example: "The product received a lot of hype before its release."
+    },
+    "hyperactive": {
+        meaning: "extremely active and unable to stay still or concentrate",
+        example: "The child was too hyperactive to sit quietly."
+    },
+    "hypercritical": {
+        meaning: "too critical and quick to find faults",
+        example: "He is hypercritical of other people's work."
+    },
+    "hypermarket": {
+        meaning: "a very large store selling many different kinds of goods",
+        example: "We bought everything we needed at the hypermarket."
+    },
+    "hypertension": {
+        meaning: "abnormally high blood pressure",
+        example: "Regular exercise can help prevent hypertension."
+    },
+    "hyphen": {
+        meaning: "the punctuation mark - used to join words",
+        example: "Use a hyphen when writing this compound adjective."
+    },
+    "hyphenate": {
+        meaning: "to join words with a hyphen",
+        example: "These two words are usually hyphenated."
+    },
+    "hypocrisy": {
+        meaning: "behavior that pretends to have moral standards that one does not really have",
+        example: "People quickly noticed the hypocrisy in his statement."
+    },
+    "hypothesis": {
+        meaning: "an idea or explanation that can be tested",
+        example: "The researchers developed a hypothesis and tested it."
+    },
+    "icebreaker": {
+        meaning: "something that helps people start talking or feel more relaxed",
+        example: "The teacher used a simple game as an icebreaker."
+    },
+    "idiosyncrasy": {
+        meaning: "a distinctive habit or characteristic of a particular person",
+        example: "One of his idiosyncrasies is drinking tea before every meeting."
+    },
+    "idolize": {
+        meaning: "to admire or love someone excessively",
+        example: "Many young fans idolize famous athletes."
+    },
+    "idolatry": {
+        meaning: "the worship of idols",
+        example: "The text discusses the history of idolatry."
+    },
+    "idyllic": {
+        meaning: "extremely peaceful, beautiful, and pleasant",
+        example: "They spent an idyllic summer in the countryside."
+    },
+    "ignite": {
+        meaning: "to start burning or cause something to burn",
+        example: "A single spark can ignite the fuel."
+    },
+    "ignoble": {
+        meaning: "dishonorable, shameful, or morally bad",
+        example: "He was criticized for his ignoble behavior."
+    },
+    "ignominy": {
+        meaning: "public shame or disgrace",
+        example: "The scandal brought ignominy to the once-famous politician."
+    },
+    "illegible": {
+        meaning: "impossible or very difficult to read",
+        example: "His handwriting was almost illegible."
+    },
+    "illegitimate": {
+        meaning: "not legally or officially acceptable",
+        example: "The court ruled that the contract was illegitimate."
+    },
+    "illustrator": {
+        meaning: "a person who creates pictures for books or other publications",
+        example: "The illustrator created colorful pictures for the children's book."
+    },
+    "illustrious": {
+        meaning: "famous and respected because of achievements",
+        example: "She had an illustrious career as a scientist."
+    },
+    "illicit": {
+        meaning: "illegal or forbidden",
+        example: "The police discovered an illicit trade network."
+    },
+    "imbibe": {
+        meaning: "to drink; to absorb ideas or knowledge",
+        example: "Students imbibe knowledge from many different sources."
+    },
+    "imbue": {
+        meaning: "to fill someone or something with a particular quality or feeling",
+        example: "The teacher tried to imbue students with confidence."
+    },
+    "immaterial": {
+        meaning: "unimportant or irrelevant",
+        example: "The difference is immaterial to the final decision."
+    },
+    "immerse": {
+        meaning: "to involve yourself deeply in an activity or experience",
+        example: "She immersed herself in English for several months."
+    },
+    "immobile": {
+        meaning: "unable to move",
+        example: "The injured bird remained immobile."
+    },
+    "immune": {
+        meaning: "protected from a disease or unaffected by something",
+        example: "Some people are naturally immune to the disease."
+    },
+    "immunize": {
+        meaning: "to protect someone from a disease by vaccination",
+        example: "Children are routinely immunized against several diseases."
+    },
+    "impair": {
+        meaning: "to damage or weaken something",
+        example: "Lack of sleep can impair concentration."
+    },
+    "impartial": {
+        meaning: "fair and not favoring one side",
+        example: "A judge must remain impartial."
+    },
+    "impasse": {
+        meaning: "a situation in which no further progress is possible",
+        example: "The negotiations reached an impasse."
+    },
+    "impassioned": {
+        meaning: "showing very strong emotion",
+        example: "She gave an impassioned speech about education."
+    },
+    "impassive": {
+        meaning: "showing little or no emotion",
+        example: "He remained impassive throughout the argument."
+    },
+    "impeccable": {
+        meaning: "perfect and without any faults",
+        example: "Her manners were impeccable."
+    },
+    "impede": {
+        meaning: "to make progress or movement difficult",
+        example: "Heavy traffic impeded our progress."
+    },
+    "impediment": {
+        meaning: "something that makes progress difficult",
+        example: "Lack of money was a major impediment to the project."
+    },
+    "impending": {
+        meaning: "about to happen, especially something unpleasant",
+        example: "They were worried about the impending storm."
+    },
+    "impel": {
+        meaning: "to force or strongly encourage someone to act",
+        example: "A sense of duty impelled her to help."
+    },
+    "imperil": {
+        meaning: "to put someone or something in danger",
+        example: "The decision could imperil the entire project."
+    },
+    "imperious": {
+        meaning: "arrogant and expecting others to obey",
+        example: "His imperious manner made his colleagues uncomfortable."
+    },
+    "impersonate": {
+        meaning: "to pretend to be another person",
+        example: "The comedian can impersonate several famous actors."
+    },
+    "impertinent": {
+        meaning: "rude and disrespectful",
+        example: "The child asked an impertinent question."
+    },
+    "impetuous": {
+        meaning: "acting suddenly without thinking carefully",
+        example: "His impetuous decision caused several problems."
+    },
+    "impetus": {
+        meaning: "something that encourages or causes an action",
+        example: "The new law gave impetus to environmental reform."
+    },
+    "impinge": {
+        meaning: "to have an effect on something, especially in a harmful way",
+        example: "The new rules may impinge on personal freedom."
+    },
+    "impious": {
+        meaning: "showing a lack of respect for God or religion",
+        example: "The remarks were considered impious by many believers."
+    },
+    "implacable": {
+        meaning: "impossible to calm, satisfy, or change",
+        example: "She faced an implacable opponent."
+    },
+    "implant": {
+        meaning: "to put something into a person's body or establish an idea in someone's mind",
+        example: "The doctor implanted a small medical device."
+    },
+    "implicit": {
+        meaning: "suggested without being directly stated",
+        example: "There was an implicit understanding between them."
+    },
+    "implore": {
+        meaning: "to beg someone strongly to do something",
+        example: "She implored him to reconsider his decision."
+    },
+    "impostor": {
+        meaning: "a person who pretends to be someone else",
+        example: "The police discovered that he was an impostor."
+    },
+    "impotent": {
+        meaning: "unable to act effectively or exert power",
+        example: "The committee felt impotent in the face of the crisis."
+    },
+    "impregnable": {
+        meaning: "impossible to defeat or enter by force",
+        example: "The fortress was considered impregnable."
+    },
+    "impressionable": {
+        meaning: "easily influenced by other people",
+        example: "Young children can be highly impressionable."
+    },
+    "imprint": {
+        meaning: "to leave a lasting mark or impression",
+        example: "The experience left a deep imprint on her memory."
+    },
+    "impromptu": {
+        meaning: "done or spoken without preparation",
+        example: "He gave an impromptu speech at the meeting."
+    },
+    "improvise": {
+        meaning: "to create or perform something without preparation",
+        example: "The musicians had to improvise when the equipment failed."
+    },
+    "imprudent": {
+        meaning: "not wise or careful",
+        example: "It would be imprudent to invest all your money in one company."
+    },
+    "inadvertent": {
+        meaning: "not intentional; accidental",
+        example: "The mistake was inadvertent."
+    },
+    "inanimate": {
+        meaning: "not alive",
+        example: "The sculpture is an inanimate object."
+    },
+    "inarticulate": {
+        meaning: "unable to express ideas clearly in words",
+        example: "He became inarticulate when asked to explain his feelings."
+    },
+    "inborn": {
+        meaning: "existing naturally from birth",
+        example: "Some people have an inborn talent for music."
+    },
+    "inbuilt": {
+        meaning: "existing as a natural or permanent part of something",
+        example: "The phone has an inbuilt security system."
+    },
+    "incapacitate": {
+        meaning: "to make someone unable to act or function normally",
+        example: "The injury incapacitated him for several weeks."
+    },
+    "incarnation": {
+        meaning: "a person or thing that represents a particular quality or idea",
+        example: "She was seen as the incarnation of courage."
+    },
+    "incendiary": {
+        meaning: "designed to cause fire; likely to provoke anger or conflict",
+        example: "The newspaper published an incendiary article."
+    },
+    "incensed": {
+        meaning: "extremely angry",
+        example: "The customers were incensed by the sudden price increase."
+    },
+    "incessant": {
+        meaning: "continuing without stopping",
+        example: "The incessant noise made it difficult to sleep."
+    },
+    "incisive": {
+        meaning: "clear, direct, and showing sharp understanding",
+        example: "She offered an incisive analysis of the problem."
+    },
+    "incoherent": {
+        meaning: "not clear or logically connected",
+        example: "His explanation was incoherent and difficult to follow."
+    },
+    "incriminate": {
+        meaning: "to make someone appear guilty of a crime",
+        example: "The evidence could incriminate the suspect."
+    },
+    "incubate": {
+        meaning: "to keep eggs warm until they hatch; to develop an idea or project",
+        example: "The company incubates promising new ideas."
+    },
+    "inculcate": {
+        meaning: "to teach an idea or habit through repeated instruction",
+        example: "Parents try to inculcate good habits in their children."
+    },
+    "incur": {
+        meaning: "to experience something unpleasant as a result of your actions",
+        example: "Late payment may incur additional charges."
+    },
+    "indecision": {
+        meaning: "the inability to make a decision",
+        example: "His indecision delayed the project."
+    },
+    "indelible": {
+        meaning: "impossible to remove or forget",
+        example: "The trip left an indelible impression on her."
+    },
+    "indemnify": {
+        meaning: "to compensate someone for loss or damage",
+        example: "The company agreed to indemnify the customer for the loss."
+    },
+    "indigenous": {
+        meaning: "originally belonging to a particular place",
+        example: "The region is home to several indigenous communities."
+    },
+    "indiscreet": {
+        meaning: "not careful about what you say or do",
+        example: "His indiscreet comments caused embarrassment."
+    },
+    "indiscriminate": {
+        meaning: "done without considering differences or making careful choices",
+        example: "The indiscriminate use of antibiotics can cause problems."
+    },
+    "indistinguishable": {
+        meaning: "impossible to distinguish from something else",
+        example: "The two copies were almost indistinguishable."
+    },
+    "indoctrinate": {
+        meaning: "to teach someone to accept a set of beliefs without questioning them",
+        example: "The group tried to indoctrinate its members."
+    },
+    "indolent": {
+        meaning: "lazy and unwilling to make an effort",
+        example: "His indolent habits prevented him from making progress."
+    },
+    "indubitable": {
+        meaning: "certain and impossible to doubt",
+        example: "There is indubitable evidence of the change."
+    },
+    "ineffectual": {
+        meaning: "not producing the desired result",
+        example: "The government's response proved ineffectual."
+    },
+    "ineluctable": {
+        meaning: "impossible to avoid or escape",
+        example: "Change is an ineluctable part of life."
+    },
+    "inept": {
+        meaning: "not skilled or competent",
+        example: "His inept handling of the situation made things worse."
+    },
+    "inescapable": {
+        meaning: "impossible to avoid or escape",
+        example: "The consequences were inescapable."
+    },
+    "inestimable": {
+        meaning: "too valuable to be measured or calculated",
+        example: "Her support was of inestimable value."
+    },
+    "inexhaustible": {
+        meaning: "impossible to use up",
+        example: "The sun provides an almost inexhaustible source of energy."
+    },
+    "inexorable": {
+        meaning: "impossible to stop, prevent, or persuade",
+        example: "The inexorable advance of technology continues."
+    },
+    "inexplicable": {
+        meaning: "impossible to explain or understand",
+        example: "His sudden disappearance remains inexplicable."
+    },
+    "infamous": {
+        meaning: "well known for something bad or evil",
+        example: "The city is home to an infamous prison."
+    },
+    "infantile": {
+        meaning: "childish or immature",
+        example: "His infantile behavior annoyed his colleagues."
+    },
+    "infantry": {
+        meaning: "soldiers who fight on foot",
+        example: "The infantry moved toward the front line."
+    },
+    "infatuated": {
+        meaning: "extremely attracted to or in love with someone",
+        example: "He became infatuated with his new colleague."
+    },
+    "infidelity": {
+        meaning: "being unfaithful to a partner",
+        example: "The novel explores the effects of infidelity."
+    },
+    "infighting": {
+        meaning: "fighting or disagreement within a group",
+        example: "Political infighting delayed the decision."
+    },
+    "infiltrate": {
+        meaning: "to secretly enter a place or organization",
+        example: "The spies managed to infiltrate the organization."
+    },
+    "infirm": {
+        meaning: "weak or physically unhealthy",
+        example: "The old man had become physically infirm."
+    },
+    "infirmary": {
+        meaning: "a room or building where sick or injured people receive care",
+        example: "The injured player was taken to the infirmary."
+    },
+    "infirmity": {
+        meaning: "physical weakness or illness",
+        example: "Age brought several physical infirmities."
+    },
+    "inflame": {
+        meaning: "to make someone angry or a situation more intense",
+        example: "The speech inflamed public anger."
+    },
+    "inflamed": {
+        meaning: "angry or physically swollen and red",
+        example: "His eyes were red and inflamed."
+    },
+    "inflammable": {
+        meaning: "easily set on fire",
+        example: "Keep inflammable materials away from the heater."
+    },
+    "inflammation": {
+        meaning: "a painful, swollen, or red condition of part of the body",
+        example: "The doctor prescribed medicine to reduce the inflammation."
+    },
+    "inflammatory": {
+        meaning: "intended to make people angry or excited",
+        example: "The article contained inflammatory language."
+    },
+    "inflexible": {
+        meaning: "unwilling or unable to change",
+        example: "The company's inflexible rules caused problems."
+    },
+    "inflict": {
+        meaning: "to cause something unpleasant to be suffered",
+        example: "The attack inflicted serious damage on the city."
+    },
+    "influx": {
+        meaning: "a large arrival of people or things",
+        example: "The city experienced an influx of tourists."
+    },
+    "infrastructure": {
+        meaning: "basic systems and facilities such as roads, power, and communications",
+        example: "The country needs to improve its infrastructure."
+    },
+    "infringe": {
+        meaning: "to break a law or limit someone else's rights",
+        example: "The new rule may infringe on individual rights."
+    },
+    "infuriate": {
+        meaning: "to make someone extremely angry",
+        example: "The unfair decision infuriated the workers."
+    },
+    "infuse": {
+        meaning: "to fill something with a quality or feeling",
+        example: "The teacher infused the lesson with humor."
+    },
+    "ingenuous": {
+        meaning: "innocent, sincere, and honest",
+        example: "Her ingenuous response made everyone smile."
+    },
+    "ingrained": {
+        meaning: "deeply established and difficult to change",
+        example: "The habit was deeply ingrained in him."
+    },
+    "ingratiate": {
+        meaning: "to try to make someone like you by pleasing them",
+        example: "He tried to ingratiate himself with the manager."
+    },
+    "inhale": {
+        meaning: "to breathe air or another substance into the lungs",
+        example: "Inhale slowly through your nose."
+    },
+    "inhibit": {
+        meaning: "to prevent or slow down an action or process",
+        example: "Fear can inhibit creativity."
+    },
+    "injunction": {
+        meaning: "an official order requiring someone to do or stop doing something",
+        example: "The court issued an injunction against the company."
+    },
+    "inkling": {
+        meaning: "a slight idea or suspicion",
+        example: "I had an inkling that something was wrong."
+    },
+    "inmate": {
+        meaning: "a person living in a prison or other institution",
+        example: "The inmates were allowed to exercise outdoors."
+    },
+    "innate": {
+        meaning: "natural and present from birth",
+        example: "She has an innate ability to understand music."
+    },
+    "innovate": {
+        meaning: "to introduce new ideas, methods, or products",
+        example: "Companies must innovate to remain competitive."
+    },
+    "inoffensive": {
+        meaning: "not likely to upset, offend, or annoy anyone",
+        example: "He made an inoffensive joke."
+    },
+    "inordinate": {
+        meaning: "much greater than usual or reasonable",
+        example: "He spent an inordinate amount of time on the task."
+    },
+    "inquisitive": {
+        meaning: "curious and eager to learn",
+        example: "The inquisitive student asked many questions."
+    },
+    "insatiable": {
+        meaning: "impossible to satisfy",
+        example: "He has an insatiable curiosity about other cultures."
+    },
+    "insidious": {
+        meaning: "gradually causing harm in a way that is difficult to notice",
+        example: "The disease can have an insidious effect on the body."
+    },
+    "insinuate": {
+        meaning: "to suggest something indirectly, often unpleasantly",
+        example: "Are you insinuating that I lied?"
+    },
+    "insipid": {
+        meaning: "lacking flavor, interest, or excitement",
+        example: "The movie was surprisingly insipid."
+    },
+    "insolent": {
+        meaning: "rude and disrespectful",
+        example: "The student was punished for his insolent behavior."
+    },
+    "insoluble": {
+        meaning: "impossible to solve; unable to dissolve",
+        example: "The problem seemed insoluble."
+    },
+    "insomnia": {
+        meaning: "a condition in which someone has difficulty sleeping",
+        example: "Stress can cause insomnia."
+    },
+    "instantaneous": {
+        meaning: "happening immediately or in an extremely short time",
+        example: "The system provides instantaneous results."
+    },
+    "instigate": {
+        meaning: "to cause or encourage something, especially trouble",
+        example: "The speech was accused of instigating violence."
+    },
+    "instill": {
+        meaning: "to gradually put an idea or feeling into someone's mind",
+        example: "Parents try to instill good habits in their children."
+    },
+    "insular": {
+        meaning: "narrow-minded and unwilling to consider outside ideas",
+        example: "His insular attitude prevented him from seeing other perspectives."
+    },
+    "insulate": {
+        meaning: "to protect from heat, sound, electricity, or outside influence",
+        example: "The walls are insulated against the cold."
+    },
+    "insuperable": {
+        meaning: "impossible to overcome",
+        example: "The difficulties were serious but not insuperable."
+    },
+    "insurgent": {
+        meaning: "a person fighting against an established government",
+        example: "The army launched an operation against the insurgents."
+    },
+    "insurmountable": {
+        meaning: "impossible to overcome",
+        example: "The financial problems seemed insurmountable."
+    },
+    "insurrection": {
+        meaning: "an organized attempt to oppose or overthrow a government",
+        example: "The government suppressed the insurrection."
+    },
+    "intake": {
+        meaning: "the amount of food, drink, or another substance taken into the body",
+        example: "You should reduce your daily salt intake."
+    },
+    "intangible": {
+        meaning: "not physical or impossible to touch",
+        example: "Trust is an intangible but valuable quality."
+    },
+    "intelligible": {
+        meaning: "clear enough to be understood",
+        example: "The speaker's explanation was simple and intelligible."
+    },
+    "interdependent": {
+        meaning: "depending on each other",
+        example: "Modern economies are highly interdependent."
+    },
+    "interface": {
+        meaning: "a point where two systems meet and interact",
+        example: "The app has a simple user interface."
+    },
+    "interject": {
+        meaning: "to interrupt a conversation with a comment",
+        example: "She interjected with an important question."
+    },
+    "interjection": {
+        meaning: "a short word or phrase expressing a sudden feeling",
+        example: "“Wow!” is a common interjection."
+    },
+    "interlock": {
+        meaning: "to connect or fit closely together",
+        example: "The pieces interlock to form a strong structure."
+    },
+    "interlocutor": {
+        meaning: "a person who takes part in a conversation or discussion",
+        example: "He listened carefully to his interlocutor."
+    },
+    "interloper": {
+        meaning: "someone who enters a place or situation where they are not wanted",
+        example: "The group regarded him as an interloper."
+    },
+    "interlude": {
+        meaning: "a short period between parts of an activity",
+        example: "There was a short interlude between the two performances."
+    },
+    "intermediary": {
+        meaning: "a person who acts as a link between two people or groups",
+        example: "The lawyer acted as an intermediary between the two sides."
+    },
+    "interment": {
+        meaning: "the act of burying a dead person",
+        example: "The interment took place the following morning."
+    },
+    "interminable": {
+        meaning: "continuing for a very long time and seeming endless",
+        example: "The meeting felt interminable."
+    },
+    "intermingle": {
+        meaning: "to mix together",
+        example: "Different cultures intermingle in the city."
+    },
+    "interpose": {
+        meaning: "to put something between two things; to interrupt",
+        example: "She interposed herself between the two arguing men."
+    },
+    "intersperse": {
+        meaning: "to distribute things among other things",
+        example: "The teacher interspersed the lecture with short activities."
+    },
+    "intestinal": {
+        meaning: "relating to the intestines",
+        example: "The patient suffered from an intestinal infection."
+    },
+    "intimacy": {
+        meaning: "a close personal relationship",
+        example: "Their friendship gradually developed into deep intimacy."
+    },
+    "intimidate": {
+        meaning: "to frighten someone so that they will do what you want",
+        example: "He tried to intimidate the witness."
+    },
+    "intransigent": {
+        meaning: "unwilling to change your opinions or compromise",
+        example: "The two sides remained intransigent during the negotiations."
+    },
+    "intrepid": {
+        meaning: "very brave and willing to take risks",
+        example: "The intrepid explorer crossed the desert alone."
+    },
+    "intricacy": {
+        meaning: "the quality of having many complicated details",
+        example: "I was fascinated by the intricacy of the design."
+    },
+    "intrigue": {
+        meaning: "to interest or fascinate; a secret plan or plot",
+        example: "The mysterious story intrigued the students."
+    },
+    "intriguing": {
+        meaning: "very interesting because it is unusual or mysterious",
+        example: "She asked an intriguing question."
+    },
+    "intrinsic": {
+        meaning: "belonging naturally to the essential nature of something",
+        example: "The intrinsic value of education is difficult to measure."
+    },
+    "introspection": {
+        meaning: "careful examination of your own thoughts and feelings",
+        example: "The experience led him to a period of introspection."
+    },
+    "introvert": {
+        meaning: "a person who is more comfortable with quiet activities and being alone",
+        example: "As an introvert, she enjoys spending time by herself."
+    },
+    "intrusive": {
+        meaning: "causing annoyance by interfering in someone's private life or space",
+        example: "The reporters asked several intrusive questions."
+    },
+    "intuitive": {
+        meaning: "based on instinct rather than conscious reasoning",
+        example: "She has an intuitive understanding of people."
+    },
+    "inundate": {
+        meaning: "to flood; to give someone far too much of something",
+        example: "The office was inundated with complaints."
+    },
+    "invalidate": {
+        meaning: "to make something no longer valid or effective",
+        example: "The new evidence may invalidate the earlier conclusion."
+    },
+    "inveterate": {
+        meaning: "long-established and unlikely to change",
+        example: "He is an inveterate traveler."
+    },
+    "invidious": {
+        meaning: "likely to cause resentment or unfairly compare people",
+        example: "It is invidious to compare the two students in public."
+    },
+    "invigilate": {
+        meaning: "to supervise students during an examination",
+        example: "She was asked to invigilate the final exam."
+    },
+    "invigilator": {
+        meaning: "a person who supervises an examination",
+        example: "The invigilator checked everyone's identification."
+    },
+    "invigorate": {
+        meaning: "to give someone more energy or strength",
+        example: "A short walk can invigorate you after a long day."
+    },
+    "invincible": {
+        meaning: "impossible to defeat",
+        example: "The team seemed invincible after winning ten games."
+    },
+    "invocation": {
+        meaning: "a prayer or a formal request for help",
+        example: "The ceremony began with an invocation."
+    },
+    "invoice": {
+        meaning: "a document listing goods or services and their prices",
+        example: "The company sent us an invoice for the repairs."
+    },
+    "invoke": {
+        meaning: "to refer to something as support; to call upon formally",
+        example: "The lawyer invoked the right to remain silent."
+    },
+    "involuntary": {
+        meaning: "not done intentionally or under conscious control",
+        example: "He made an involuntary movement."
+    },
+    "invulnerable": {
+        meaning: "unable to be harmed or damaged",
+        example: "No one is completely invulnerable to criticism."
+    },
+    "irascible": {
+        meaning: "easily angered",
+        example: "The irascible old man often complained about small things."
+    },
+    "irk": {
+        meaning: "to annoy or irritate",
+        example: "It really irks me when people arrive late."
+    },
+    "irksome": {
+        meaning: "annoying or irritating",
+        example: "The paperwork was an irksome part of the job."
+    },
+    "irradiate": {
+        meaning: "to shine light on or expose to radiation",
+        example: "The surface was irradiated with ultraviolet light."
+    },
+    "irreducible": {
+        meaning: "impossible to reduce or simplify further",
+        example: "The problem contains an irreducible minimum cost."
+    },
+    "irrespective": {
+        meaning: "without considering or being affected by something",
+        example: "Everyone will be treated equally, irrespective of age."
+    },
+    "irrevocable": {
+        meaning: "impossible to change, cancel, or reverse",
+        example: "The decision was final and irrevocable."
+    },
+    "irritant": {
+        meaning: "a substance that causes irritation",
+        example: "Smoke is a common respiratory irritant."
+    },
+    "irruption": {
+        meaning: "a sudden and forceful entry",
+        example: "The irruption of protesters disrupted the meeting."
+    },
+    "isotherm": {
+        meaning: "a line on a map connecting places with the same temperature",
+        example: "The map shows an isotherm for average winter temperatures."
+    },
+    "isothermal": {
+        meaning: "having or maintaining a constant temperature",
+        example: "The experiment was carried out under isothermal conditions."
+    },
+    "isotope": {
+        meaning: "one of two or more forms of an element with different atomic masses",
+        example: "Carbon-14 is a radioactive isotope of carbon."
+    },
+    "itch": {
+        meaning: "to have an uncomfortable skin sensation; to strongly want to do something",
+        example: "I am itching to start my new project."
+    },
+    "itemize": {
+        meaning: "to list individual items separately",
+        example: "Please itemize all the expenses on the form."
+    },
+    "iterate": {
+        meaning: "to repeat something, especially to improve it",
+        example: "The developers iterated the design several times."
+    },
+    "itinerant": {
+        meaning: "traveling from place to place rather than staying in one place",
+        example: "He worked as an itinerant teacher."
+    },
+    "itinerary": {
+        meaning: "a plan or record of a journey",
+        example: "I sent my travel itinerary to my family."
+    }
+};
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+let navigationTimer = null;
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
+function getVocabularySignature() {
+
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+
+}
+
+
+function saveQuizProgress() {
+
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
+
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+
+            vocabularySignature:
+                getVocabularySignature(),
+
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
+}
+
+
+function loadQuizProgress() {
+
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
+
+    if (!saved) {
+        return false;
+    }
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
+
+        return false;
+    }
+
+}
+
+
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
+
+function getStarredWords() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+    }
+
+}
+
+
+function saveStarredWords(words) {
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
+}
+
+
+function getCorrectWord(question) {
+
+    return question.options[
+        question.answer - 1
+    ];
+
+}
+
+
+function isStarred(question) {
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
+}
+
+
+function updateStarButton() {
+
+    const button =
+        document.getElementById("starButton");
+
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
+
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+ // Cancel any pending automatic navigation
+ if (navigationTimer !== null) {
+        clearTimeout(navigationTimer);
+        navigationTimer = null;
+    }
+
+    if (isReviewingStarred) return;
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+if (!isReviewingStarred) {
+    saveQuizProgress();
+}
+
+document.querySelector(".navigation").style.display = "flex";
+
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Question number
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    // Current score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+
+    // Display question
+    document.getElementById(
+        "question"
+    ).textContent =
+        question.question;
+
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+
+    // Clear feedback
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    // Previous button
+    document.getElementById(
+        "prevButton"
+    ).disabled =
+        currentQuestion === 0;
+
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(
+    selectedIndex,
+    button
+) {
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.disabled = true;
+
+        }
+    );
+
+
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
+
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
+
+        questionResults[
+            currentQuestion
+        ] = 1;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+            navigationTimer = setTimeout(() => {
+    navigationTimer = null;
+    goToNextOrFinish();
+}, 900);
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+}
+
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[
+            question.answer - 1
+        ];
+
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
+        correctOption;
+
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
+            : "";
+
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
+            : "";
+
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
+
+
+    // Automatically move on once
+    // the popup is dismissed
+    goToNextOrFinish();
+
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+if (currentQuestion > 0) {
+
+    currentQuestion--;
+
+    if (!isReviewingStarred) {
+        saveQuizProgress();
+    }
+
+    displayQuestion();
+}
+}
+
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+function goToNextOrFinish() {
+
+// More questions remain
+if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Starred review has finished
+if (isReviewingStarred) {
+
+    questions = [...savedQuizState.questions];
+
+    currentQuestion = savedQuizState.currentQuestion;
+
+    correctAnswers = savedQuizState.correctAnswers;
+
+    score = savedQuizState.score;
+
+    questionResults = [...savedQuizState.questionResults];
+
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Normal quiz has finished
+showResult();
+}
+function restartQuiz() {
+
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
+
+
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+    const totalQuestions =
+        questions.length;
+
+
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
+
+
+    const mark =
+        percentage.toFixed(2);
+
+
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "score"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "question"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
+    }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    loadQuizProgress();
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        "No questions found.";
+
+}
+function exportStarredWords() {
+    const starredWords = JSON.parse(
+        localStorage.getItem(STARRED_WORDS_KEY) || "[]"
+    );
+
+    const blob = new Blob(
+        [JSON.stringify(starredWords, null, 2)],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "difficult-words.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
