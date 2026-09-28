@@ -1,0 +1,3646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+   #starButton,
+#reviewStarredButton {
+    position: fixed;
+    right: 20px;
+    z-index: 900;
+
+    min-height: 32px;
+    padding: 6px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    bottom: 60px;
+}
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full 
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+    <button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+        ★ Review (0)
+    </button>
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+<button onclick="exportStarredWords()">
+    Save Difficult Words
+</button>
+<script>
+   const vocabulary = {
+    "nab": {
+        meaning: "to catch or arrest; to grab or obtain",
+        example: "The police nabbed the suspect near the station."
+    },
+    "nag": {
+        meaning: "to keep complaining or criticizing someone; a person who nags",
+        example: "She kept nagging him to clean his room."
+    },
+    "namesake": {
+        meaning: "a person who has the same name as another person",
+        example: "My grandfather was my namesake."
+    },
+    "nape": {
+        meaning: "the back of the neck",
+        example: "She felt a cold breeze on the nape of her neck."
+    },
+    "nappy": {
+        meaning: "a diaper for a baby",
+        example: "The baby needs a clean nappy."
+    },
+    "narcissus": {
+        meaning: "a plant with yellow or white flowers; a daffodil",
+        example: "The narcissus blooms in early spring."
+    },
+    "nautical": {
+        meaning: "related to ships, sailors, or navigation",
+        example: "The museum has a large collection of nautical maps."
+    },
+    "navel": {
+        meaning: "the small hollow in the middle of the abdomen",
+        example: "The baby had a small mark near her navel."
+    },
+    "navigate": {
+        meaning: "to find or plan a route; to travel by ship or aircraft; to cross",
+        example: "The sailors used the stars to navigate the ocean."
+    },
+    "nebulous": {
+        meaning: "cloudy or unclear; vague and difficult to understand",
+        example: "His plans for the future remained nebulous."
+    },
+    "necessitate": {
+        meaning: "to make something necessary or unavoidable",
+        example: "The damage will necessitate major repairs."
+    },
+    "nectar": {
+        meaning: "sweet liquid produced by flowers; a sweet drink",
+        example: "Bees collect nectar from flowers."
+    },
+    "negate": {
+        meaning: "to deny or reject; to cancel or make ineffective",
+        example: "The new evidence may negate his earlier argument."
+    },
+    "negligent": {
+        meaning: "careless or failing to give proper attention",
+        example: "The company was negligent in maintaining the equipment."
+    },
+    "negotiable": {
+        meaning: "able to be discussed and changed by agreement",
+        example: "The price is negotiable."
+    },
+    "neoclassical": {
+        meaning: "related to a revival of classical art, architecture, or ideas",
+        example: "The building has a striking neoclassical design."
+    },
+    "neon": {
+        meaning: "a gas used to produce bright light; a neon lamp",
+        example: "A neon sign lit up the street at night."
+    },
+    "nestle": {
+        meaning: "to settle comfortably in a safe or sheltered place",
+        example: "The village nestles in a quiet valley."
+    },
+    "neural": {
+        meaning: "related to nerves or the nervous system",
+        example: "The study examined neural activity in the brain."
+    },
+    "neurological": {
+        meaning: "related to the nervous system and its diseases",
+        example: "The patient underwent a neurological examination."
+    },
+    "neurosis": {
+        meaning: "a mental or emotional condition involving anxiety or distress",
+        example: "The novel explores his growing neurosis."
+    },
+    "neurotic": {
+        meaning: "suffering from or showing excessive anxiety or nervousness",
+        example: "He became increasingly neurotic about small mistakes."
+    },
+    "neutralize": {
+        meaning: "to make neutral; to make ineffective; to counteract",
+        example: "The medicine helps neutralize the acid."
+    },
+    "newsreel": {
+        meaning: "a short film showing recent news events",
+        example: "The old newsreel showed scenes from the war."
+    },
+    "nib": {
+        meaning: "the pointed end of a pen; a pointed tool or part",
+        example: "The pen's nib was damaged."
+    },
+    "nibble": {
+        meaning: "to eat by taking small bites; a small bite",
+        example: "The rabbit nibbled at the leaves."
+    },
+    "niche": {
+        meaning: "a shallow space in a wall for a statue or object",
+        example: "A small statue stood in a niche in the wall."
+    },
+    "nicotine": {
+        meaning: "an addictive substance found in tobacco",
+        example: "Nicotine is highly addictive."
+    },
+    "nigger": {
+        meaning: "an extremely offensive racial slur for a Black person",
+        example: "This word is now considered highly offensive and should be avoided."
+    },
+    "nigh": {
+        meaning: "near or nearly; close to",
+        example: "The end of the journey was nigh."
+    },
+    "nimble": {
+        meaning: "quick and light in movement; quick-thinking",
+        example: "The nimble cat jumped over the fence."
+    },
+    "nip": {
+        meaning: "to pinch or bite; to stop or prevent; a small bite or severe cold",
+        example: "The dog tried to nip my hand."
+    },
+    "nipple": {
+        meaning: "the small raised part of the breast; the rubber part of a baby's bottle",
+        example: "The baby was sucking on the bottle nipple."
+    },
+    "Nirvana": {
+        meaning: "a state of perfect peace and freedom from suffering in Buddhism",
+        example: "In Buddhism, Nirvana represents freedom from suffering."
+    },
+    "nitrate": {
+        meaning: "a chemical compound containing nitrogen and oxygen",
+        example: "High levels of nitrate were found in the water."
+    },
+    "node": {
+        meaning: "a point where lines or parts connect; a swelling or joint",
+        example: "The diagram shows a node where the two lines meet."
+    },
+    "nomad": {
+        meaning: "a person who moves from place to place rather than living permanently in one place",
+        example: "The nomads moved their camp with the seasons."
+    },
+    "nomadic": {
+        meaning: "moving from place to place rather than living permanently in one place",
+        example: "The tribe has a traditionally nomadic lifestyle."
+    },
+    "nomenclature": {
+        meaning: "a system of names or terms used in a particular field",
+        example: "Scientists use a standard nomenclature for naming species."
+    },
+    "nominal": {
+        meaning: "existing in name only; very small; related to nouns",
+        example: "The workers received a nominal increase in pay."
+    },
+    "nominee": {
+        meaning: "a person who has been officially suggested for a position or award",
+        example: "She was the youngest nominee for the award."
+    },
+    "nonchalant": {
+        meaning: "calm and unconcerned; showing little interest or worry",
+        example: "He gave a nonchalant shrug and walked away."
+    },
+    "nonetheless": {
+        meaning: "despite that; nevertheless",
+        example: "The task was difficult; nonetheless, we completed it."
+    },
+    "nonstop": {
+        meaning: "continuing without stopping; without making intermediate stops",
+        example: "We took a nonstop flight to London."
+    },
+    "Nordic": {
+        meaning: "related to the countries of northern Europe",
+        example: "She is interested in Nordic history and culture."
+    },
+    "norm": {
+        meaning: "a standard or usual way of behaving; a standard or target",
+        example: "Working from home has become the norm for many people."
+    },
+    "nostalgia": {
+        meaning: "a sentimental longing for the past",
+        example: "The old photographs filled him with nostalgia."
+    },
+    "nostalgic": {
+        meaning: "having a sentimental longing for the past",
+        example: "The song made her nostalgic for her childhood."
+    },
+    "notary": {
+        meaning: "a person legally authorized to witness and certify documents",
+        example: "The contract must be signed in front of a notary."
+    },
+    "notation": {
+        meaning: "a system of signs or symbols used to record information",
+        example: "Musical notation allows musicians to record a piece of music."
+    },
+    "notification": {
+        meaning: "a notice or official message giving information",
+        example: "You will receive a notification when your order ships."
+    },
+    "notoriety": {
+        meaning: "the state of being famous for something bad",
+        example: "The scandal brought him considerable notoriety."
+    },
+    "nought": {
+        meaning: "zero; nothing",
+        example: "The score was five to nought."
+    },
+    "novice": {
+        meaning: "a person who is new to an activity or has little experience",
+        example: "As a novice, she still makes many mistakes."
+    },
+    "nuance": {
+        meaning: "a small difference in meaning, feeling, or color",
+        example: "The translator captured every nuance of the original."
+    },
+    "nucleus": {
+        meaning: "the central part of a cell or atom; the central or most important part",
+        example: "The nucleus contains most of the cell's genetic material."
+    },
+    "nuclei": {
+        meaning: "the plural form of nucleus",
+        example: "The microscope revealed several cell nuclei."
+    },
+    "nude": {
+        meaning: "not wearing clothes; a naked person or work of art",
+        example: "The museum displayed several nude paintings."
+    },
+    "nudge": {
+        meaning: "to push someone gently, usually with an elbow",
+        example: "She nudged me and pointed toward the door."
+    },
+    "nudity": {
+        meaning: "the state of being naked",
+        example: "The film contains scenes of nudity."
+    },
+    "numb": {
+        meaning: "unable to feel; to make someone unable to feel",
+        example: "My fingers became numb in the cold."
+    },
+    "nurture": {
+        meaning: "to care for and educate; to encourage the development of",
+        example: "Parents should nurture their children's curiosity."
+    },
+    "nutrient": {
+        meaning: "providing nourishment; a substance needed for growth and health",
+        example: "Plants need several essential nutrients to grow."
+    },
+    "nutritious": {
+        meaning: "containing substances that are good for health and growth",
+        example: "Beans are a nutritious source of protein."
+    },
+    "nuzzle": {
+        meaning: "to rub or push gently with the nose or face",
+        example: "The puppy nuzzled against her hand."
+    },
+    "nymph": {
+        meaning: "a female spirit or goddess in ancient Greek mythology",
+        example: "The poem describes a beautiful forest nymph."
+    },
+    "oasis": {
+        meaning: "a fertile place in a desert; a pleasant place in an otherwise difficult situation",
+        example: "The travelers finally reached an oasis in the desert."
+    },
+    "obese": {
+        meaning: "extremely overweight in a way that may be harmful to health",
+        example: "The doctor warned that being obese can increase health risks."
+    },
+    "obesity": {
+        meaning: "the condition of being extremely overweight",
+        example: "Regular exercise can help prevent obesity."
+    },
+    "obituary": {
+        meaning: "a notice announcing someone's death and describing their life",
+        example: "The newspaper published an obituary for the former professor."
+    },
+    "obliterate": {
+        meaning: "to destroy or remove something completely",
+        example: "The explosion obliterated the old building."
+    },
+    "oblivion": {
+        meaning: "the state of being forgotten; complete unawareness or forgetfulness",
+        example: "The ancient city eventually faded into oblivion."
+    },
+    "oboe": {
+        meaning: "a woodwind musical instrument with a narrow tube",
+        example: "She plays the oboe in the university orchestra."
+    },
+    "obscene": {
+        meaning: "offensive or indecent, especially in a sexual way",
+        example: "The website contained obscene material."
+    },
+    "obscenity": {
+        meaning: "offensive or indecent language, behavior, or material",
+        example: "The law prohibits certain forms of public obscenity."
+    },
+    "obscurity": {
+        meaning: "the state of being unclear or unknown",
+        example: "The meaning of the poem remains in obscurity."
+    },
+    "observance": {
+        meaning: "the practice of obeying a rule or celebrating a tradition",
+        example: "The festival is an annual observance."
+    },
+    "observant": {
+        meaning: "good at noticing things; careful to obey rules or customs",
+        example: "She is very observant and notices small changes."
+    },
+    "obsess": {
+        meaning: "to completely occupy someone's thoughts; to trouble continually",
+        example: "He tends to obsess over small details."
+    },
+    "obsessive": {
+        meaning: "unable to stop thinking about something; excessively preoccupied",
+        example: "His obsessive attention to detail slowed the project."
+    },
+    "obsolete": {
+        meaning: "no longer used because something newer has replaced it",
+        example: "Many old computer technologies are now obsolete."
+    },
+    "occidental": {
+        meaning: "relating to Western countries or people",
+        example: "The museum has both Oriental and Occidental art."
+    },
+    "oceanography": {
+        meaning: "the scientific study of the oceans",
+        example: "She studied oceanography at university."
+    },
+    "octopus": {
+        meaning: "a sea animal with eight arms",
+        example: "An octopus can change the color of its skin."
+    },
+    "odds": {
+        meaning: "the likelihood of something happening; differences; betting ratios",
+        example: "The odds of winning are quite low."
+    },
+    "ode": {
+        meaning: "a poem expressing strong feelings, often praising a person or thing",
+        example: "The poet wrote an ode to nature."
+    },
+    "ointment": {
+        meaning: "a soft substance put on the skin as medicine",
+        example: "Apply the ointment to the affected area."
+    },
+    "omega": {
+        meaning: "the last letter of the Greek alphabet",
+        example: "Omega is the final letter of the Greek alphabet."
+    },
+    "omelet": {
+        meaning: "a dish made from beaten eggs cooked in a pan",
+        example: "I ordered an omelet with cheese and vegetables."
+    },
+    "omniscient": {
+        meaning: "knowing everything",
+        example: "The novel is written from an omniscient point of view."
+    },
+    "onomatopoeia": {
+        meaning: "the use of words that imitate natural sounds",
+        example: "Words such as 'buzz' and 'hiss' are examples of onomatopoeia."
+    },
+    "onset": {
+        meaning: "the beginning of something, especially something unpleasant",
+        example: "The onset of winter brought colder weather."
+    },
+    "onslaught": {
+        meaning: "a violent or powerful attack",
+        example: "The town faced an onslaught of criticism."
+    },
+    "ooze": {
+        meaning: "to flow or leak slowly; thick muddy liquid",
+        example: "Water began to ooze through the wall."
+    },
+    "opal": {
+        meaning: "a gemstone with a pale color and changing reflections",
+        example: "She wore a necklace containing a beautiful opal."
+    },
+    "opaque": {
+        meaning: "not allowing light to pass through; difficult to understand",
+        example: "The glass is opaque, so you cannot see through it."
+    },
+    "operative": {
+        meaning: "effective or functioning; related to operation",
+        example: "The new safety rules are now operative."
+    },
+    "oppressive": {
+        meaning: "unfairly controlling or cruel; causing discomfort through excessive heat or pressure",
+        example: "The oppressive heat made it difficult to work."
+    },
+    "opt": {
+        meaning: "to choose one thing rather than another",
+        example: "She opted for a smaller apartment."
+    },
+    "optical": {
+        meaning: "related to sight or the science of light",
+        example: "The device uses an optical sensor."
+    },
+    "optimize": {
+        meaning: "to make something as effective or efficient as possible",
+        example: "We need to optimize the website for mobile devices."
+    },
+    "optimum": {
+        meaning: "the best or most suitable condition or level",
+        example: "The machine operates at its optimum temperature."
+    },
+    "opulent": {
+        meaning: "very luxurious and expensive-looking",
+        example: "They stayed in an opulent hotel."
+    },
+    "opus": {
+        meaning: "a major work of art, music, or literature",
+        example: "The symphony is regarded as his greatest opus."
+    },
+    "oracle": {
+        meaning: "a person or place believed to give divine advice or predictions",
+        example: "The ancient Greeks consulted the oracle at Delphi."
+    },
+    "orator": {
+        meaning: "a skilled public speaker",
+        example: "He was a powerful orator who attracted large crowds."
+    },
+    "orbital": {
+        meaning: "related to an orbit or the path of an object around another object",
+        example: "The satellite was placed in a low orbital path."
+    },
+    "orchestrate": {
+        meaning: "to arrange music for an orchestra; to carefully organize an event",
+        example: "She orchestrated the entire conference."
+    },
+    "orchid": {
+        meaning: "a plant with beautiful flowers; a pale purple color",
+        example: "She grows orchids in her greenhouse."
+    },
+    "ordain": {
+        meaning: "to officially make someone a priest; to order or decree",
+        example: "He was ordained as a priest last year."
+    },
+    "ordinal": {
+        meaning: "relating to order in a series; an ordinal number",
+        example: "First, second, and third are ordinal numbers."
+    },
+    "orgasm": {
+        meaning: "the physical climax of sexual activity",
+        example: "The medical textbook explains the physiological process of orgasm."
+    },
+    "orientation": {
+        meaning: "the direction or position of something; an introduction to a new situation",
+        example: "New students attend an orientation before classes begin."
+    },
+    "ornate": {
+        meaning: "highly decorated, sometimes excessively so",
+        example: "The room had an ornate ceiling."
+    },
+    "orphanage": {
+        meaning: "a place where children without parents are cared for",
+        example: "The charity provides books for children in an orphanage."
+    },
+    "orthodoxy": {
+        meaning: "traditional beliefs or accepted ideas",
+        example: "The theory challenged the scientific orthodoxy of the time."
+    },
+    "oscillation": {
+        meaning: "repeated movement from one side to another; fluctuation",
+        example: "The pendulum's oscillation gradually slowed down."
+    },
+    "ostensibly": {
+        meaning: "apparently or seemingly, although the real reason may be different",
+        example: "He left ostensibly to attend a meeting."
+    },
+    "ostentatious": {
+        meaning: "showy and intended to attract attention or admiration",
+        example: "He drove an ostentatious sports car."
+    },
+    "oust": {
+        meaning: "to force someone out of a position or place",
+        example: "The board voted to oust the chairman."
+    },
+    "outcast": {
+        meaning: "a person rejected by society or a particular group",
+        example: "He felt like an outcast at school."
+    },
+    "outcry": {
+        meaning: "a strong public expression of anger or protest",
+        example: "The decision caused a public outcry."
+    },
+    "outfit": {
+        meaning: "a set of clothes or equipment; to provide with equipment",
+        example: "She bought a new outfit for the interview."
+    },
+    "outgrow": {
+        meaning: "to become too big for something; to grow faster than someone else",
+        example: "The child quickly outgrew his old shoes."
+    },
+    "outlandish": {
+        meaning: "strange, unusual, or difficult to believe",
+        example: "He came up with an outlandish explanation."
+    },
+    "outlay": {
+        meaning: "an amount of money spent on something",
+        example: "The initial outlay for the equipment was substantial."
+    },
+    "outnumber": {
+        meaning: "to be greater in number than another group",
+        example: "The students outnumbered the teachers."
+    },
+    "outpost": {
+        meaning: "a small military or commercial station far from a main settlement",
+        example: "The soldiers were stationed at a remote outpost."
+    },
+    "outreach": {
+        meaning: "the act of reaching beyond a usual group or area",
+        example: "The university runs an outreach program for local schools."
+    },
+    "outright": {
+        meaning: "completely; openly and directly; immediately",
+        example: "She rejected the proposal outright."
+    },
+    "outspoken": {
+        meaning: "speaking openly and frankly",
+        example: "She is an outspoken critic of the policy."
+    },
+    "outweigh": {
+        meaning: "to be greater or more important than something else",
+        example: "The benefits outweigh the risks."
+    },
+    "ovation": {
+        meaning: "enthusiastic applause from an audience",
+        example: "The performer received a standing ovation."
+    },
+    "overt": {
+        meaning: "open and clearly shown; not secret",
+        example: "There was no overt sign of disagreement."
+    },
+    "overture": {
+        meaning: "an introduction to a musical work; an opening offer or proposal",
+        example: "The orchestra performed the opera's overture."
+    },
+    "overview": {
+        meaning: "a general description or summary of something",
+        example: "The first chapter provides an overview of the course."
+    },
+    "ovum": {
+        meaning: "an egg cell produced by a female animal or human",
+        example: "The ovum can be fertilized by a sperm cell."
+    },
+    "oxidize": {
+        meaning: "to combine with oxygen or lose electrons in a chemical reaction",
+        example: "Iron oxidizes when exposed to oxygen and water."
+    },
+    "pacify": {
+        meaning: "to calm someone; to stop fighting or unrest",
+        example: "The mother tried to pacify the crying baby."
+    },
+    "paddy": {
+        meaning: "a field where rice is grown",
+        example: "Farmers were working in the paddy fields."
+    },
+    "padlock": {
+        meaning: "a portable lock; to lock something with a padlock",
+        example: "He used a padlock to secure the gate."
+    },
+    "pagan": {
+        meaning: "a person who follows a religion other than a major world religion; non-Christian",
+        example: "The festival has roots in ancient pagan traditions."
+    },
+    "pageant": {
+        meaning: "a public show or competition, often involving costumes",
+        example: "The students organized a historical pageant."
+    },
+    "painstaking": {
+        meaning: "done with great care and attention to detail",
+        example: "She made a painstaking effort to check every figure."
+    },
+    "pal": {
+        meaning: "a friend; to become friendly with someone",
+        example: "He made a new pal at university."
+    },
+    "palatable": {
+        meaning: "pleasant to taste; acceptable or agreeable",
+        example: "The soup was simple but quite palatable."
+    },
+    "palatal": {
+        meaning: "related to the palate or a speech sound made near the palate",
+        example: "The linguist explained the difference between palatal sounds."
+    },
+    "palate": {
+        meaning: "the roof of the mouth; a person's ability to appreciate tastes",
+        example: "The restaurant offers dishes to suit every palate."
+    },
+    "palette": {
+        meaning: "a board used by an artist to hold and mix colors",
+        example: "The artist chose a soft blue and green palette."
+    },
+    "palpable": {
+        meaning: "able to be touched; so obvious that it can almost be felt",
+        example: "There was a palpable sense of tension in the room."
+    },
+    "pamper": {
+        meaning: "to treat someone with excessive care or attention",
+        example: "She likes to pamper herself with a long bath."
+    },
+    "pamphlet": {
+        meaning: "a small thin book or booklet containing information",
+        example: "The doctor gave me a pamphlet about the treatment."
+    },
+    "parasite": {
+        meaning: "an organism that lives on or in another organism and benefits from it; a person who lives off others",
+        example: "The parasite lives inside its host."
+    },
+    "panacea": {
+        meaning: "a supposed solution or remedy for all problems",
+        example: "There is no single panacea for poverty."
+    },
+    "panoramic": {
+        meaning: "showing a wide and complete view of an area",
+        example: "The hotel offers panoramic views of the city."
+    },
+    "pant": {
+        meaning: "to breathe quickly and noisily, usually after exercise",
+        example: "The dog was panting after running."
+    },
+    "panther": {
+        meaning: "a large wild cat, especially a leopard or jaguar with dark fur",
+        example: "A black panther moved silently through the forest."
+    },
+    "pantomime": {
+        meaning: "a theatrical performance using gestures and little or no speech",
+        example: "The children performed a pantomime at Christmas."
+    },
+    "par": {
+        meaning: "a standard or normal level; the official value of a currency or security",
+        example: "Her performance was well above par."
+    },
+    "parable": {
+        meaning: "a simple story that teaches a moral or religious lesson",
+        example: "The teacher used a parable to explain the idea."
+    },
+    "paradigm": {
+        meaning: "a typical example or model; a pattern of ideas",
+        example: "The discovery changed the traditional scientific paradigm."
+    },
+    "paradoxical": {
+        meaning: "seemingly contradictory but possibly true",
+        example: "It is paradoxical that more choices can sometimes make people less satisfied."
+    },
+    "paraffin": {
+        meaning: "a waxy substance used in candles and other products",
+        example: "The candle was made from paraffin."
+    },
+    "paralysis": {
+        meaning: "loss of the ability to move; inability to act or make progress",
+        example: "The accident left him with partial paralysis."
+    },
+    "paralytic": {
+        meaning: "causing or relating to paralysis; extremely drunk in British informal use",
+        example: "The disease can cause paralytic symptoms."
+    },
+    "parameter": {
+        meaning: "a limit or factor that defines a situation; a variable in mathematics",
+        example: "The study was conducted within strict parameters."
+    },
+    "paramilitary": {
+        meaning: "organized like a military force but not officially part of the army",
+        example: "The government accused the group of supporting paramilitary forces."
+    },
+    "paramount": {
+        meaning: "more important than anything else",
+        example: "Safety is of paramount importance."
+    },
+    "paranoia": {
+        meaning: "an unreasonable belief that others are trying to harm you",
+        example: "His growing paranoia made him distrust everyone."
+    },
+    "paranoid": {
+        meaning: "unreasonably suspicious or fearful that others intend harm",
+        example: "He became paranoid about being watched."
+    },
+    "pare": {
+        meaning: "to cut away the outer part or edge of something",
+        example: "She pared the apple with a small knife."
+    },
+    "parenthesis": {
+        meaning: "a pair of round brackets; an additional statement inserted into a sentence",
+        example: "Put the extra information in parentheses."
+    },
+    "parenthetical": {
+        meaning: "contained in or relating to parentheses; inserted as additional information",
+        example: "The author added a parenthetical remark."
+    },
+    "parenthood": {
+        meaning: "the state or experience of being a parent",
+        example: "Parenthood brings many new responsibilities."
+    },
+    "parody": {
+        meaning: "a humorous imitation of a person, work, or style",
+        example: "The film is a parody of superhero movies."
+    },
+    "parole": {
+        meaning: "conditional release from prison; to release someone on such conditions",
+        example: "He was released on parole after serving ten years."
+    },
+    "parry": {
+        meaning: "to avoid or deflect a blow, attack, or question",
+        example: "She skillfully parried his difficult question."
+    },
+    "parsley": {
+        meaning: "a green herb used to flavor or decorate food",
+        example: "The chef sprinkled fresh parsley over the soup."
+    },
+    "parson": {
+        meaning: "a Christian priest or minister, especially a Protestant one",
+        example: "The parson led the wedding ceremony."
+    },
+    "partake": {
+        meaning: "to take part in something; to share or consume",
+        example: "Everyone was invited to partake in the celebration."
+    },
+    "partiality": {
+        meaning: "unfair preference for one person or group; a special liking",
+        example: "The judge was accused of partiality."
+    },
+    "partisan": {
+        meaning: "strongly supporting one side or political group; a committed supporter",
+        example: "The debate became highly partisan."
+    },
+    "password": {
+        meaning: "a secret word or sequence of characters used to access something",
+        example: "Never share your password with strangers."
+    },
+    "pasta": {
+        meaning: "food made from flour and water, usually cooked by boiling",
+        example: "We had pasta with tomato sauce for dinner."
+    },
+    "pastel": {
+        meaning: "a soft-colored drawing stick; a pale and delicate color",
+        example: "She decorated the room in pastel colors."
+    },
+    "patchy": {
+        meaning: "uneven, incomplete, or made of separate areas",
+        example: "The internet connection is still patchy."
+    },
+    "pathology": {
+        meaning: "the scientific study of disease and its causes",
+        example: "She specializes in the pathology of infectious diseases."
+    },
+    "pathological": {
+        meaning: "related to disease; abnormal in an unhealthy way",
+        example: "The report described the pathological changes in the tissue."
+    },
+    "patio": {
+        meaning: "a paved outdoor area next to a house",
+        example: "We had dinner on the patio."
+    },
+    "patriarch": {
+        meaning: "the male head of a family or group; a senior religious leader",
+        example: "The patriarch of the family made the final decision."
+    },
+    "patriarchal": {
+        meaning: "organized around male authority or leadership",
+        example: "The novel describes a strongly patriarchal society."
+    },
+    "patronage": {
+        meaning: "support given by a patron, especially financial support for art or institutions",
+        example: "The museum survived through private patronage."
+    },
+    "patronize": {
+        meaning: "to support a business regularly; to treat someone as inferior",
+        example: "I often patronize that small bookstore."
+    },
+    "pawn": {
+        meaning: "a chess piece; a person used by someone else to achieve a purpose",
+        example: "The king sacrificed a pawn."
+    },
+    "pawn": {
+        meaning: "to leave something valuable with a lender in exchange for money",
+        example: "He had to pawn his watch to pay the bill."
+    },
+    "payroll": {
+        meaning: "a list of employees and their pay; the total amount paid to employees",
+        example: "The company has more than five hundred people on its payroll."
+    },
+    "peat": {
+        meaning: "partly decayed plant material used as fuel or in gardening",
+        example: "The region has large deposits of peat."
+    },
+    "pedagogic": {
+        meaning: "related to teaching or education",
+        example: "The book has strong pedagogic value."
+    },
+    "pedantic": {
+        meaning: "too concerned with minor rules or details, especially in education",
+        example: "His pedantic correction interrupted the discussion."
+    },
+    "pedestal": {
+        meaning: "a base supporting a statue or other object",
+        example: "The statue stands on a marble pedestal."
+    },
+    "pedigree": {
+        meaning: "a record of a person's ancestry; the recorded ancestry of an animal",
+        example: "The dog has an impressive pedigree."
+    },
+    "peek": {
+        meaning: "to look quickly or secretly through a small opening",
+        example: "She took a quick peek inside the box."
+    },
+    "pelican": {
+        meaning: "a large water bird with a long bill and a large throat pouch",
+        example: "A pelican landed near the fishing boat."
+    },
+    "pendent": {
+        meaning: "hanging down; a hanging ornament",
+        example: "A pendent light hung from the ceiling."
+    },
+    "pending": {
+        meaning: "waiting to be decided or completed; about to happen",
+        example: "The application is still pending."
+    },
+    "penis": {
+        meaning: "the male reproductive organ",
+        example: "The diagram shows the structure of the penis."
+    },
+    "pensioner": {
+        meaning: "a person receiving a pension",
+        example: "Many pensioners rely on public transportation."
+    },
+    "pentathlon": {
+        meaning: "an athletic competition consisting of five events",
+        example: "She trained for the modern pentathlon."
+    },
+    "penthouse": {
+        meaning: "a luxurious apartment on the top floor of a building",
+        example: "They rented a penthouse overlooking the city."
+    },
+    "peppermint": {
+        meaning: "a plant with a strong fresh flavor; a sweet made from it",
+        example: "I drank a cup of peppermint tea."
+    },
+    "percussion": {
+        meaning: "musical instruments played by striking; striking or collision",
+        example: "Drums are common percussion instruments."
+    },
+    "perfunctory": {
+        meaning: "done without care, interest, or effort",
+        example: "He gave the report only a perfunctory review."
+    },
+    "perilous": {
+        meaning: "very dangerous or risky",
+        example: "The climbers faced a perilous journey."
+    },
+    "perimeter": {
+        meaning: "the outer edge or boundary of an area",
+        example: "Security guards patrol the perimeter of the building."
+    },
+    "periodic": {
+        meaning: "happening regularly at intervals",
+        example: "The equipment requires periodic maintenance."
+    },
+    "peripheral": {
+        meaning: "on the edge or outside; less important than the main part",
+        example: "The issue is peripheral to the main discussion."
+    },
+    "periphery": {
+        meaning: "the outer edge or boundary of something",
+        example: "Small villages lie on the periphery of the city."
+    },
+    "perish": {
+        meaning: "to die, especially in a violent or sudden way; to decay",
+        example: "Many plants perish without enough water."
+    },
+    "perjury": {
+        meaning: "the crime of deliberately giving false evidence under oath",
+        example: "He was charged with perjury after lying in court."
+    },
+    "perk": {
+        meaning: "an extra benefit from a job; to become more cheerful",
+        example: "Free meals are one of the perks of the job."
+    },
+    "permeate": {
+        meaning: "to spread through or penetrate something",
+        example: "The smell of coffee permeated the room."
+    },
+    "permissible": {
+        meaning: "allowed or permitted",
+        example: "Only reasonable use of the equipment is permissible."
+    },
+    "pernicious": {
+        meaning: "very harmful, especially in a gradual or hidden way",
+        example: "The disease can have a pernicious effect on the body."
+    },
+    "perpetrate": {
+        meaning: "to commit a crime or harmful act",
+        example: "The group was accused of perpetrating the attack."
+    },
+    "perpetrator": {
+        meaning: "a person who commits a crime or harmful act",
+        example: "The police are still searching for the perpetrator."
+    },
+    "perpetuate": {
+        meaning: "to make something continue indefinitely",
+        example: "The policy may perpetuate social inequality."
+    },
+    "persimmon": {
+        meaning: "an orange fruit with soft sweet flesh",
+        example: "She bought several ripe persimmons at the market."
+    },
+    "personage": {
+        meaning: "a person, especially an important or famous one",
+        example: "Several historical personages appear in the novel."
+    },
+    "personify": {
+        meaning: "to be a typical example of something; to represent something as a person",
+        example: "She personifies the spirit of determination."
+    },
+    "pertain": {
+        meaning: "to relate or belong to something",
+        example: "The rules pertain to all employees."
+    },
+    "pertinent": {
+        meaning: "relevant and directly related to the matter being discussed",
+        example: "Please provide only pertinent information."
+    },
+    "perturb": {
+        meaning: "to make someone worried, nervous, or disturbed",
+        example: "The unexpected news perturbed everyone."
+    },
+    "pervade": {
+        meaning: "to spread throughout or be present everywhere",
+        example: "A sense of excitement pervaded the campus."
+    },
+    "pervert": {
+        meaning: "to distort or misuse; to cause someone to behave immorally",
+        example: "The information was deliberately perverted to mislead the public."
+    },
+    "pester": {
+        meaning: "to annoy someone repeatedly",
+        example: "The children kept pestering their father for permission."
+    },
+    "pesticide": {
+        meaning: "a chemical used to kill insects or other pests",
+        example: "Farmers use pesticides to protect crops."
+    },
+    "phantom": {
+        meaning: "a ghost or something that seems to exist but does not",
+        example: "The old house was said to be haunted by a phantom."
+    },
+    "pharmaceutical": {
+        meaning: "related to medicines or the production of drugs",
+        example: "She works for a pharmaceutical company."
+    },
+    "pharmacist": {
+        meaning: "a person qualified to prepare and sell medicines",
+        example: "The pharmacist explained how to take the medicine."
+    },
+    "pharmacy": {
+        meaning: "the science of medicines; a shop where medicines are prepared or sold",
+        example: "I bought the medicine at the pharmacy."
+    },
+    "pheasant": {
+        meaning: "a large bird with a long tail, often hunted for food",
+        example: "A pheasant crossed the road in front of us."
+    },
+    "phenomenal": {
+        meaning: "related to phenomena; exceptionally impressive or remarkable",
+        example: "The athlete made phenomenal progress in a year."
+    },
+    "philanthropic": {
+        meaning: "related to helping people through charity",
+        example: "The university received a large philanthropic donation."
+    },
+    "philosophic": {
+        meaning: "related to philosophy; calm and thoughtful",
+        example: "She took a philosophic approach to the problem."
+    },
+    "phonology": {
+        meaning: "the study of the sound system of a language",
+        example: "Phonology examines how sounds function within a language."
+    },
+    "phosphorus": {
+        meaning: "a chemical element that is important in living organisms",
+        example: "Plants need phosphorus for healthy growth."
+    },
+    "phosphorous": {
+        meaning: "relating to or containing phosphorus",
+        example: "The laboratory analyzed the phosphorous compound."
+    },
+    "physiotherapy": {
+        meaning: "treatment using physical exercises and methods to improve movement",
+        example: "She began physiotherapy after the operation."
+    },
+    "physique": {
+        meaning: "the shape and size of a person's body",
+        example: "He has a strong athletic physique."
+    },
+    "picket": {
+        meaning: "a person protesting outside a workplace; to protest outside a place",
+        example: "Workers formed a picket outside the factory."
+    },
+    "pickle": {
+        meaning: "food preserved in vinegar or salt; to preserve food in this way; a difficult situation",
+        example: "She added a pickle to her sandwich."
+    },
+    "pidgin": {
+        meaning: "a simplified language developed between people who speak different languages",
+        example: "Pidgin developed as a means of communication between different groups."
+    },
+    "pier": {
+        meaning: "a structure extending into water; a supporting column",
+        example: "We walked along the pier at sunset."
+    },
+    "piety": {
+        meaning: "strong religious devotion; respect and devotion to parents",
+        example: "Her piety was an important part of her life."
+    },
+    "pike": {
+        meaning: "a freshwater fish; a long pointed weapon",
+        example: "The soldier carried a long pike."
+    },
+    "pinch": {
+        meaning: "to squeeze with the fingers; a small amount; a difficult situation",
+        example: "She pinched the dough between her fingers."
+    },
+    "pinpoint": {
+        meaning: "to identify or locate something very precisely; to emphasize",
+        example: "The investigation pinpointed the cause of the problem."
+    },
+    "piracy": {
+        meaning: "robbery at sea; illegal copying or distribution of copyrighted material",
+        example: "The company is fighting software piracy."
+    },
+    "piss": {
+        meaning: "to urinate; an informal and sometimes offensive word for urine",
+        example: "The dog stopped to piss beside the tree."
+    },
+    "piston": {
+        meaning: "a part inside an engine that moves up and down",
+        example: "The mechanic replaced a damaged piston."
+    },
+    "pitcher": {
+        meaning: "a container for liquids; a baseball player who throws the ball",
+        example: "The pitcher threw a fast ball."
+    },
+    "pitfall": {
+        meaning: "an unexpected problem or danger",
+        example: "One common pitfall is failing to check the data."
+    },
+    "pivot": {
+        meaning: "a central point around which something turns; a central person or idea",
+        example: "The company made a major pivot in its business strategy."
+    },
+    "pivotal": {
+        meaning: "extremely important because it affects the development of a situation",
+        example: "She played a pivotal role in the project."
+    },
+    "plaid": {
+        meaning: "a pattern of crossed lines forming squares",
+        example: "He wore a plaid shirt."
+    },
+    "plaintiff": {
+        meaning: "a person who brings a case against someone in a court of law",
+        example: "The plaintiff filed a lawsuit against the company."
+    },
+    "planetary": {
+        meaning: "related to planets",
+        example: "Scientists are studying planetary systems beyond our own."
+    },
+    "plaque": {
+        meaning: "a flat piece of metal or stone with writing; a layer that forms on teeth",
+        example: "A bronze plaque marks the historic building."
+    },
+    "plaster": {
+        meaning: "a material used to cover walls; to cover with plaster; a medical cast",
+        example: "The workers plastered the damaged wall."
+    },
+    "platoon": {
+        meaning: "a small military unit",
+        example: "The platoon moved quietly through the forest."
+    },
+    "playoff": {
+        meaning: "an extra game or series of games used to decide a winner",
+        example: "The team reached the playoffs."
+    },
+    "plea": {
+        meaning: "an urgent request; a statement made by a defendant in court",
+        example: "The defendant entered a plea of not guilty."
+    },
+    "plead": {
+        meaning: "to ask strongly; to defend oneself in court; to give a reason as an excuse",
+        example: "She pleaded with him to stay."
+    },
+    "pleat": {
+        meaning: "a fold made in cloth; to fold cloth into pleats",
+        example: "The skirt has several neat pleats."
+    },
+    "plenipotentiary": {
+        meaning: "a person with full power to represent a government",
+        example: "The ambassador served as a plenipotentiary in the negotiations."
+    },
+    "plight": {
+        meaning: "a difficult or unpleasant situation",
+        example: "The charity aims to improve the plight of homeless people."
+    },
+    "plumb": {
+        meaning: "a lead weight used to measure depth; to measure or investigate deeply",
+        example: "The workers used a plumb line to check the wall."
+    },
+    "plummet": {
+        meaning: "to fall suddenly and rapidly",
+        example: "Temperatures plummeted during the night."
+    },
+    "plunger": {
+        meaning: "a device with a handle and rubber cup used to clear pipes; a piston-like part",
+        example: "He used a plunger to unblock the sink."
+    },
+    "plush": {
+        meaning: "a soft fabric with a thick pile; luxurious and comfortable",
+        example: "The hotel has plush carpets and comfortable chairs."
+    },
+    "plutonium": {
+        meaning: "a radioactive chemical element used in nuclear technology",
+        example: "Plutonium is a highly radioactive element."
+    },
+    "poach": {
+        meaning: "to hunt or fish illegally; to cook food gently in liquid",
+        example: "They poached the eggs in hot water."
+    },
+    "pockmark": {
+        meaning: "a small hollow scar left on the skin, especially by disease",
+        example: "His face had several old pockmarks."
+    },
+    "poignant": {
+        meaning: "deeply moving or emotionally painful",
+        example: "The film ends with a poignant scene."
+    },
+    "polarity": {
+        meaning: "the condition of having two opposite poles or opposing tendencies",
+        example: "The battery has a positive and a negative polarity."
+    },
+    "polemic": {
+        meaning: "a strong verbal or written argument against someone or something",
+        example: "The article became a political polemic."
+    },
+    "polio": {
+        meaning: "a serious infectious disease that can cause paralysis",
+        example: "Vaccination has greatly reduced cases of polio."
+    },
+    "pollen": {
+        meaning: "fine powder produced by flowers and other plants",
+        example: "Pollen can trigger allergies in some people."
+    },
+    "polyester": {
+        meaning: "a strong synthetic material used especially for clothing",
+        example: "The jacket is made of polyester."
+    },
+    "pompous": {
+        meaning: "too formal or self-important in speech or behavior",
+        example: "His pompous speech annoyed the audience."
+    },
+    "poplar": {
+        meaning: "a tall tree with leaves that tremble in the wind",
+        example: "A row of poplar trees lined the road."
+    },
+    "poppy": {
+        meaning: "a plant with delicate flowers, often red",
+        example: "Red poppies covered the field."
+    },
+    "popularize": {
+        meaning: "to make something widely known, used, or accepted",
+        example: "The book helped popularize the theory."
+    },
+    "populous": {
+        meaning: "having a large population",
+        example: "It is one of the most populous cities in the country."
+    },
+    "pore": {
+        meaning: "to study or read something carefully",
+        example: "She spent hours poring over the research paper."
+    },
+    "portfolio": {
+        meaning: "a collection of documents or work; a collection of investments; a minister's area of responsibility",
+        example: "The designer showed us her portfolio."
+    },
+    "posthumous": {
+        meaning: "happening or published after a person's death",
+        example: "The author received a posthumous award."
+    },
+    "postscript": {
+        meaning: "an additional note at the end of a letter; an extra addition",
+        example: "She added a short postscript to the letter."
+    },
+    "posture": {
+        meaning: "the way someone holds their body; an attitude or position",
+        example: "Good posture can reduce back pain."
+    },
+    "potency": {
+        meaning: "power, effectiveness, or strength",
+        example: "The drug's potency decreases over time."
+    },
+    "potent": {
+        meaning: "very powerful or effective",
+        example: "The medicine is highly potent."
+    },
+    "potluck": {
+        meaning: "a meal where each guest brings food; an informal meal",
+        example: "We are having a potluck dinner on Friday."
+    },
+    "pouch": {
+        meaning: "a small bag or pocket",
+        example: "She kept her keys in a small pouch."
+    },
+    "pounce": {
+        meaning: "to jump suddenly on someone or something",
+        example: "The cat pounced on the mouse."
+    },
+    "precinct": {
+        meaning: "a defined area; a voting or police district",
+        example: "The police searched the entire precinct."
+    },
+    "precipitate": {
+        meaning: "to cause something to happen suddenly; to throw down; a solid formed from a solution",
+        example: "The decision precipitated a major crisis."
+    },
+    "precipitous": {
+        meaning: "very steep; happening suddenly and without enough thought",
+        example: "The company suffered a precipitous decline in sales."
+    },
+    "preclude": {
+        meaning: "to prevent something from happening",
+        example: "A lack of evidence may preclude further investigation."
+    },
+    "predatory": {
+        meaning: "relating to animals that hunt; exploiting others for personal gain",
+        example: "The company was accused of using predatory lending practices."
+    },
+    "predicament": {
+        meaning: "a difficult or unpleasant situation",
+        example: "We found ourselves in a difficult predicament."
+    },
+    "prefabricate": {
+        meaning: "to make parts in advance so they can later be assembled",
+        example: "The houses were prefabricated in a factory."
+    },
+    "preferential": {
+        meaning: "giving an advantage or preference to someone or something",
+        example: "Students from the region receive preferential treatment."
+    },
+    "premature": {
+        meaning: "happening too early; not fully developed; done too soon",
+        example: "It is premature to announce the results."
+    },
+    "premiere": {
+        meaning: "the first public performance or showing of a film or play",
+        example: "The film will premiere next month."
+    },
+    "premonition": {
+        meaning: "a strong feeling that something is going to happen",
+        example: "She had a strange premonition that something was wrong."
+    },
+    "prenatal": {
+        meaning: "relating to the period before a baby is born",
+        example: "She attends regular prenatal checkups."
+    },
+    "preoccupied": {
+        meaning: "so worried or interested in something that you do not notice other things",
+        example: "He was too preoccupied with work to notice the time."
+    },
+    "preparatory": {
+        meaning: "intended to prepare for something",
+        example: "The students took a preparatory course before the exam."
+    },
+    "prerequisite": {
+        meaning: "something required before something else can happen or be done",
+        example: "Basic computer skills are a prerequisite for the course."
+    },
+    "preschool": {
+        meaning: "relating to children before they start school; a school for young children",
+        example: "She works as a preschool teacher."
+    },
+    "presidium": {
+        meaning: "a governing committee or executive body",
+        example: "The presidium met to discuss the proposal."
+    },
+    "presumption": {
+        meaning: "an assumption or belief based on limited evidence; an act of taking something without permission",
+        example: "The presumption of innocence is a basic legal principle."
+    },
+    "pretentious": {
+        meaning: "trying to appear more important, intelligent, or sophisticated than one really is",
+        example: "The restaurant's description sounded unnecessarily pretentious."
+    },
+    "prevalent": {
+        meaning: "common or widespread",
+        example: "The disease is more prevalent in older people."
+    },
+    "priceless": {
+        meaning: "extremely valuable or precious; impossible to put a price on",
+        example: "The family photographs are priceless to her."
+    },
+    "prism": {
+        meaning: "a solid object that separates light into different colors",
+        example: "The prism separated the white light into a rainbow."
+    },
+    "pristine": {
+        meaning: "in its original condition; extremely clean and unspoiled",
+        example: "The island has pristine beaches."
+    },
+    "pro": {
+        meaning: "a professional or expert; an argument in favor of something",
+        example: "The main pro is that the plan will save money."
+    },
+    "probation": {
+        meaning: "a period of testing or supervision; a period during which a criminal is supervised instead of imprisoned",
+        example: "He was given two years of probation."
+    },
+    "procedural": {
+        meaning: "related to an established procedure or process",
+        example: "The committee discussed several procedural issues."
+    },
+    "proceedings": {
+        meaning: "legal action; a series of events or activities; official records of a meeting",
+        example: "The court proceedings lasted several weeks."
+    },
+    "procure": {
+        meaning: "to obtain something, especially with effort",
+        example: "The company managed to procure the necessary equipment."
+    },
+    "prod": {
+        meaning: "to poke or push; to encourage someone to act",
+        example: "She prodded him to finish his homework."
+    },
+    "prodigal": {
+        meaning: "wasteful in spending money; very generous",
+        example: "His prodigal spending soon caused financial problems."
+    },
+    "prodigy": {
+        meaning: "a young person with exceptional talent; something remarkable",
+        example: "The child is a musical prodigy."
+    },
+    "profiteer": {
+        meaning: "a person who makes excessive profits, especially unfairly",
+        example: "The government accused traders of profiteering."
+    },
+    "proliferation": {
+        meaning: "rapid growth or increase in number",
+        example: "The proliferation of smartphones has changed communication."
+    },
+    "prolific": {
+        meaning: "producing a large amount of work, fruit, or offspring",
+        example: "She is a prolific writer."
+    },
+    "prologue": {
+        meaning: "an introduction to a literary work; an opening event",
+        example: "The novel begins with a short prologue."
+    },
+    "prominence": {
+        meaning: "the state of being important or well known; a part that projects outward",
+        example: "She gained prominence after publishing her first book."
+    },
+    "prone": {
+        meaning: "likely to suffer from or do something; lying face downward",
+        example: "Some people are prone to allergies."
+    },
+    "propagate": {
+        meaning: "to spread an idea or information; to reproduce or cause plants to reproduce",
+        example: "The organization works to propagate environmental awareness."
+    },
+    "propel": {
+        meaning: "to push or drive something forward",
+        example: "The motor propels the boat through the water."
+    },
+    "prophecy": {
+        meaning: "a prediction about what will happen in the future",
+        example: "The ancient prophecy was recorded on a stone tablet."
+    },
+    "prophesy": {
+        meaning: "to predict what will happen in the future",
+        example: "The prophet claimed to prophesy future events."
+    },
+    "proponent": {
+        meaning: "a person who supports an idea, plan, or cause",
+        example: "She is a strong proponent of renewable energy."
+    },
+    "prospective": {
+        meaning: "expected or likely to happen; relating to a future possibility",
+        example: "The university held a meeting for prospective students."
+    },
+    "prostate": {
+        meaning: "a gland in the male reproductive system",
+        example: "The doctor recommended a prostate examination."
+    },
+    "prostitution": {
+        meaning: "the practice of engaging in sexual activity for payment; misuse of something",
+        example: "The report examines the social effects of prostitution."
+    },
+    "protagonist": {
+        meaning: "the main character in a story; a leading person in a cause",
+        example: "The protagonist struggles to find his identity."
+    },
+    "protocol": {
+        meaning: "a set of rules for official behavior; an official agreement or procedure",
+        example: "The researchers followed a strict safety protocol."
+    },
+    "prototype": {
+        meaning: "an original model used as the basis for later versions",
+        example: "The engineers tested a prototype of the new vehicle."
+    },
+    "protracted": {
+        meaning: "lasting longer than expected; prolonged",
+        example: "The two sides were involved in protracted negotiations."
+    },
+    "protrude": {
+        meaning: "to stick out beyond a surface",
+        example: "A branch protruded from the wall."
+    },
+    "provident": {
+        meaning: "careful about the future and saving resources",
+        example: "Her provident habits helped her prepare for retirement."
+    },
+    "provisional": {
+        meaning: "temporary and subject to change",
+        example: "The committee reached a provisional agreement."
+    },
+    "prowess": {
+        meaning: "great skill or ability",
+        example: "The athlete demonstrated remarkable physical prowess."
+    },
+    "proximity": {
+        meaning: "the state of being near something",
+        example: "The hotel is popular because of its proximity to the station."
+    },
+    "prudent": {
+        meaning: "wise and careful, especially about the future",
+        example: "It would be prudent to save some money for emergencies."
+    },
+    "pseudo": {
+        meaning: "false, not genuine, or pretending to be something",
+        example: "The article was criticized for using pseudo-scientific claims."
+    },
+    "psychiatrist": {
+        meaning: "a doctor who specializes in mental disorders",
+        example: "The patient was referred to a psychiatrist."
+    },
+    "psycho": {
+        meaning: "a mentally disturbed person; relating to psychoanalysis",
+        example: "The film portrays a dangerous psycho."
+    },
+    "psychoanalyst": {
+        meaning: "a person who practices psychoanalysis",
+        example: "She consulted a psychoanalyst about her recurring dreams."
+    },
+    "psychotherapist": {
+        meaning: "a professional who treats emotional or mental problems through therapy",
+        example: "The psychotherapist helped him manage his anxiety."
+    },
+    "psychotherapy": {
+        meaning: "the treatment of mental or emotional problems through therapy",
+        example: "Psychotherapy can help people manage long-term stress."
+    },
+    "pub": {
+        meaning: "a place where people buy and drink alcoholic drinks",
+        example: "They met at a small pub near the station."
+    },
+    "puberty": {
+        meaning: "the period when a child develops into an adult",
+        example: "Many physical changes occur during puberty."
+    },
+    "pulpit": {
+        meaning: "a raised stand from which a priest or minister gives a sermon",
+        example: "The priest stood at the pulpit."
+    },
+    "pun": {
+        meaning: "a humorous use of a word with two meanings or similar sounds",
+        example: "The joke was a clever pun on the word 'right.'"
+    },
+    "pungent": {
+        meaning: "having a strong, sharp smell or taste",
+        example: "The cheese has a particularly pungent smell."
+    },
+    "punitive": {
+        meaning: "intended to punish; involving severe punishment",
+        example: "The government introduced punitive measures against tax evasion."
+    },
+    "purge": {
+        meaning: "to remove unwanted people or things; the act of removing them",
+        example: "The company began a purge of outdated files."
+    },
+    "purport": {
+        meaning: "the main meaning or intention; to claim or appear to be",
+        example: "The document purports to explain the reasons for the decision."
+    },
+    "python": {
+        meaning: "a large nonvenomous snake that kills its prey by squeezing it",
+        example: "The python wrapped itself around the branch."
+    },
+    "quack": {
+        meaning: "an unqualified person pretending to be a doctor or expert",
+        example: "The man was exposed as a medical quack."
+    },
+    "quadrangle": {
+        meaning: "a four-sided figure; a rectangular courtyard surrounded by buildings",
+        example: "Students gathered in the university quadrangle."
+    },
+    "quadrant": {
+        meaning: "one of four equal parts of a circle or area",
+        example: "The graph is divided into four quadrants."
+    },
+    "quadratic": {
+        meaning: "involving a quantity multiplied by itself; a quadratic equation",
+        example: "Students learned how to solve quadratic equations."
+    },
+    "quadrilateral": {
+        meaning: "having four sides; a four-sided figure",
+        example: "A square is a type of quadrilateral."
+    },
+    "quadruple": {
+        meaning: "consisting of four; four times as much; to become four times as much",
+        example: "The number of visitors quadrupled in five years."
+    },
+    "quail": {
+        meaning: "a small bird; to feel afraid or lose courage",
+        example: "The hunter saw a quail in the grass."
+    },
+    "quaint": {
+        meaning: "attractively old-fashioned or unusual",
+        example: "We stayed in a quaint little village."
+    },
+    "Quaker": {
+        meaning: "a member of the Religious Society of Friends",
+        example: "The Quakers are known for their commitment to peace."
+    },
+    "qualifier": {
+        meaning: "a word that limits or modifies another word; a person who qualifies",
+        example: "The adjective acts as a qualifier for the noun."
+    },
+    "quantifier": {
+        meaning: "a word such as 'many,' 'some,' or 'all' that indicates quantity",
+        example: "In 'many students,' 'many' is a quantifier."
+    },
+    "quantum": {
+        meaning: "the smallest discrete amount of a physical quantity; a quantity or amount",
+        example: "The course introduces the basic ideas of quantum physics."
+    },
+    "quarantine": {
+        meaning: "a period of isolation to prevent the spread of disease; to isolate",
+        example: "The infected animals were placed in quarantine."
+    },
+    "quartet": {
+        meaning: "a group of four singers or musicians; a piece for four performers",
+        example: "The string quartet performed beautifully."
+    },
+    "quartz": {
+        meaning: "a common hard mineral found in many rocks",
+        example: "The rock contains large crystals of quartz."
+    },
+    "quash": {
+        meaning: "to reject or cancel; to suppress or stop",
+        example: "The court quashed the earlier decision."
+    },
+    "quaver": {
+        meaning: "to speak, sing, or move with a trembling sound or motion; a trembling sound",
+        example: "Her voice began to quaver with fear."
+    },
+    "quell": {
+        meaning: "to stop or suppress something, especially a disturbance",
+        example: "The police were sent to quell the riot."
+    },
+    "quench": {
+        meaning: "to put out a fire; to satisfy thirst; to stop something",
+        example: "A cold drink quickly quenched his thirst."
+    },
+    "querulous": {
+        meaning: "complaining frequently in an annoyed way",
+        example: "The querulous customer complained about every detail."
+    },
+    "quibble": {
+        meaning: "to argue about small or unimportant details",
+        example: "They spent too much time quibbling over minor issues."
+    },
+    "quick": {
+        meaning: "the sensitive flesh under a fingernail or toenail",
+        example: "Be careful not to cut the nail into the quick."
+    },
+    "quicksand": {
+        meaning: "loose wet sand that can trap people or animals",
+        example: "The hikers were warned to stay away from the quicksand."
+    },
+    "quintessence": {
+        meaning: "the perfect or most typical example of something",
+        example: "She is the quintessence of elegance."
+    },
+    "quintet": {
+        meaning: "a group of five singers or musicians; a piece for five performers",
+        example: "The jazz quintet played for two hours."
+    },
+    "quip": {
+        meaning: "a clever or humorous remark",
+        example: "He made a quick quip to lighten the mood."
+    },
+    "quirk": {
+        meaning: "a strange or unusual feature or habit",
+        example: "One of his quirks is that he always carries two watches."
+    },
+    "quixotic": {
+        meaning: "extremely idealistic and unrealistic",
+        example: "His quixotic plan was unlikely to succeed."
+    },
+    "quiz": {
+        meaning: "a test or competition involving questions; to test or question",
+        example: "The teacher gave the students a short vocabulary quiz."
+    },
+    "quizzical": {
+        meaning: "showing that you are puzzled or curious",
+        example: "She gave him a quizzical look."
+    },
+    "quotient": {
+        meaning: "the result of dividing one number by another",
+        example: "The quotient of 20 divided by 5 is 4."
+    }
+};
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+let navigationTimer = null;
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
+function getVocabularySignature() {
+
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+
+}
+
+
+function saveQuizProgress() {
+
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
+
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+
+            vocabularySignature:
+                getVocabularySignature(),
+
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
+}
+
+
+function loadQuizProgress() {
+
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
+
+    if (!saved) {
+        return false;
+    }
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
+
+        return false;
+    }
+
+}
+
+
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
+
+function getStarredWords() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+    }
+
+}
+
+
+function saveStarredWords(words) {
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
+}
+
+
+function getCorrectWord(question) {
+
+    return question.options[
+        question.answer - 1
+    ];
+
+}
+
+
+function isStarred(question) {
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
+}
+
+
+function updateStarButton() {
+
+    const button =
+        document.getElementById("starButton");
+
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
+
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+ // Cancel any pending automatic navigation
+ if (navigationTimer !== null) {
+        clearTimeout(navigationTimer);
+        navigationTimer = null;
+    }
+
+    if (isReviewingStarred) return;
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+if (!isReviewingStarred) {
+    saveQuizProgress();
+}
+
+document.querySelector(".navigation").style.display = "flex";
+
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Question number
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    // Current score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+
+    // Display question
+    document.getElementById(
+        "question"
+    ).textContent =
+        question.question;
+
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+
+    // Clear feedback
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    // Previous button
+    document.getElementById(
+        "prevButton"
+    ).disabled =
+        currentQuestion === 0;
+
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(
+    selectedIndex,
+    button
+) {
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.disabled = true;
+
+        }
+    );
+
+
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
+
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
+
+        questionResults[
+            currentQuestion
+        ] = 1;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+            navigationTimer = setTimeout(() => {
+    navigationTimer = null;
+    goToNextOrFinish();
+}, 900);
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+}
+
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[
+            question.answer - 1
+        ];
+
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
+        correctOption;
+
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
+            : "";
+
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
+            : "";
+
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
+
+
+    // Automatically move on once
+    // the popup is dismissed
+    goToNextOrFinish();
+
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+if (currentQuestion > 0) {
+
+    currentQuestion--;
+
+    if (!isReviewingStarred) {
+        saveQuizProgress();
+    }
+
+    displayQuestion();
+}
+}
+
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+function goToNextOrFinish() {
+
+// More questions remain
+if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Starred review has finished
+if (isReviewingStarred) {
+
+    questions = [...savedQuizState.questions];
+
+    currentQuestion = savedQuizState.currentQuestion;
+
+    correctAnswers = savedQuizState.correctAnswers;
+
+    score = savedQuizState.score;
+
+    questionResults = [...savedQuizState.questionResults];
+
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Normal quiz has finished
+showResult();
+}
+function restartQuiz() {
+
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
+
+
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+    const totalQuestions =
+        questions.length;
+
+
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
+
+
+    const mark =
+        percentage.toFixed(2);
+
+
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "score"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "question"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
+    }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    loadQuizProgress();
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        "No questions found.";
+
+}
+function exportStarredWords() {
+    const starredWords = JSON.parse(
+        localStorage.getItem(STARRED_WORDS_KEY) || "[]"
+    );
+
+    const blob = new Blob(
+        [JSON.stringify(starredWords, null, 2)],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "difficult-words.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
