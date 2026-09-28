@@ -1,0 +1,3312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 20px;
+    line-height: 1.55;
+
+    font-weight: 300;
+
+    color: #111827;
+
+    margin-bottom: 25px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 58px;
+
+    padding: 15px 17px;
+
+    margin-bottom: 8px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.35;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 12px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 54px;
+    margin-top: 1px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+   #starButton,
+#reviewStarredButton {
+    position: fixed;
+    right: 20px;
+    z-index: 900;
+
+    min-height: 32px;
+    padding: 6px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    bottom: 60px;
+}
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 900;
+
+    min-width: 48px;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 20px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 64px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 20px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full 
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+    <button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+        ★ Review (0)
+    </button>
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+<button onclick="exportStarredWords()">
+    Save Difficult Words
+</button>
+<script>
+    
+const vocabulary = {
+    "jab": {
+        meaning: "to poke, stab, or hit suddenly",
+        example: "He jabbed the button with his finger."
+    },
+    "jagged": {
+        meaning: "having rough, sharp, uneven edges",
+        example: "The rock had a jagged edge."
+    },
+    "janitor": {
+        meaning: "a person who takes care of a building",
+        example: "The janitor cleaned the hallway before classes began."
+    },
+    "jargon": {
+        meaning: "special words used by a particular group or profession",
+        example: "Legal jargon can be difficult for ordinary readers."
+    },
+    "jasmine": {
+        meaning: "a fragrant flower; a pale yellow color",
+        example: "The jasmine filled the garden with a sweet fragrance."
+    },
+    "javelin": {
+        meaning: "a long spear used in a sporting event",
+        example: "She threw the javelin farther than she expected."
+    },
+    "jaywalk": {
+        meaning: "to cross a street in violation of traffic rules",
+        example: "It is dangerous to jaywalk on a busy road."
+    },
+    "jeer": {
+        meaning: "to laugh at or mock someone",
+        example: "The crowd began to jeer at the losing team."
+    },
+    "jellyfish": {
+        meaning: "a soft sea animal with a transparent body and tentacles",
+        example: "A jellyfish drifted close to the beach."
+    },
+    "jeopardise": {
+        meaning: "to put someone or something in danger",
+        example: "One careless decision could jeopardise the entire project."
+    },
+    "jerky": {
+        meaning: "moving with sudden starts and stops",
+        example: "The bus made a jerky movement as it pulled away."
+    },
+    "jest": {
+        meaning: "a joke or something said as a joke",
+        example: "He made the remark in jest."
+    },
+    "jetty": {
+        meaning: "a structure built out into the water",
+        example: "We walked along the jetty at sunset."
+    },
+    "jigsaw": {
+        meaning: "a puzzle made from many pieces",
+        example: "She finished the jigsaw in one afternoon."
+    },
+    "jingle": {
+        meaning: "a light ringing sound; to make such a sound",
+        example: "The keys began to jingle in his pocket."
+    },
+    "jocular": {
+        meaning: "humorous and fond of joking",
+        example: "His jocular manner made everyone feel relaxed."
+    },
+    "jog": {
+        meaning: "to run slowly; to push or touch lightly",
+        example: "I jog every morning before work."
+    },
+    "jolt": {
+        meaning: "to move or shake suddenly",
+        example: "The car jolted when it hit a pothole."
+    },
+    "jostle": {
+        meaning: "to push or squeeze roughly among a crowd",
+        example: "Passengers jostled for space near the door."
+    },
+    "joystick": {
+        meaning: "a control stick used to operate a machine or vehicle",
+        example: "He moved the joystick to guide the aircraft."
+    },
+    "jubilant": {
+        meaning: "extremely happy because of a success",
+        example: "The players were jubilant after the final whistle."
+    },
+    "judicious": {
+        meaning: "showing good judgment and careful thought",
+        example: "She made a judicious choice after considering the evidence."
+    },
+    "juggle": {
+        meaning: "to keep several objects in the air; to manage several things at once",
+        example: "She has to juggle work, study, and family responsibilities."
+    },
+    "jumble": {
+        meaning: "to mix things into a confused mass",
+        example: "The papers were jumbled together on the desk."
+    },
+    "jumbo": {
+        meaning: "very large",
+        example: "A jumbo package arrived at the warehouse."
+    },
+    "juncture": {
+        meaning: "an important point in time; a point of connection",
+        example: "At this juncture, we need to decide whether to continue."
+    },
+    "jurisdiction": {
+        meaning: "official power to make legal decisions over an area or case",
+        example: "The case falls under the court's jurisdiction."
+    },
+    "juror": {
+        meaning: "a member of a jury",
+        example: "Each juror listened carefully to the evidence."
+    },
+    "juvenile": {
+        meaning: "relating to young people; a young person",
+        example: "The museum has a special program for juvenile visitors."
+    },
+    "juxtapose": {
+        meaning: "to place two things together for comparison",
+        example: "The exhibition juxtaposes traditional paintings with modern photographs."
+    },
+    "keel": {
+        meaning: "the main structural beam along the bottom of a boat",
+        example: "The ship's keel was badly damaged."
+    },
+    "kennel": {
+        meaning: "a shelter or enclosure for a dog",
+        example: "The dog slept in its kennel."
+    },
+    "kernel": {
+        meaning: "the inner part of a seed; the central point of something",
+        example: "The kernel of his argument is easy to understand."
+    },
+    "kickoff": {
+        meaning: "the start of a football match",
+        example: "The kickoff is scheduled for seven o'clock."
+    },
+    "kindred": {
+        meaning: "related by blood; similar in character or interests",
+        example: "They discovered that they were kindred spirits."
+    },
+    "kinship": {
+        meaning: "a relationship based on family, similarity, or close feeling",
+        example: "She felt a strong sense of kinship with the local people."
+    },
+    "kiwi": {
+        meaning: "a New Zealand bird; a New Zealander",
+        example: "The kiwi is a flightless bird native to New Zealand."
+    },
+    "knack": {
+        meaning: "a special skill or ability",
+        example: "She has a knack for explaining difficult ideas clearly."
+    },
+    "knead": {
+        meaning: "to press and work dough with the hands",
+        example: "Knead the dough until it becomes smooth."
+    },
+    "know-how": {
+        meaning: "practical knowledge or skill",
+        example: "Years of experience gave him the technical know-how to fix the machine."
+    },
+    "laborious": {
+        meaning: "requiring a lot of time and effort",
+        example: "Copying the data by hand was a laborious task."
+    },
+    "lacquer": {
+        meaning: "a hard glossy coating; to cover with such a coating",
+        example: "The craftsman lacquered the wooden box."
+    },
+    "ladle": {
+        meaning: "a large long-handled spoon; to serve with one",
+        example: "She used a ladle to serve the soup."
+    },
+    "lager": {
+        meaning: "a type of light beer",
+        example: "The restaurant serves several kinds of lager."
+    },
+    "lagoon": {
+        meaning: "a shallow body of salt water separated from the sea",
+        example: "A narrow strip of sand separates the lagoon from the ocean."
+    },
+    "lament": {
+        meaning: "to express sadness about something; a mournful song or expression",
+        example: "Many people lamented the loss of the old building."
+    },
+    "lance": {
+        meaning: "a long pointed weapon; to pierce or cut with a lance",
+        example: "The knight carried a lance."
+    },
+    "languid": {
+        meaning: "lacking energy; slow and relaxed",
+        example: "The hot afternoon left everyone feeling languid."
+    },
+    "languish": {
+        meaning: "to suffer or become weak because of neglect or difficult conditions",
+        example: "The plants languished without enough water."
+    },
+    "lapse": {
+        meaning: "a small mistake; a period of time; to pass or fall into a state",
+        example: "A brief lapse in concentration caused the error."
+    },
+    "laryngitis": {
+        meaning: "inflammation of the throat or voice box",
+        example: "The singer had to rest because of laryngitis."
+    },
+    "larynx": {
+        meaning: "the part of the throat containing the vocal cords",
+        example: "The larynx plays an important role in producing the voice."
+    },
+    "latch": {
+        meaning: "a device for fastening a door or window",
+        example: "Make sure the latch is securely closed."
+    },
+    "lateral": {
+        meaning: "relating to the side; moving sideways",
+        example: "The injury affected the lateral side of his knee."
+    },
+    "lathe": {
+        meaning: "a machine used for shaping wood or metal",
+        example: "The worker shaped the metal on a lathe."
+    },
+    "launderette": {
+        meaning: "a self-service laundry",
+        example: "Students often use the launderette near the dormitory."
+    },
+    "laurel": {
+        meaning: "an evergreen tree; honor or distinction",
+        example: "The winners received the laurel as a symbol of achievement."
+    },
+    "lavish": {
+        meaning: "very generous or excessive; to give generously",
+        example: "They held a lavish celebration for their anniversary."
+    },
+    "lawsuit": {
+        meaning: "a legal case brought before a court",
+        example: "The company is facing a lawsuit over the contract."
+    },
+    "lax": {
+        meaning: "not strict or careful enough",
+        example: "The school's lax security caused concern."
+    },
+    "ledge": {
+        meaning: "a narrow horizontal surface projecting from a wall or cliff",
+        example: "A small bird was sitting on the window ledge."
+    },
+    "leek": {
+        meaning: "a vegetable related to the onion",
+        example: "She added chopped leek to the soup."
+    },
+    "leeway": {
+        meaning: "extra time, space, or freedom to act",
+        example: "The teacher gave us some leeway with the deadline."
+    },
+    "legalize": {
+        meaning: "to make something legal",
+        example: "The government voted to legalize the practice."
+    },
+    "legendary": {
+        meaning: "famous and admired, often like a legend",
+        example: "The athlete became a legendary figure in the sport."
+    },
+    "legislate": {
+        meaning: "to make or enact laws",
+        example: "Parliament can legislate on matters of national importance."
+    },
+    "legible": {
+        meaning: "clear enough to read",
+        example: "Please write your name in large, legible letters."
+    },
+    "legitimize": {
+        meaning: "to make something legal or acceptable",
+        example: "The new evidence helped legitimize his claim."
+    },
+    "lenient": {
+        meaning: "not strict in enforcing rules or punishment",
+        example: "The judge was relatively lenient with first-time offenders."
+    },
+    "lenience": {
+        meaning: "the quality of being lenient or merciful",
+        example: "The prisoner appealed for lenience."
+    },
+    "lentil": {
+        meaning: "a small flat edible seed used as food",
+        example: "Lentils are often used in soups and stews."
+    },
+    "lethal": {
+        meaning: "capable of causing death",
+        example: "The chemical can be lethal in large amounts."
+    },
+    "leukemia": {
+        meaning: "a cancer affecting blood-forming tissues",
+        example: "The patient was receiving treatment for leukemia."
+    },
+    "leverage": {
+        meaning: "power or advantage gained from a situation",
+        example: "The company used its market position as leverage."
+    },
+    "levity": {
+        meaning: "a lack of seriousness; lightness in manner",
+        example: "His attempt at levity was inappropriate at the ceremony."
+    },
+    "lexis": {
+        meaning: "the vocabulary of a language",
+        example: "Students can expand their English lexis through extensive reading."
+    },
+    "liaison": {
+        meaning: "communication or cooperation between people or groups",
+        example: "She acts as a liaison between students and the administration."
+    },
+    "lieu": {
+        meaning: "place or position; used in the phrase 'in lieu of'",
+        example: "The company offered extra leave in lieu of overtime pay."
+    },
+    "ligament": {
+        meaning: "a strong band of tissue connecting bones",
+        example: "He injured a ligament in his knee."
+    },
+    "lighten": {
+        meaning: "to make lighter, less heavy, or less serious",
+        example: "A short walk helped lighten her mood."
+    },
+    "lilac": {
+        meaning: "a flowering shrub; a pale purple color",
+        example: "The room was decorated in a soft lilac shade."
+    },
+    "limelight": {
+        meaning: "the position of receiving public attention",
+        example: "The young actor suddenly found himself in the limelight."
+    },
+    "lineage": {
+        meaning: "a line of descent or family history",
+        example: "The museum traced the artist's lineage through several generations."
+    },
+    "linguist": {
+        meaning: "a person who studies languages; a person who speaks several languages",
+        example: "The linguist compared the two dialects."
+    },
+    "liquidate": {
+        meaning: "to close a business by selling its assets; to eliminate",
+        example: "The company was forced to liquidate its assets."
+    },
+    "literacy": {
+        meaning: "the ability to read and write; knowledge or education",
+        example: "Digital literacy is increasingly important in modern education."
+    },
+    "literal": {
+        meaning: "following the exact words or original meaning",
+        example: "The phrase should not be understood in a literal sense."
+    },
+    "literate": {
+        meaning: "able to read and write; well educated",
+        example: "The program aims to help every child become literate."
+    },
+    "litigation": {
+        meaning: "the process of taking a legal case to court",
+        example: "The dispute was finally settled without further litigation."
+    },
+    "liven": {
+        meaning: "to make more lively or interesting",
+        example: "Music can liven up a long journey."
+    },
+    "livid": {
+        meaning: "extremely angry; bluish or grayish in color",
+        example: "She was livid when she discovered the mistake."
+    },
+    "loathe": {
+        meaning: "to hate or dislike intensely",
+        example: "He loathes being kept waiting."
+    },
+    "lobe": {
+        meaning: "a rounded part of an organ or body",
+        example: "The doctor examined the lower lobe of the lung."
+    },
+    "loft": {
+        meaning: "a room or space directly under the roof",
+        example: "They converted the loft into a small study."
+    },
+    "logistics": {
+        meaning: "the organization of supplies, transport, and practical details",
+        example: "Good logistics are essential for a large event."
+    },
+    "logo": {
+        meaning: "a symbol or design used to identify a company or organization",
+        example: "The new logo appears on every product."
+    },
+    "loin": {
+        meaning: "the part of the body between the ribs and hips; meat from this area",
+        example: "The butcher prepared a loin of pork."
+    },
+    "loiter": {
+        meaning: "to stand or wait somewhere without an obvious purpose",
+        example: "The security guard asked the group not to loiter outside."
+    },
+    "loll": {
+        meaning: "to sit, lie, or stand in a relaxed way",
+        example: "He lolled in the chair and watched television."
+    },
+    "longevity": {
+        meaning: "long life or the length of time something lasts",
+        example: "Regular exercise may contribute to longevity."
+    },
+    "loot": {
+        meaning: "goods stolen during a war, riot, or crime; to steal such goods",
+        example: "The thieves escaped with a large amount of loot."
+    },
+    "lop": {
+        meaning: "to cut off branches or parts of something",
+        example: "The gardener lopped off the dead branches."
+    },
+    "lopsided": {
+        meaning: "uneven or heavier on one side",
+        example: "The picture looked lopsided on the wall."
+    },
+    "lotion": {
+        meaning: "a liquid or cream used on the skin",
+        example: "She applied lotion to her dry hands."
+    },
+    "lotus": {
+        meaning: "a water plant with large flowers and leaves",
+        example: "A lotus rose above the surface of the pond."
+    },
+    "louse": {
+        meaning: "a small parasitic insect living on people or animals",
+        example: "The child was treated for head lice."
+    },
+    "lousy": {
+        meaning: "covered with lice; very bad or unpleasant",
+        example: "We had a lousy day because of the constant rain."
+    },
+    "lowbrow": {
+        meaning: "lacking intellectual or cultural sophistication",
+        example: "The magazine is aimed at a lowbrow audience."
+    },
+    "lyrical": {
+        meaning: "expressing strong personal emotion, especially in a poetic way",
+        example: "The singer is known for her lyrical voice."
+    },
+    "lubricant": {
+        meaning: "a substance used to reduce friction between surfaces",
+        example: "Add a little lubricant to the moving parts."
+    },
+    "lucid": {
+        meaning: "clear and easy to understand; mentally clear",
+        example: "The professor gave a lucid explanation of the theory."
+    },
+    "lucrative": {
+        meaning: "producing a lot of money",
+        example: "He found a lucrative job in the technology industry."
+    },
+    "lug": {
+        meaning: "to carry or pull something heavy with difficulty",
+        example: "They lugged the boxes up three flights of stairs."
+    },
+    "ludicrous": {
+        meaning: "so unreasonable or foolish that it seems ridiculous",
+        example: "The price they asked for the old car was ludicrous."
+    },
+    "lukewarm": {
+        meaning: "only slightly warm; not enthusiastic",
+        example: "The coffee was lukewarm by the time I drank it."
+    },
+    "lull": {
+        meaning: "to make someone sleep; to make a storm or feeling become calmer",
+        example: "The gentle music lulled the baby to sleep."
+    },
+    "lullaby": {
+        meaning: "a song sung to help a child sleep",
+        example: "She sang a quiet lullaby to the baby."
+    },
+    "luminous": {
+        meaning: "giving off or reflecting light",
+        example: "The watch has luminous hands that are easy to see at night."
+    },
+    "lunacy": {
+        meaning: "extreme foolishness; historically, mental illness",
+        example: "It would be lunacy to ignore such clear evidence."
+    },
+    "lunge": {
+        meaning: "to make a sudden forward movement",
+        example: "The dog lunged at the ball."
+    },
+    "lurch": {
+        meaning: "to move suddenly and unsteadily",
+        example: "The bus lurched forward when the driver accelerated."
+    },
+    "lure": {
+        meaning: "something that attracts or tempts; to attract or tempt",
+        example: "The promise of easy money lured him into the scheme."
+    },
+    "lurk": {
+        meaning: "to remain hidden while waiting to act",
+        example: "A danger may lurk beneath the calm surface."
+    },
+    "luscious": {
+        meaning: "very pleasant to taste or smell; sexually attractive",
+        example: "The peaches were ripe, juicy, and luscious."
+    },
+    "lush": {
+        meaning: "growing thickly and healthily; rich and green",
+        example: "The valley is covered with lush vegetation."
+    },
+    "lust": {
+        meaning: "a very strong desire, especially sexual desire",
+        example: "The novel explores the difference between love and lust."
+    },
+    "luxuriant": {
+        meaning: "growing thickly and abundantly",
+        example: "The garden was filled with luxuriant green plants."
+    },
+    "lychee": {
+        meaning: "a tropical fruit with rough red skin and sweet white flesh",
+        example: "We bought fresh lychees at the market."
+    },
+    "lynch": {
+        meaning: "to kill someone illegally by mob action",
+        example: "The novel describes a community shaken by a lynching."
+    },
+    "lyric": {
+        meaning: "a lyric poem; expressing emotion in a poetic way",
+        example: "The song's lyrics describe a lonely journey."
+    },
+    "macabre": {
+        meaning: "disturbing because it involves death or injury",
+        example: "The museum contained a macabre collection of historical objects."
+    },
+    "macaroni": {
+        meaning: "a type of short tubular pasta",
+        example: "She made macaroni with cheese for lunch."
+    },
+    "mackerel": {
+        meaning: "a sea fish often used as food",
+        example: "The fishermen brought in a large catch of mackerel."
+    },
+    "macroeconomic": {
+        meaning: "relating to the economy as a whole",
+        example: "The report examines several macroeconomic trends."
+    },
+    "madden": {
+        meaning: "to make extremely angry or frustrated",
+        example: "The constant delays began to madden the passengers."
+    },
+    "maggot": {
+        meaning: "a soft, legless larva of a fly",
+        example: "The old food was covered with maggots."
+    },
+    "magnanimous": {
+        meaning: "generous and forgiving, especially toward a rival",
+        example: "She was magnanimous after winning the competition."
+    },
+    "magnate": {
+        meaning: "a powerful and wealthy businessperson",
+        example: "The media magnate owns several newspapers."
+    },
+    "magnetism": {
+        meaning: "the force associated with magnets; a strong power of attraction",
+        example: "His confidence gave him a certain personal magnetism."
+    },
+    "magnitude": {
+        meaning: "great size or importance; numerical size",
+        example: "The magnitude of the earthquake surprised scientists."
+    },
+    "magnolia": {
+        meaning: "a tree or shrub with large flowers",
+        example: "A magnolia was blooming beside the house."
+    },
+    "magpie": {
+        meaning: "a black-and-white bird; a person who collects things indiscriminately",
+        example: "The magpie carried a shiny object back to its nest."
+    },
+    "maim": {
+        meaning: "to injure someone so severely that a part of the body is permanently damaged",
+        example: "The accident maimed several workers."
+    },
+    "mainspring": {
+        meaning: "the main spring in a clock; the main force or cause behind something",
+        example: "Curiosity was the mainspring of her research."
+    },
+    "mainstay": {
+        meaning: "a person or thing that provides essential support",
+        example: "Tourism is a mainstay of the local economy."
+    },
+    "majestic": {
+        meaning: "having great beauty, dignity, or grandeur",
+        example: "We watched the majestic mountains in silence."
+    },
+    "maladjusted": {
+        meaning: "unable to adapt successfully to circumstances",
+        example: "The novel portrays a maladjusted young man struggling to fit in."
+    },
+    "maladministration": {
+        meaning: "poor or inefficient management",
+        example: "The investigation uncovered serious maladministration."
+    },
+    "malformed": {
+        meaning: "formed incorrectly or abnormally",
+        example: "The scan revealed a malformed bone."
+    },
+    "malfunction": {
+        meaning: "a failure to work properly",
+        example: "The machine stopped because of a technical malfunction."
+    },
+    "malign": {
+        meaning: "harmful or evil in nature",
+        example: "The disease can be malign if left untreated."
+    },
+    "malignant": {
+        meaning: "dangerously harmful; cancerous and likely to spread",
+        example: "The biopsy showed that the tumor was malignant."
+    },
+    "malignancy": {
+        meaning: "the quality of being malignant; a malignant disease",
+        example: "Doctors found no evidence of malignancy."
+    },
+    "malnutrition": {
+        meaning: "poor health caused by insufficient or unbalanced nutrition",
+        example: "Children in the region suffer from malnutrition."
+    },
+    "malnutritious": {
+        meaning: "lacking adequate nutritional value",
+        example: "A diet based mainly on junk food can be malnutritious."
+    },
+    "malpractice": {
+        meaning: "wrong or negligent professional behavior",
+        example: "The patient filed a complaint alleging medical malpractice."
+    },
+    "malt": {
+        meaning: "grain treated for use in brewing or distilling",
+        example: "The brewery uses locally produced malt."
+    },
+    "maltreat": {
+        meaning: "to treat someone or something cruelly or badly",
+        example: "The organization works to protect animals from being maltreated."
+    },
+    "mammoth": {
+        meaning: "extremely large; a prehistoric elephant-like animal",
+        example: "The project requires a mammoth amount of work."
+    },
+    "manacle": {
+        meaning: "a metal restraint for the wrists or hands",
+        example: "The prisoner was placed in manacles."
+    },
+    "manageable": {
+        meaning: "easy enough to control or deal with",
+        example: "The workload is manageable if we divide it among the team."
+    },
+    "managerial": {
+        meaning: "relating to management or managers",
+        example: "She has extensive managerial experience."
+    },
+    "mandarin": {
+        meaning: "a high-ranking official in imperial China; the former name for standard Chinese",
+        example: "The historical novel describes a powerful mandarin."
+    },
+    "mandate": {
+        meaning: "an official order or authority to act; to order officially",
+        example: "The committee received a mandate to investigate the issue."
+    },
+    "mandatory": {
+        meaning: "required by rule or law",
+        example: "Attendance at the safety training is mandatory."
+    },
+    "mane": {
+        meaning: "the long hair around the neck of some animals",
+        example: "The lion shook its mane."
+    },
+    "manful": {
+        meaning: "brave, determined, and strong",
+        example: "He made a manful effort to finish the difficult task."
+    },
+    "manger": {
+        meaning: "a box or trough from which animals eat",
+        example: "The horses were feeding from the manger."
+    },
+    "mania": {
+        meaning: "extreme enthusiasm or obsession; a state of abnormally elevated mood",
+        example: "His latest mania is collecting antique maps."
+    },
+    "maniac": {
+        meaning: "a wildly uncontrolled or extremely reckless person",
+        example: "He drove like a maniac through the empty streets."
+    },
+    "manic": {
+        meaning: "relating to or affected by mania; extremely energetic",
+        example: "The project entered a manic period before the deadline."
+    },
+    "manicure": {
+        meaning: "a treatment for the hands and fingernails",
+        example: "She booked a manicure before the wedding."
+    },
+    "manifesto": {
+        meaning: "a public statement of beliefs, aims, or intentions",
+        example: "The group published a manifesto outlining its goals."
+    },
+    "manoeuvre": {
+        meaning: "a skillful movement or carefully planned action",
+        example: "The driver manoeuvred the car into the narrow space."
+    },
+    "manslaughter": {
+        meaning: "the unlawful killing of a person without the intent required for murder",
+        example: "He was convicted of manslaughter."
+    },
+    "mantelpiece": {
+        meaning: "the shelf above a fireplace",
+        example: "Family photographs stood on the mantelpiece."
+    },
+    "mantle": {
+        meaning: "a covering or cloak; a role or responsibility passed to someone",
+        example: "She inherited the mantle of leadership."
+    },
+    "manure": {
+        meaning: "animal waste used as fertilizer; to fertilize with it",
+        example: "Farmers spread manure over the fields."
+    },
+    "mar": {
+        meaning: "to damage or spoil something",
+        example: "A single careless comment marred the celebration."
+    },
+    "marathon": {
+        meaning: "a long-distance running race; something requiring great endurance",
+        example: "Writing the report became a marathon task."
+    },
+    "marijuana": {
+        meaning: "the dried leaves and flowers of the cannabis plant",
+        example: "The article discusses the legal history of marijuana."
+    },
+    "marital": {
+        meaning: "relating to marriage",
+        example: "They sought counseling for marital problems."
+    },
+    "marquee": {
+        meaning: "a large tent used for an event",
+        example: "Guests gathered inside the marquee for dinner."
+    },
+    "mart": {
+        meaning: "a market or commercial center",
+        example: "The town once served as an important trading mart."
+    },
+    "martial": {
+        meaning: "relating to war or the military",
+        example: "The museum contains many martial artifacts."
+    },
+    "mascot": {
+        meaning: "a person, animal, or object representing a group or organization",
+        example: "The tiger is the university's mascot."
+    },
+    "mash": {
+        meaning: "to crush food into a soft mass; a soft crushed mixture",
+        example: "Mash the potatoes until they are smooth."
+    },
+    "masquerade": {
+        meaning: "to pretend to be someone else; a disguise or costume event",
+        example: "The thief masqueraded as a security guard."
+    },
+    "massage": {
+        meaning: "to rub or press the body to relax or relieve pain",
+        example: "She had a massage after the long flight."
+    },
+    "mastermind": {
+        meaning: "to plan and direct something skillfully; a person who does this",
+        example: "She masterminded the entire campaign."
+    },
+    "mating": {
+        meaning: "the act of animals reproducing sexually",
+        example: "The documentary shows the mating behavior of birds."
+    },
+    "matriculate": {
+        meaning: "to be formally admitted to a university or college",
+        example: "She matriculated at the university in September."
+    },
+    "matrix": {
+        meaning: "an environment or structure from which something develops; a mathematical array",
+        example: "The program uses a matrix to store the data."
+    },
+    "matron": {
+        meaning: "a woman in charge of domestic arrangements in an institution",
+        example: "The school matron supervised the dormitory."
+    },
+    "maul": {
+        meaning: "to attack and injure by tearing or crushing",
+        example: "The animal mauled its attacker."
+    },
+    "mauve": {
+        meaning: "a pale purple color",
+        example: "She wore a mauve dress."
+    },
+    "maverick": {
+        meaning: "a person who thinks and acts independently",
+        example: "The scientist was known as a maverick in his field."
+    },
+    "maxim": {
+        meaning: "a short statement expressing a general truth or principle",
+        example: "His favorite maxim was 'Actions speak louder than words.'"
+    },
+    "mayhem": {
+        meaning: "violent disorder, confusion, or destruction",
+        example: "The sudden storm caused mayhem at the airport."
+    },
+    "maze": {
+        meaning: "a complicated network of paths; a confusing situation",
+        example: "Finding the exit felt like navigating a maze."
+    },
+    "meagre": {
+        meaning: "small in amount; poor or lacking in quality",
+        example: "They survived on a meagre income."
+    },
+    "meander": {
+        meaning: "to wander without a clear direction; to follow a winding course",
+        example: "The river meanders through the valley."
+    },
+    "measles": {
+        meaning: "an infectious disease causing fever and a red skin rash",
+        example: "The child was vaccinated against measles."
+    },
+    "measurable": {
+        meaning: "able to be measured; significant enough to be noticed",
+        example: "The new policy produced a measurable improvement."
+    },
+    "Mecca": {
+        meaning: "the Islamic holy city in Saudi Arabia; a place attracting many visitors",
+        example: "The city became a Mecca for young artists."
+    },
+    "meddle": {
+        meaning: "to interfere in something without being wanted or needed",
+        example: "Try not to meddle in their private affairs."
+    },
+    "mediate": {
+        meaning: "to help settle a disagreement between people or groups",
+        example: "A senior professor agreed to mediate the dispute."
+    },
+    "Medicaid": {
+        meaning: "a U.S. government health program for eligible low-income people",
+        example: "The family applied for Medicaid assistance."
+    },
+    "medication": {
+        meaning: "medicine or a drug used to treat a condition",
+        example: "She takes medication for her allergy."
+    },
+    "mediocre": {
+        meaning: "of only average quality; not very good",
+        example: "The restaurant received mediocre reviews."
+    },
+    "meditate": {
+        meaning: "to think deeply or practice meditation",
+        example: "He meditates for twenty minutes every morning."
+    },
+    "meek": {
+        meaning: "quiet, gentle, and unwilling to fight or argue",
+        example: "The once-meek student gradually became more confident."
+    },
+    "megaphone": {
+        meaning: "a device that makes a person's voice louder",
+        example: "The coach used a megaphone to address the crowd."
+    },
+    "mellow": {
+        meaning: "soft, pleasant, and mature; pleasantly relaxed",
+        example: "The music became mellow as the evening progressed."
+    },
+    "melodrama": {
+        meaning: "a dramatic story with exaggerated emotions",
+        example: "The film is an entertaining melodrama."
+    },
+    "membrane": {
+        meaning: "a thin layer of tissue or material separating areas",
+        example: "The cell membrane controls what enters and leaves the cell."
+    },
+    "memento": {
+        meaning: "an object kept as a reminder of a person or event",
+        example: "She kept the ticket as a memento of the trip."
+    },
+    "menial": {
+        meaning: "relating to low-level, routine work",
+        example: "He started with menial tasks before gaining more responsibility."
+    },
+    "meningitis": {
+        meaning: "inflammation of the membranes surrounding the brain and spinal cord",
+        example: "The doctor warned that meningitis can be a serious illness."
+    },
+    "menopause": {
+        meaning: "the natural period when a woman permanently stops menstruating",
+        example: "She began reading about the symptoms of menopause."
+    },
+    "menstrual": {
+        meaning: "relating to menstruation",
+        example: "The doctor asked about her menstrual cycle."
+    },
+    "mercantile": {
+        meaning: "relating to trade or commerce",
+        example: "The city grew around a busy mercantile district."
+    },
+    "mercenary": {
+        meaning: "motivated mainly by money or personal gain",
+        example: "His motives seemed purely mercenary."
+    },
+    "merciful": {
+        meaning: "showing kindness or forgiveness",
+        example: "The judge was merciful and reduced the sentence."
+    },
+    "mermaid": {
+        meaning: "a mythical creature with the upper body of a woman and the tail of a fish",
+        example: "The child drew a mermaid swimming among the rocks."
+    },
+    "mesh": {
+        meaning: "a network of wires or threads; to fit or work together",
+        example: "The two systems need to mesh perfectly."
+    },
+    "mesmerise": {
+        meaning: "to fascinate or hold someone's attention completely",
+        example: "The audience was mesmerised by the dancer's performance."
+    },
+    "Messiah": {
+        meaning: "a savior or liberator; in Christianity, Jesus",
+        example: "The novel presents the leader as a kind of political messiah."
+    },
+    "metabolism": {
+        meaning: "the chemical processes by which a living body converts food into energy",
+        example: "Exercise can affect the body's metabolism."
+    },
+    "metallurgy": {
+        meaning: "the science and technology of metals",
+        example: "He studied metallurgy at university."
+    },
+    "metaphor": {
+        meaning: "a figure of speech in which one thing is described as another",
+        example: "'Time is money' is a common metaphor."
+    },
+    "metaphysical": {
+        meaning: "relating to ideas about the nature of reality and existence",
+        example: "The book raises difficult metaphysical questions."
+    },
+    "meteor": {
+        meaning: "a streak of light caused by a space object entering Earth's atmosphere",
+        example: "We saw a meteor streak across the night sky."
+    },
+    "meteorology": {
+        meaning: "the scientific study of the atmosphere and weather",
+        example: "She studied meteorology to understand severe storms."
+    },
+    "meteorological": {
+        meaning: "relating to weather or the science of weather",
+        example: "The station collects meteorological data every hour."
+    },
+    "methane": {
+        meaning: "a colorless gas that is a major component of natural gas",
+        example: "Methane is a potent greenhouse gas."
+    },
+    "methodical": {
+        meaning: "done in a careful, organized, and systematic way",
+        example: "She took a methodical approach to the research."
+    },
+    "methodology": {
+        meaning: "a system of methods used in a particular area of study",
+        example: "The paper explains the research methodology."
+    },
+    "meticulous": {
+        meaning: "extremely careful and precise about details",
+        example: "He kept meticulous records of every experiment."
+    },
+    "metro": {
+        meaning: "an underground railway system in a large city",
+        example: "We took the metro to the city center."
+    },
+    "microbiology": {
+        meaning: "the scientific study of microorganisms",
+        example: "She is doing research in microbiology."
+    },
+    "microscope": {
+        meaning: "an instrument used to see very small objects",
+        example: "The cells were examined under a microscope."
+    },
+    "midget": {
+        meaning: "a very small person or thing; an outdated and offensive term for a person with dwarfism",
+        example: "The source uses this historical term, which is now considered offensive."
+    },
+    "migraine": {
+        meaning: "a severe headache, often accompanied by nausea or sensitivity to light",
+        example: "She stayed home because of a migraine."
+    },
+    "migrant": {
+        meaning: "a person who moves from one place to another, often for work",
+        example: "The study examines the lives of migrant workers."
+    },
+    "milometer": {
+        meaning: "a device that measures the distance traveled by a vehicle",
+        example: "The car's milometer showed 80,000 miles."
+    },
+    "millet": {
+        meaning: "a group of small-seeded grains used as food",
+        example: "Millet is an important crop in some dry regions."
+    },
+    "milligram": {
+        meaning: "a unit of mass equal to one thousandth of a gram",
+        example: "The tablet contains 500 milligrams of the active ingredient."
+    },
+    "millipede": {
+        meaning: "a long-bodied animal with many pairs of legs",
+        example: "A millipede moved slowly across the forest floor."
+    },
+    "mime": {
+        meaning: "a form of acting using gestures rather than speech",
+        example: "The performer used mime to tell the story."
+    },
+    "mimic": {
+        meaning: "to copy the way someone or something behaves or sounds",
+        example: "The child mimicked his father's accent."
+    },
+    "mince": {
+        meaning: "to cut food into very small pieces; finely chopped meat",
+        example: "Mince the garlic before adding it to the sauce."
+    },
+    "mink": {
+        meaning: "a small mammal valued historically for its fur",
+        example: "The documentary follows wild mink living near the river."
+    },
+    "mirage": {
+        meaning: "an optical illusion caused by atmospheric conditions; an unreal image or hope",
+        example: "The distant lake was only a mirage."
+    },
+    "mire": {
+        meaning: "deep wet mud; to involve someone in a difficult situation",
+        example: "The project became mired in bureaucracy."
+    },
+    "mirth": {
+        meaning: "happiness and laughter",
+        example: "The children's jokes filled the room with mirth."
+    },
+    "misadventure": {
+        meaning: "an unfortunate accident or unlucky event",
+        example: "Their camping trip ended in a series of misadventures."
+    },
+    "miscellaneous": {
+        meaning: "consisting of many different kinds of things",
+        example: "The drawer was full of miscellaneous items."
+    },
+    "misgiving": {
+        meaning: "a feeling of doubt or worry about something",
+        example: "She had misgivings about signing the contract."
+    },
+    "mitigate": {
+        meaning: "to make something less severe or harmful",
+        example: "The new measures may mitigate the environmental damage."
+    },
+    "mitten": {
+        meaning: "a type of glove covering the fingers together",
+        example: "He wore thick mittens in the snow."
+    },
+    "mixer": {
+        meaning: "a machine for mixing ingredients; a drink added to another drink",
+        example: "Use a hand mixer to beat the eggs."
+    },
+    "moat": {
+        meaning: "a deep ditch, often filled with water, around a castle or building",
+        example: "The medieval castle was surrounded by a moat."
+    },
+    "mobile": {
+        meaning: "able to move or be moved easily",
+        example: "The equipment is lightweight and mobile."
+    },
+    "mobilize": {
+        meaning: "to organize or prepare people or resources for action",
+        example: "The community mobilized volunteers after the storm."
+    },
+    "mockery": {
+        meaning: "ridicule or insulting imitation",
+        example: "His accent became the subject of mockery."
+    },
+    "modem": {
+        meaning: "a device that connects a computer or network to the internet",
+        example: "The old modem could no longer handle the faster connection."
+    },
+    "modular": {
+        meaning: "made of separate units that can be combined or rearranged",
+        example: "The course has a modular structure."
+    },
+    "module": {
+        meaning: "a separate unit that forms part of a larger system",
+        example: "Students must complete each module before moving on."
+    },
+    "moisturize": {
+        meaning: "to add moisture to the skin",
+        example: "Use a cream to moisturize dry skin."
+    },
+    "molest": {
+        meaning: "to harass, disturb, or attack someone, especially sexually",
+        example: "The law protects children from being molested."
+    },
+    "mollify": {
+        meaning: "to calm or soothe someone who is angry or upset",
+        example: "He tried to mollify the angry customer."
+    },
+    "momentum": {
+        meaning: "the force or speed gained by movement; progress that makes continued development easier",
+        example: "The campaign gained momentum after the announcement."
+    },
+    "mongrel": {
+        meaning: "an animal of mixed breed; something of mixed origin",
+        example: "The shelter rescued a friendly mongrel."
+    },
+    "monochrome": {
+        meaning: "using or consisting of a single color or shades of one color",
+        example: "The artist created a monochrome photograph."
+    },
+    "monogamy": {
+        meaning: "the practice of having one spouse or partner at a time",
+        example: "The article compares monogamy with other relationship systems."
+    },
+    "monolingual": {
+        meaning: "using or knowing only one language",
+        example: "The program is designed for monolingual learners."
+    },
+    "monolith": {
+        meaning: "a large single block of stone; a large unified organization or system",
+        example: "The monument was carved from a single monolith."
+    },
+    "monologue": {
+        meaning: "a long speech by one person, especially in a play",
+        example: "The actor delivered a powerful monologue."
+    },
+    "monotone": {
+        meaning: "a single unchanging tone of voice or sound",
+        example: "He read the passage in a flat monotone."
+    },
+    "monotony": {
+        meaning: "the quality of being repetitive and lacking variety",
+        example: "The monotony of the routine became exhausting."
+    },
+    "monsoon": {
+        meaning: "a seasonal wind system that brings heavy rain to some regions",
+        example: "The monsoon arrives in early summer."
+    },
+    "montage": {
+        meaning: "a combination of separate images or scenes forming a whole",
+        example: "The film opens with a montage of city life."
+    },
+    "monetary": {
+        meaning: "relating to money or currency",
+        example: "The policy has important monetary consequences."
+    },
+    "mope": {
+        meaning: "to spend time feeling unhappy and doing little",
+        example: "He stayed home and moped after the argument."
+    },
+    "morbid": {
+        meaning: "relating to disease or death; unusually gloomy or unhealthy",
+        example: "The article takes a morbid interest in old crimes."
+    },
+    "mores": {
+        meaning: "the traditional customs and moral attitudes of a society",
+        example: "The novel challenges the social mores of its time."
+    },
+    "moribund": {
+        meaning: "close to death or no longer active",
+        example: "The once-famous company is now moribund."
+    },
+    "morphine": {
+        meaning: "a powerful drug used to relieve severe pain",
+        example: "The doctor prescribed morphine for severe pain."
+    },
+    "mortality": {
+        meaning: "the state of being mortal; the number or rate of deaths",
+        example: "The study examines infant mortality."
+    },
+    "mortar": {
+        meaning: "a mixture used to hold bricks together; a type of military weapon",
+        example: "The workers mixed mortar for the brick wall."
+    },
+    "mortgage": {
+        meaning: "a legal agreement involving a loan secured by property",
+        example: "They took out a mortgage to buy the house."
+    },
+    "mortuary": {
+        meaning: "a place where dead bodies are kept",
+        example: "The body was taken to the hospital mortuary."
+    },
+    "mosaic": {
+        meaning: "a picture or pattern made from small pieces of material",
+        example: "The floor was decorated with a colorful mosaic."
+    },
+    "motif": {
+        meaning: "a repeated design, idea, or theme in art or literature",
+        example: "Birds are a recurring motif in the artist's work."
+    },
+    "motivate": {
+        meaning: "to give someone a reason or desire to act",
+        example: "Clear goals can motivate students to study."
+    },
+    "motive": {
+        meaning: "a reason for doing something",
+        example: "Police are still investigating the motive for the crime."
+    },
+    "motley": {
+        meaning: "made up of many different and often unrelated things or people",
+        example: "A motley group of travelers gathered at the station."
+    },
+    "mound": {
+        meaning: "a raised mass or pile of earth or other material",
+        example: "They built a small mound around the tree."
+    },
+    "mount": {
+        meaning: "to rise or increase; to climb onto; to organize or prepare",
+        example: "Pressure began to mount as the deadline approached."
+    },
+    "mousse": {
+        meaning: "a light, soft food made from whipped ingredients",
+        example: "We ordered chocolate mousse for dessert."
+    },
+    "movable": {
+        meaning: "able to be moved; relating to property that is not land or buildings",
+        example: "The shelves are movable, so the room can be rearranged."
+    },
+    "muck": {
+        meaning: "dirt, rubbish, or animal waste; to make dirty",
+        example: "His boots were covered in muck."
+    },
+    "muddle": {
+        meaning: "a confused state; to mix up or confuse",
+        example: "The instructions only muddled the situation."
+    },
+    "muffin": {
+        meaning: "a small sweet or savory baked cake",
+        example: "She had a blueberry muffin for breakfast."
+    },
+    "mumble": {
+        meaning: "to speak quietly and unclearly",
+        example: "He mumbled an apology and left."
+    },
+    "mummy": {
+        meaning: "a preserved dead body, especially from ancient Egypt",
+        example: "The museum displayed an Egyptian mummy."
+    },
+    "mumps": {
+        meaning: "an infectious disease causing swelling of the salivary glands",
+        example: "The school reported several cases of mumps."
+    },
+    "mundane": {
+        meaning: "ordinary, routine, and not exciting",
+        example: "Even mundane tasks can become enjoyable with good music."
+    },
+    "municipality": {
+        meaning: "a city, town, or district with its own local government",
+        example: "The municipality repaired the damaged road."
+    },
+    "munitions": {
+        meaning: "military weapons and ammunition",
+        example: "The factory produced munitions during the war."
+    },
+    "mural": {
+        meaning: "a large painting made directly on a wall",
+        example: "Students painted a colorful mural on the school wall."
+    },
+    "muse": {
+        meaning: "to think deeply or reflect",
+        example: "She sat by the window and mused about the future."
+    },
+    "musk": {
+        meaning: "a strong-smelling substance used in perfumes",
+        example: "The perfume has a warm musk fragrance."
+    },
+    "mussel": {
+        meaning: "a shellfish with a dark shell",
+        example: "We ordered steamed mussels with bread."
+    },
+    "muster": {
+        meaning: "to gather or collect; to summon up courage or effort",
+        example: "She mustered enough courage to speak in public."
+    },
+    "mutant": {
+        meaning: "an organism whose genetic material has changed",
+        example: "The researchers studied a mutant strain of the plant."
+    },
+    "mutilate": {
+        meaning: "to damage or disfigure severely",
+        example: "The machine could mutilate an object if used incorrectly."
+    },
+    "muzzle": {
+        meaning: "the nose and mouth area of an animal; a device placed over an animal's mouth",
+        example: "The dog wore a muzzle at the clinic."
+    },
+    "myriad": {
+        meaning: "a very large number; countless",
+        example: "The city offers a myriad of opportunities for young people."
+    },
+    "mythology": {
+        meaning: "a collection or study of myths",
+        example: "The course introduces students to Greek mythology."
+    }
+};
+
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+let navigationTimer = null;
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
+function getVocabularySignature() {
+
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+
+}
+
+
+function saveQuizProgress() {
+
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
+
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+
+            vocabularySignature:
+                getVocabularySignature(),
+
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
+}
+
+
+function loadQuizProgress() {
+
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
+
+    if (!saved) {
+        return false;
+    }
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
+
+        return false;
+    }
+
+}
+
+
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
+
+function getStarredWords() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+    }
+
+}
+
+
+function saveStarredWords(words) {
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
+}
+
+
+function getCorrectWord(question) {
+
+    return question.options[
+        question.answer - 1
+    ];
+
+}
+
+
+function isStarred(question) {
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
+}
+
+
+function updateStarButton() {
+
+    const button =
+        document.getElementById("starButton");
+
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
+
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+ // Cancel any pending automatic navigation
+ if (navigationTimer !== null) {
+        clearTimeout(navigationTimer);
+        navigationTimer = null;
+    }
+
+    if (isReviewingStarred) return;
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+if (!isReviewingStarred) {
+    saveQuizProgress();
+}
+
+document.querySelector(".navigation").style.display = "flex";
+
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Question number
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    // Current score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+
+    // Display question
+    document.getElementById(
+        "question"
+    ).textContent =
+        question.question;
+
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+
+    // Clear feedback
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    // Previous button
+    document.getElementById(
+        "prevButton"
+    ).disabled =
+        currentQuestion === 0;
+
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(
+    selectedIndex,
+    button
+) {
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.disabled = true;
+
+        }
+    );
+
+
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
+
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
+
+        questionResults[
+            currentQuestion
+        ] = 1;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+            navigationTimer = setTimeout(() => {
+    navigationTimer = null;
+    goToNextOrFinish();
+}, 900);
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+}
+
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[
+            question.answer - 1
+        ];
+
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
+        correctOption;
+
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
+            : "";
+
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
+            : "";
+
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
+
+
+    // Automatically move on once
+    // the popup is dismissed
+    goToNextOrFinish();
+
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+if (currentQuestion > 0) {
+
+    currentQuestion--;
+
+    if (!isReviewingStarred) {
+        saveQuizProgress();
+    }
+
+    displayQuestion();
+}
+}
+
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+function goToNextOrFinish() {
+
+// More questions remain
+if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Starred review has finished
+if (isReviewingStarred) {
+
+    questions = [...savedQuizState.questions];
+
+    currentQuestion = savedQuizState.currentQuestion;
+
+    correctAnswers = savedQuizState.correctAnswers;
+
+    score = savedQuizState.score;
+
+    questionResults = [...savedQuizState.questionResults];
+
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Normal quiz has finished
+showResult();
+}
+function restartQuiz() {
+
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
+
+
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+    const totalQuestions =
+        questions.length;
+
+
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
+
+
+    const mark =
+        percentage.toFixed(2);
+
+
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "score"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "question"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
+    }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    loadQuizProgress();
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        "No questions found.";
+
+}
+function exportStarredWords() {
+    const starredWords = JSON.parse(
+        localStorage.getItem(STARRED_WORDS_KEY) || "[]"
+    );
+
+    const blob = new Blob(
+        [JSON.stringify(starredWords, null, 2)],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "difficult-words.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
