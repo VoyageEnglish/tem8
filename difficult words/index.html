@@ -1,0 +1,3339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <title>English Quiz</title>
+
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f7;
+    color: #202124;
+
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+}
+
+
+/* ==========================================
+   MAIN QUIZ CONTAINER
+   ========================================== */
+
+.quiz {
+    width: 100%;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        16px
+        max(40px, env(safe-area-inset-bottom));
+}
+
+
+/* ==========================================
+   PROGRESS
+   ========================================== */
+
+#progress {
+    font-size: 16px;
+    line-height: 1.4;
+
+    color: #6b7280;
+
+    margin-bottom: 8px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   SCORE
+   ========================================== */
+
+#score {
+    font-size: 19px;
+    line-height: 1.4;
+
+    color: #1f2937;
+
+    font-weight: bold;
+
+    margin-bottom: 26px;
+}
+
+
+/* ==========================================
+   QUESTION
+   ========================================== */
+
+#question {
+    font-size: 22px;
+    line-height: 1.55;
+
+    font-weight: 400;
+
+    color: #111827;
+
+    margin-bottom: 10px;
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   OPTIONS
+   ========================================== */
+
+#options {
+    width: 100%;
+}
+
+.option {
+    display: block;
+
+    width: 92%;
+    margin-left: 0;
+    
+
+    min-height: 18px;
+
+    padding: 2px 4px;
+
+    margin-bottom: 0px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 0.5;
+
+    text-align: left;
+
+    color: #1f2937;
+
+    background: #ffffff;
+
+    border: 2px solid #d1d5db;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.15s,
+        border-color 0.15s,
+        transform 0.1s;
+}
+
+
+/* Touch feedback */
+
+.option:active {
+    background: #eef2ff;
+    transform: scale(0.99);
+}
+
+
+/* Correct answer */
+
+.option.correct {
+    color: #166534;
+
+    background: #dcfce7;
+
+    border-color: #22c55e;
+}
+
+
+/* Wrong answer */
+
+.option.wrong {
+    color: #991b1b;
+
+    background: #fee2e2;
+
+    border-color: #ef4444;
+}
+
+#slideStage .option {
+    min-height: 20px;
+    padding: 2px 4px;
+    margin-bottom: 2px;
+    line-height: 1;
+    font-size: 21px;
+}
+/* ==========================================
+   FEEDBACK
+   ========================================== */
+
+#feedback {
+    min-height: 5px;
+
+    margin-top: 1px;
+
+    font-size: 19px;
+    line-height: 1.4;
+
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   NAVIGATION
+   ========================================== */
+
+.navigation {
+    display: flex;
+
+    justify-content: flex-start;
+
+    gap: 12px;
+
+    margin-top: 1px;
+
+    width: 100%;
+}
+
+.navigation button {
+    flex: 0 0 auto;
+
+    min-width: 125px;
+    min-height: 30px;
+    margin-top: 0px;
+    padding: 14px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+/* Previous */
+
+#prevButton {
+    color: #374151;
+    background: #e5e7eb;
+    margin-top: 0px;
+
+}
+
+
+/* Next, if used later */
+
+#nextButton {
+    color: white;
+    background: #2563eb;
+}
+
+
+/* Remove old unused button rules */
+
+
+
+.navigation button:active {
+    transform: scale(0.98);
+}
+
+
+.navigation button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+
+/* ==========================================
+   FINAL RESULT
+   ========================================== */
+
+#result {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 23px;
+
+    font-weight: bold;
+
+    color: #111827;
+
+    margin-top: 45px;
+
+    line-height: 1.7;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   RESTART BUTTON
+   ========================================== */
+
+#restartButton {
+    display: none;
+
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 56px;
+
+    margin: 30px auto 0;
+
+    padding: 15px 18px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#restartButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   INFO POPUP
+   ========================================== */
+
+#infoOverlay {
+    display: none;
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(17, 24, 39, 0.55);
+
+    align-items: flex-end;
+    justify-content: center;
+
+    padding:
+        12px
+        12px
+        max(12px, env(safe-area-inset-bottom));
+
+    z-index: 1000;
+}
+
+
+#infoOverlay.visible {
+    display: flex;
+}
+
+
+/* ==========================================
+   INFO BOX
+   ========================================== */
+
+#infoBox {
+    width: 100%;
+
+    max-width: 520px;
+
+    max-height: 78vh;
+
+    overflow-y: auto;
+
+    -webkit-overflow-scrolling: touch;
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    padding: 22px 20px;
+
+    margin: 0;
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* ==========================================
+   POPUP WORD
+   ========================================== */
+
+#infoWord {
+    font-size: 22px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+
+    color: #111827;
+
+    margin-bottom: 14px;
+
+    overflow-wrap: break-word;
+}
+
+
+/* ==========================================
+   POPUP MEANING
+   ========================================== */
+
+#infoMeaning {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #1f2937;
+
+    margin-bottom: 15px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoMeaning span.label {
+    font-weight: bold;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   POPUP EXAMPLE
+   ========================================== */
+
+#infoExample {
+    font-size: 20px;
+
+    line-height: 1.55;
+
+    color: #4b5563;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+
+    overflow-wrap: break-word;
+}
+
+
+#infoExample span.label {
+    font-weight: bold;
+
+    font-style: normal;
+
+    color: #374151;
+}
+
+
+/* ==========================================
+   GOT IT BUTTON
+   ========================================== */
+
+#infoCloseButton {
+    width: 100%;
+
+    min-height: 54px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    color: white;
+
+    background: #2563eb;
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+
+#infoCloseButton:active {
+    background: #1d4ed8;
+
+    transform: scale(0.98);
+}
+
+
+/* ==========================================
+   DIFFICULT WORD / STAR BUTTONS
+   ========================================== */
+
+   #starButton,
+#reviewStarredButton {
+    position: fixed;
+    right: 20px;
+    z-index: 900;
+
+    min-height: 32px;
+    padding: 6px 10px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #374151;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#starButton {
+    bottom: 60px;
+}
+
+#reviewStarredButton {
+    bottom: 20px;
+}
+
+#starButton:active,
+#reviewStarredButton:active {
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   FULL SCREEN BUTTON
+   ========================================== */
+
+#fullscreenButton {
+    position: fixed;
+    top: 5px;
+    right: 8px;
+    z-index: 900;
+
+    min-width: 30px;
+    min-height: 25px;
+    padding: 4px 6px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    color: white;
+    background: #2563eb;
+
+    border: none;
+    border-radius: 10px;
+
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#fullscreenButton:active {
+    background: #1d4ed8;
+    transform: scale(0.97);
+}
+
+/* ==========================================
+   SMALL ANDROID PHONES
+   ========================================== */
+
+@media (max-width: 380px) {
+
+    .quiz {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    #question {
+        font-size: 22px;
+        line-height: 1.5;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 60px;
+        padding: 16px;
+        font-weight: 400px;
+    }
+
+    #score {
+        font-size: 18px;
+    }
+
+    #progress {
+        font-size: 18px;
+    }
+
+    #infoBox {
+        padding: 20px 17px;
+        max-height: 80vh;
+    }
+
+    #infoWord {
+        font-size: 22px;
+    }
+
+    #infoMeaning {
+        font-size: 20px;
+    }
+
+    #infoExample {
+        font-size: 20px;
+    }
+}
+
+
+/* ==========================================
+   TABLET / LARGE SCREEN
+   ========================================== */
+
+@media (min-width: 600px) {
+
+    .quiz {
+        padding-top: 35px;
+    }
+
+    #question {
+        font-size: 22px;
+    }
+
+    .option {
+        font-size: 21px;
+        min-height: 56px;
+        font-weight:400px;
+        margin-bottom: 2px;
+        line-height: 1;
+    }
+
+    #infoBox {
+        max-width: 500px;
+    }
+}
+
+
+/* ==========================================
+   LANDSCAPE PHONE
+   ========================================== */
+
+@media (max-height: 400px) and (orientation: landscape) {
+
+    .quiz {
+        padding-top: 12px;
+        padding-bottom: 25px;
+    }
+
+    #score {
+        margin-bottom: 15px;
+    }
+
+    #question {
+        margin-bottom: 22px;
+    }
+
+    .option {
+        min-height: 50px;
+        padding: 12px 16px;
+        margin-bottom: 9px;
+        font-size:21px;
+        font-weight:400px;
+    }
+
+    #infoBox {
+        max-height: 90vh;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<button id="fullscreenButton" type="button" onclick="toggleFullScreen()">
+    ⛶ Full 
+</button>
+
+<button id="starButton" type="button" onclick="toggleStar()">
+    ☆ Difficult
+</button>
+
+
+
+
+
+<div class="quiz">
+
+    <div id="progress"></div>
+
+    <div id="score"></div>
+
+    <div id="question"></div>
+
+    <div id="options"></div>
+
+    <div id="feedback"></div>
+
+    <div class="navigation">
+        <button id="prevButton">Previous</button>
+    </div>
+    <button id="reviewStarredButton" type="button" onclick="reviewStarred()">
+        ★ Review (0)
+    </button>
+    <div id="result"></div>
+
+    <button id="restartButton" onclick="restartQuiz()">
+        Restart from Question 1
+    </button>
+
+</div>
+
+<!-- Popup shown when the wrong answer is chosen -->
+<div id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+    <div id="infoBox">
+        <div id="infoWord"></div>
+        <div id="infoMeaning"></div>
+        <div id="infoExample"></div>
+        <button id="infoCloseButton" onclick="closeInfo()">Got it</button>
+    </div>
+</div>
+<button onclick="exportStarredWords()">
+    Save Difficult Words
+</button>
+<script>
+   const vocabulary = {
+    clutter: {
+        meaning: "a collection of things lying around in a messy or untidy way",
+        example: "The room was full of clutter, so I spent the afternoon cleaning it."
+    },
+    ballast: {
+        meaning: "heavy material used to give stability to a ship, vehicle, or structure",
+        example: "Sandbags were used as ballast to keep the boat stable."
+    },
+    certify: {
+        meaning: "to officially state that something is true or meets a particular standard",
+        example: "The laboratory certified that the water was safe to drink."
+    },
+    bane: {
+        meaning: "a person or thing that causes continual trouble or annoyance",
+        example: "Traffic jams are the bane of his daily commute."
+    },
+    consign: {
+        meaning: "to send or give something to someone for a particular purpose",
+        example: "The damaged goods were consigned to the warehouse."
+    },
+    confetti: {
+        meaning: "small pieces of colored paper thrown during a celebration",
+        example: "The newlyweds walked through a shower of confetti."
+    },
+    chum: {
+        meaning: "a close friend",
+        example: "He went fishing with an old school chum."
+    },
+    blob: {
+        meaning: "a small, shapeless mass or drop of something",
+        example: "A blob of paint landed on the floor."
+    },
+    afoot: {
+        meaning: "happening or in progress",
+        example: "Something unusual seems to be afoot in the office."
+    },
+    abject: {
+        meaning: "extremely bad or unpleasant; showing complete lack of pride or hope",
+        example: "The project ended in abject failure."
+    },
+    budge: {
+        meaning: "to move slightly or make someone or something move",
+        example: "The heavy box would not budge."
+    },
+    buff: {
+        meaning: "to polish something until it is smooth and shiny",
+        example: "He buffed the car until it looked almost new."
+    },
+    con: {
+        meaning: "to trick or persuade someone dishonestly; a dishonest trick",
+        example: "The salesman tried to con me into buying an unnecessary product."
+    },
+    buggy: {
+        meaning: "a small vehicle; also, containing faults or errors, especially in software",
+        example: "The new app is still buggy and sometimes crashes."
+    },
+    cathode: {
+        meaning: "the electrode through which electric current leaves a device",
+        example: "The electrons move toward the cathode in the circuit."
+    },
+    autopsy: {
+        meaning: "an examination of a dead body to determine the cause of death",
+        example: "The doctor performed an autopsy to determine how the man had died."
+    },
+    corroborate: {
+        meaning: "to provide evidence that confirms or supports a statement or theory",
+        example: "The witness's story was corroborated by security footage."
+    },
+    bogus: {
+        meaning: "not genuine, true, or real; fake",
+        example: "The website was selling bogus products."
+    },
+    capitulate: {
+        meaning: "to stop resisting and agree to something after being defeated or pressured",
+        example: "After hours of negotiation, the company finally capitulated."
+    },
+    claustrophobia: {
+        meaning: "an extreme fear of being in small or enclosed spaces",
+        example: "His claustrophobia makes it difficult for him to use crowded elevators."
+    },
+    alms: {
+        meaning: "money, food, or other things given to poor people as charity",
+        example: "The monk distributed alms to the poor."
+    },
+    ambivalent: {
+        meaning: "having mixed or conflicting feelings about something",
+        example: "She felt ambivalent about moving to another city."
+    },
+    admonish: {
+        meaning: "to warn or criticize someone gently but firmly",
+        example: "The teacher admonished the students for being careless."
+    },
+    banish: {
+        meaning: "to force someone to leave a place or get rid of something completely",
+        example: "The king banished the traitor from the kingdom."
+    },
+    begrudge: {
+        meaning: "to resent giving or allowing something to someone",
+        example: "I do not begrudge her success because she worked hard for it."
+    },
+    callow: {
+        meaning: "young and inexperienced, especially in dealing with people or situations",
+        example: "The callow young manager had much to learn."
+    },
+    allay: {
+        meaning: "to reduce fear, worry, or doubt",
+        example: "The doctor tried to allay the patient's fears."
+    },
+    burrow: {
+        meaning: "a hole or tunnel dug by an animal for living in; to dig such a hole",
+        example: "The rabbit disappeared into its burrow."
+    },
+    craven: {
+        meaning: "lacking courage; cowardly",
+        example: "He was criticized for his craven refusal to defend his friend."
+    },
+    categorical: {
+        meaning: "absolute and without exceptions or conditions",
+        example: "She gave a categorical denial of the accusation."
+    },
+    agnostic: {
+        meaning: "believing that it is impossible to know whether God exists",
+        example: "He describes himself as agnostic rather than religious."
+    },
+    apposite: {
+        meaning: "very suitable or appropriate to a particular situation",
+        example: "Her example was particularly apposite to the topic we were discussing."
+    },
+    crease: {
+        meaning: "a line or mark made by folding or pressing something; to make such a mark",
+        example: "There was a deep crease in his shirt."
+    },
+    clandestine: {
+        meaning: "secret and carefully hidden, especially because something is illegal or wrong",
+        example: "The two groups held a clandestine meeting at night."
+    },
+    chuck: {
+        meaning: "to throw something away or casually throw something",
+        example: "He chucked the empty bottle into the trash."
+    },
+    esoteric: {
+        meaning: "understood or known by only a small group of people with special knowledge",
+        example: "The book contains many esoteric terms from ancient philosophy."
+    },
+    embroil: {
+        meaning: "to involve someone in a difficult or unpleasant situation",
+        example: "The scandal embroiled several senior officials."
+    },
+    eclectic: {
+        meaning: "choosing ideas, styles, or things from many different sources",
+        example: "She has an eclectic taste in music."
+    },
+    extrapolate: {
+        meaning: "to estimate or predict something by using known information",
+        example: "Scientists extrapolated future temperatures from the available data."
+    },
+    espouse: {
+        meaning: "to support or adopt an idea, belief, or cause",
+        example: "The organization espouses equal opportunities for everyone."
+    },
+    exonerate: {
+        meaning: "to officially state that someone is not responsible for a crime or wrongdoing",
+        example: "New evidence helped exonerate the accused man."
+    },
+    dither: {
+        meaning: "to be unable to make a decision because of uncertainty",
+        example: "Stop dithering and make a decision."
+    },
+    defile: {
+        meaning: "to make something dirty or impure; to damage the purity or appearance of something",
+        example: "The factory was accused of defiling the river."
+    },
+    evocative: {
+        meaning: "bringing strong memories, feelings, or images to mind",
+        example: "The old photograph was deeply evocative of her childhood."
+    },
+    discrete: {
+        meaning: "separate and distinct from other things",
+        example: "The report divides the problem into several discrete parts."
+    },
+    damper: {
+        meaning: "something that reduces excitement, enthusiasm, or activity",
+        example: "The bad weather put a damper on our picnic."
+    },
+    dissolute: {
+        meaning: "morally careless and lacking self-control, especially in sexual or drinking habits",
+        example: "The novel describes the dissolute life of a wealthy young man."
+    },
+    dappled: {
+        meaning: "marked with spots or patches of light and shade",
+        example: "We walked beneath the dappled sunlight of the trees."
+    },
+    didactic: {
+        meaning: "intended to teach, especially in a way that is too obviously instructive",
+        example: "The novel is entertaining without becoming overly didactic."
+    },
+    deacon: {
+        meaning: "a person who assists a priest or minister in some Christian churches",
+        example: "The deacon helped organize the church's charity program."
+    },
+    dank: {
+        meaning: "unpleasantly damp and often cold",
+        example: "The basement was dark, dank, and poorly ventilated."
+    },
+    ebony: {
+        meaning: "a very dark black color; a hard dark wood",
+        example: "The piano was made of polished ebony."
+    },
+    dispensation: {
+        meaning: "special permission to be free from a rule or obligation",
+        example: "The student was given a special dispensation to miss the examination."
+    },
+    deplore: {
+        meaning: "to strongly disapprove of or regret something",
+        example: "The mayor deplored the violence that had occurred."
+    },
+    entourage: {
+        meaning: "a group of people who travel with and assist an important person",
+        example: "The actor arrived with a large entourage."
+    },
+    equable: {
+        meaning: "calm, even-tempered, and not easily upset",
+        example: "Despite the pressure, she remained equable and professional."
+    },
+    disconcert: {
+        meaning: "to make someone feel confused, worried, or uncomfortable",
+        example: "His unexpected question disconcerted me."
+    },
+    dumpy: {
+        meaning: "short and somewhat fat in an unattractive way",
+        example: "The old house was a dumpy little building."
+    },
+    divulge: {
+        meaning: "to reveal secret or private information",
+        example: "She refused to divulge the details of the agreement."
+    },
+    dinghy: {
+        meaning: "a small boat used for carrying people to and from a larger boat",
+        example: "They rowed the dinghy back to the yacht."
+    },
+    drab: {
+        meaning: "dull, boring, or lacking bright color",
+        example: "The office was decorated in drab shades of gray."
+    },
+    dilettante: {
+        meaning: "a person who takes an interest in an activity without serious commitment or expertise",
+        example: "He is more of a dilettante than a serious musician."
+    },
+    eon: {
+        meaning: "an extremely long period of time",
+        example: "It seemed like an eon before the bus finally arrived."
+    },
+    extradite: {
+        meaning: "to officially send someone back to another country to face criminal charges",
+        example: "The suspect was extradited to his home country."
+    },
+    debris: {
+        meaning: "scattered pieces of waste or remains after something has been destroyed",
+        example: "Workers cleared the debris from the damaged building."
+    },
+    decorous: {
+        meaning: "polite, proper, and socially acceptable",
+        example: "The guests maintained a decorous silence during the ceremony."
+    },
+    enthrall: {
+        meaning: "to fascinate or captivate someone completely",
+        example: "The storyteller enthralled the children with his tale."
+    },
+    delve: {
+        meaning: "to examine or investigate something deeply",
+        example: "The researcher delved into the history of the ancient city."
+    },
+    exhilarate: {
+        meaning: "to make someone feel extremely happy, excited, or energetic",
+        example: "The fast ride exhilarated everyone on board."
+    },
+    elucidate: {
+        meaning: "to explain something clearly",
+        example: "The professor used a diagram to elucidate the theory."
+    },
+    dais: {
+        meaning: "a raised platform where speakers or important people sit or stand",
+        example: "The guest speaker stepped onto the dais."
+    },
+    duff: {
+        meaning: "worthless or faulty; poor-quality",
+        example: "The machine stopped working because one of its parts was duff."
+    },
+    daft: {
+        meaning: "silly or foolish",
+        example: "It was a daft idea that could never have worked."
+    },
+    devious: {
+        meaning: "dishonest or indirect, especially in achieving a goal",
+        example: "He used a devious plan to gain control of the company."
+    },
+    dapper: {
+        meaning: "neat, stylish, and well dressed",
+        example: "He looked very dapper in his new suit."
+    },
+    encumber: {
+        meaning: "to make something difficult by adding a burden or obstacle",
+        example: "The heavy equipment encumbered the rescue team."
+    },
+    dilapidated: {
+        meaning: "in very poor condition because of age or lack of care",
+        example: "They bought a dilapidated house and spent years renovating it."
+    },
+    delirious: {
+        meaning: "extremely excited or happy; also confused and unable to think clearly",
+        example: "The fans were delirious with excitement after the victory."
+    },
+    exalt: {
+        meaning: "to praise someone or something very highly",
+        example: "The article exalted the scientist as a national hero."
+    },
+    defer_to: {
+        meaning: "to accept someone's opinion or decision because of their greater knowledge or authority",
+        example: "I usually defer to her judgment on financial matters."
+    },
+    din: {
+        meaning: "a loud unpleasant mixture of sounds",
+        example: "The din from the construction site made it hard to concentrate."
+    },
+    emboss: {
+        meaning: "to decorate a surface with a raised design or lettering",
+        example: "Her initials were embossed on the leather cover."
+    },
+    deluxe: {
+        meaning: "more luxurious or elaborate than usual",
+        example: "We stayed in a deluxe room overlooking the sea."
+    },
+    expunge: {
+        meaning: "to remove something completely, especially from a record",
+        example: "The court ordered the criminal record to be expunged."
+    },
+    ditty: {
+        meaning: "a short simple song, especially one that is humorous or light",
+        example: "He sang a cheerful little ditty while cooking dinner."
+    },
+    dribble: {
+        meaning: "to let liquid fall or flow slowly in small drops; to move a ball by repeatedly bouncing it",
+        example: "Water dribbled from the cracked pipe."
+    },
+    exhort: {
+        meaning: "to strongly encourage someone to do something",
+        example: "The coach exhorted the players to keep fighting."
+    },
+    desiccate: {
+        meaning: "to remove the moisture from something; to dry out completely",
+        example: "The hot sun quickly desiccated the soil."
+    },
+    ethereal: {
+        meaning: "extremely delicate, light, or beautiful in a way that seems otherworldly",
+        example: "The singer's ethereal voice filled the theater."
+    },
+    efficacy: {
+        meaning: "the ability of something to produce the desired result",
+        example: "Researchers are studying the efficacy of the new treatment."
+    },
+    decoy: {
+        meaning: "something or someone used to trick an enemy or attract attention away from another target",
+        example: "The police used a fake vehicle as a decoy."
+    },
+    exponent: {
+        meaning: "a person who strongly supports or promotes an idea; a number showing how many times a quantity is multiplied by itself",
+        example: "She is a leading exponent of renewable energy."
+    },
+    erratic: {
+        meaning: "unpredictable and inconsistent",
+        example: "His erratic behavior made it difficult to know what he would do next."
+    },
+    doldrums: {
+        meaning: "a state of inactivity, depression, or low energy",
+        example: "The company has been in the doldrums for several months."
+    },
+    diametrically: {
+        meaning: "completely and directly opposite",
+        example: "The two politicians have diametrically opposed views."
+    },
+    darn: {
+        meaning: "a mild expression of annoyance or disappointment",
+        example: "Darn! I forgot my keys again."
+    },
+    dollop: {
+        meaning: "a small amount of something, especially food",
+        example: "Add a dollop of cream to the dessert."
+    },
+    delude: {
+        meaning: "to make someone believe something that is not true",
+        example: "He was deluding himself if he thought the problem would disappear."
+    },
+    execrable: {
+        meaning: "extremely bad or unpleasant",
+        example: "The restaurant received terrible reviews for its execrable service."
+    },
+    exorcise: {
+        meaning: "to force an evil spirit out of a person or place",
+        example: "The priest was asked to exorcise the spirit."
+    },
+    dungarees: {
+        meaning: "clothing made of denim, especially jeans or overalls",
+        example: "She wore a pair of old dungarees while painting the house."
+    },
+    erudite: {
+        meaning: "having or showing great knowledge, especially from extensive reading",
+        example: "The professor was an erudite scholar of ancient history."
+    },
+    edifice: {
+        meaning: "a large building, especially an impressive one",
+        example: "The university's main edifice dates back to the nineteenth century."
+    },
+    debilitate: {
+        meaning: "to make someone or something weak or less effective",
+        example: "The disease severely debilitated the patient."
+    },
+    dimple: {
+        meaning: "a small hollow in the cheek or another part of the body",
+        example: "A dimple appeared in her cheek when she smiled."
+    },
+    discreet: {
+        meaning: "careful not to attract attention or reveal private information",
+        example: "Please be discreet when discussing the matter."
+    },
+    equitable: {
+        meaning: "fair and reasonable",
+        example: "The new system is intended to provide an equitable distribution of resources."
+    },
+    estimable: {
+        meaning: "worthy of respect or admiration",
+        example: "She is an estimable scientist with a long record of achievement."
+    },
+    etch: {
+        meaning: "to cut a design or words into a surface; to impress something deeply in the memory",
+        example: "The artist etched a beautiful pattern into the glass."
+    },
+    dunce: {
+        meaning: "a person who is slow to learn or lacks intelligence",
+        example: "He jokingly called himself a dunce after making such an obvious mistake."
+    },
+    emanate: {
+        meaning: "to come or spread out from a particular source",
+        example: "A strange smell emanated from the basement."
+    },
+    diocese: {
+        meaning: "an area under the authority of a bishop in a Christian church",
+        example: "The bishop visited several churches in the diocese."
+    },
+    engross: {
+        meaning: "to completely absorb someone's attention",
+        example: "The novel engrossed me from the very first page."
+    },
+    effluent: {
+        meaning: "liquid waste discharged from a factory or sewage system",
+        example: "The factory was fined for releasing polluted effluent into the river."
+    },
+    duplicity: {
+        meaning: "dishonest behavior involving deception or pretending to have different intentions",
+        example: "His duplicity eventually destroyed the trust between them."
+    },
+    ensign: {
+        meaning: "a flag displayed on a ship or used as a symbol of a country or organization",
+        example: "The national ensign was flying above the ship."
+    },
+    dumbfound: {
+        meaning: "to surprise someone so much that they cannot speak or react normally",
+        example: "The unexpected news dumbfounded everyone in the room."
+    },
+    eavesdrop: {
+        meaning: "to secretly listen to a private conversation",
+        example: "She tried not to eavesdrop on the conversation next door."
+    },
+    fiddling: {
+        meaning: "small, unimportant, or trivial",
+        example: "He wasted time on fiddling details instead of solving the main problem."
+    },
+    flabby: {
+        meaning: "soft and loose because of a lack of muscle or firmness",
+        example: "Regular exercise can help prevent your muscles from becoming flabby."
+    },
+    gazette: {
+        meaning: "an official newspaper or publication containing announcements",
+        example: "The new regulations were published in the official gazette."
+    },
+    fecund: {
+        meaning: "producing many offspring, ideas, or results; highly fertile or productive",
+        example: "The writer had a fecund imagination."
+    },
+    gripe: {
+        meaning: "to complain about something, especially in an annoying way",
+        example: "He is always griping about the weather."
+    },
+    flounder: {
+        meaning: "to struggle to make progress or find a solution",
+        example: "Without clear instructions, the new employees began to flounder."
+    },
+    fudge: {
+        meaning: "to avoid giving a clear answer or to deal with something dishonestly or inaccurately",
+        example: "The report fudged the figures to make the results look better."
+    },
+    fetish: {
+        meaning: "an object or activity that a person has an unusually strong interest in",
+        example: "He has a strange fetish for collecting old mechanical objects."
+    },
+    fritter: {
+        meaning: "to waste time, money, or opportunities little by little",
+        example: "Don't fritter away your savings on unnecessary purchases."
+    },
+    glean: {
+        meaning: "to obtain information gradually by observing or searching carefully",
+        example: "We were able to glean useful information from the interview."
+    },
+    forethought: {
+        meaning: "careful planning before taking action",
+        example: "With a little forethought, we could have avoided the problem."
+    },
+    fogy: {
+        meaning: "a person with old-fashioned ideas or habits",
+        example: "He is regarded as an old fogy because he refuses to use modern technology."
+    },
+    fiasco: {
+        meaning: "a complete failure, especially one that is embarrassing",
+        example: "The event turned into a complete fiasco."
+    },
+    finicky: {
+        meaning: "very particular about small details, especially about food or cleanliness",
+        example: "The child is extremely finicky about what he eats."
+    },
+    grumpy: {
+        meaning: "easily annoyed and often in a bad mood",
+        example: "He gets grumpy when he does not get enough sleep."
+    },
+    flunk: {
+        meaning: "to fail a test, course, or examination",
+        example: "He flunked the mathematics exam."
+    },
+    finesse: {
+        meaning: "great skill and delicacy in handling a difficult situation",
+        example: "She handled the sensitive negotiation with considerable finesse."
+    },
+    funk: {
+        meaning: "a state of depression, fear, or low spirits",
+        example: "He was in a funk after losing his job."
+    },
+    forceps: {
+        meaning: "a medical instrument shaped like a pair of pincers, used for gripping or removing things",
+        example: "The surgeon used forceps to remove the small object."
+    },
+    ferret: {
+        meaning: "to search for something carefully and persistently",
+        example: "The journalist ferreted out the truth."
+    },
+    fiddly: {
+        meaning: "difficult to do because it involves many small or complicated parts",
+        example: "Repairing the tiny device is a fiddly job."
+    },
+    frisk: {
+        meaning: "to search someone's body for weapons or other hidden objects",
+        example: "The security guard frisked the suspect."
+    },
+    fruition: {
+        meaning: "the point at which a plan or idea begins to produce the desired results",
+        example: "Years of hard work finally came to fruition."
+    },
+    grotesque: {
+        meaning: "strange, ugly, or unnatural in a disturbing way",
+        example: "The statue had a grotesque face."
+    },
+    foil: {
+        meaning: "a person or thing that contrasts with another and makes its qualities more noticeable",
+        example: "The calm character serves as a foil to his aggressive brother."
+    },
+    fester: {
+        meaning: "to become worse because it is not dealt with; to become infected",
+        example: "Resentment began to fester between the two colleagues."
+    },
+    fastidious: {
+        meaning: "very careful about details and difficult to satisfy",
+        example: "She is fastidious about keeping her desk organized."
+    },
+    forestall: {
+        meaning: "to prevent something from happening by acting before it can occur",
+        example: "The company acted quickly to forestall further criticism."
+    },
+    granule: {
+        meaning: "a very small particle or grain of a substance",
+        example: "Dissolve the granules in warm water before drinking."
+    },
+    flaccid: {
+        meaning: "soft and lacking firmness or strength",
+        example: "The muscles became flaccid after several weeks without exercise."
+    },
+    giddy: {
+        meaning: "extremely excited or happy, sometimes to the point of being unable to think clearly",
+        example: "She felt giddy with excitement after hearing the news."
+    },
+    furnishings: {
+        meaning: "the furniture and other objects used to decorate a room or building",
+        example: "The apartment has simple but elegant furnishings."
+    },
+    garland: {
+        meaning: "a decoration made of flowers, leaves, or other materials connected in a long chain",
+        example: "The hall was decorated with garlands of flowers."
+    },
+    gusto: {
+        meaning: "enthusiasm, energy, and enjoyment",
+        example: "She attacked the project with great gusto."
+    },
+    flighty: {
+        meaning: "not serious or reliable because of being easily excited or changing one's mind",
+        example: "He dismissed her as too flighty to manage the project."
+    },
+    gruff: {
+        meaning: "rough and unfriendly in manner or speech",
+        example: "The old man had a gruff voice but was actually very kind."
+    },
+    fornicate: {
+        meaning: "to have sexual intercourse outside marriage",
+        example: "The law once prohibited unmarried couples from fornicating."
+    },
+    gable: {
+        meaning: "the triangular upper part of a wall at the end of a sloping roof",
+        example: "The house has a large window in the front gable."
+    },
+    facile: {
+        meaning: "too simple or easy, often failing to consider important difficulties",
+        example: "The problem is more complicated than his facile explanation suggests."
+    },
+    figment: {
+        meaning: "something that exists only in the imagination",
+        example: "The monster was merely a figment of his imagination."
+    },
+    flog: {
+        meaning: "to beat someone repeatedly; to sell something aggressively",
+        example: "The soldiers were once flogged as a form of punishment."
+    },
+    flak: {
+        meaning: "strong criticism or opposition",
+        example: "The company received a lot of flak for raising its prices."
+    },
+    flurry: {
+        meaning: "a sudden brief period of activity, excitement, or movement",
+        example: "There was a flurry of activity before the meeting began."
+    },
+    foible: {
+        meaning: "a small unusual habit or weakness in someone's character",
+        example: "Everyone has a few harmless foibles."
+    },
+    flail: {
+        meaning: "to move wildly and uncontrollably",
+        example: "The drowning swimmer flailed desperately in the water."
+    },
+    fag: {
+        meaning: "a cigarette; also, to become tired from hard work",
+        example: "He stopped outside for a quick fag."
+    },
+    faze: {
+        meaning: "to disturb or worry someone",
+        example: "The criticism did not faze her at all."
+    },
+    flop: {
+        meaning: "to fail completely; a complete failure",
+        example: "The movie was a commercial flop."
+    },
+    forte: {
+        meaning: "a particular ability or area in which someone is especially skilled",
+        example: "Teaching languages is her forte."
+    },
+    font: {
+        meaning: "a particular style and size of printed or displayed type",
+        example: "Choose a clear font for the presentation."
+    },
+    felicity: {
+        meaning: "great happiness; also, appropriateness or skillful expression",
+        example: "The birth of their child brought them great felicity."
+    },
+    fount: {
+        meaning: "a source of something, especially something desirable or valuable",
+        example: "The library was a fount of knowledge."
+    },
+    grisly: {
+        meaning: "extremely unpleasant, frightening, or involving death or injury",
+        example: "The police discovered the grisly remains of the victim."
+    },
+    goggle: {
+        meaning: "to look with wide-open eyes in surprise",
+        example: "He stood there goggling at the enormous cake."
+    },
+    frill: {
+        meaning: "an unnecessary extra feature or decoration",
+        example: "The hotel offers basic rooms without any expensive frills."
+    },
+    foray: {
+        meaning: "a short attempt to become involved in a new activity or area",
+        example: "The book marks her first foray into historical fiction."
+    },
+    fuddle: {
+        meaning: "to confuse someone; to make someone unable to think clearly",
+        example: "Too much information can fuddle the mind."
+    },
+    furl: {
+        meaning: "to roll or fold something, especially a flag or sail",
+        example: "The sailors furled the sails before the storm."
+    },
+    gratuitous: {
+        meaning: "unnecessary, unwanted, or given without a good reason",
+        example: "The film contains several scenes of gratuitous violence."
+    },
+    "fudge (verb)": {
+        meaning: "to alter or handle information dishonestly or inaccurately in order to avoid a problem",
+        example: "The company was accused of fudging its financial figures."
+    },
+    fry: {
+        meaning: "to cook food in hot oil or fat",
+        example: "She fried two eggs for breakfast."
+    },
+    funicular: {
+        meaning: "a railway on a steep slope with cars moved by cables",
+        example: "We took the funicular up the steep hill."
+    },
+    fidget: {
+        meaning: "to make small restless movements because of nervousness or impatience",
+        example: "The child kept fidgeting during the long lecture."
+    },
+    gimmick: {
+        meaning: "a clever trick or unusual feature used to attract attention",
+        example: "The free gift was just a marketing gimmick."
+    },
+    footloose: {
+        meaning: "free to travel or live as one wishes without responsibilities tying one down",
+        example: "After graduation, he was young and footloose."
+    },
+    galvanize: {
+        meaning: "to cause people to take action by making them excited or determined",
+        example: "The disaster galvanized the community into action."
+    },
+    fluke: {
+        meaning: "a surprising success that happens by chance rather than skill",
+        example: "Winning the competition was not a fluke; she had trained for months."
+    },
+    foist: {
+        meaning: "to force someone to accept something unwanted",
+        example: "They tried to foist the expensive product on unsuspecting customers."
+    },
+    irruption: {
+        meaning: "a sudden and forceful entrance or appearance",
+        example: "The sudden irruption of protesters interrupted the meeting."
+    },
+    invidious: {
+        meaning: "unfair or likely to cause resentment because it involves an unpleasant comparison",
+        example: "It would be invidious to compare the two students in front of everyone."
+    },
+    heinous: {
+        meaning: "extremely evil, cruel, or shocking",
+        example: "The court described the crime as particularly heinous."
+    },
+    invocation: {
+        meaning: "a formal request for help or protection, especially from a god; a use or mention of something",
+        example: "The ceremony began with an invocation for peace."
+    },
+    illustrious: {
+        meaning: "very famous, respected, and admired because of achievements",
+        example: "The university has an illustrious history."
+    },
+    inundate: {
+        meaning: "to flood a place with water; to overwhelm someone with a large amount of something",
+        example: "The office was inundated with complaints."
+    },
+    hoggish: {
+        meaning: "greedy or excessively concerned with getting or consuming things",
+        example: "His hoggish appetite surprised everyone at the dinner table."
+    },
+    harbinger: {
+        meaning: "a sign that something is going to happen",
+        example: "The warm weather was a harbinger of spring."
+    },
+    inadvertent: {
+        meaning: "not intentional; accidental",
+        example: "His inadvertent remark offended his colleague."
+    },
+    ineluctable: {
+        meaning: "impossible to avoid or escape",
+        example: "Death is an ineluctable part of human existence."
+    },
+    impinge: {
+        meaning: "to have an effect on something, especially in a negative way",
+        example: "The new regulations may impinge on individual freedom."
+    },
+    imbibe: {
+        meaning: "to drink, especially alcohol; to absorb ideas or knowledge",
+        example: "The students eagerly imbibed the professor's ideas."
+    },
+    hale: {
+        meaning: "healthy and strong, especially despite being old",
+        example: "His grandfather is still hale and active at ninety."
+    },
+    inexorable: {
+        meaning: "impossible to stop or prevent from happening",
+        example: "The inexorable rise of technology has changed the workplace."
+    },
+    incisive: {
+        meaning: "clear, direct, and showing sharp understanding",
+        example: "She asked several incisive questions during the interview."
+    },
+    injunction: {
+        meaning: "an official court order requiring someone to do or stop doing something",
+        example: "The court issued an injunction preventing the company from using the property."
+    },
+    intersperse: {
+        meaning: "to spread things among other things at intervals",
+        example: "The author interspersed the story with humorous anecdotes."
+    },
+    intricacy: {
+        meaning: "the quality of having many complicated details or parts",
+        example: "The intricacy of the design impressed the engineers."
+    },
+    imperious: {
+        meaning: "expecting to be obeyed and showing a superior attitude",
+        example: "Her imperious manner made it difficult for others to disagree with her."
+    },
+    hulk: {
+        meaning: "a very large person or thing, especially one that is old or unattractive",
+        example: "An old hulk of a ship lay abandoned in the harbor."
+    },
+    ingrained: {
+        meaning: "deeply established and difficult to change",
+        example: "These habits are deeply ingrained in the culture."
+    },
+    heartrending: {
+        meaning: "causing great sadness or emotional pain",
+        example: "The documentary tells a heartrending story of loss."
+    },
+    inveterate: {
+        meaning: "having a particular habit or tendency for a long time",
+        example: "He is an inveterate traveler who has visited more than fifty countries."
+    },
+    intrepid: {
+        meaning: "extremely brave and willing to face danger",
+        example: "The intrepid explorers crossed the desert on foot."
+    },
+    haggle: {
+        meaning: "to argue about the price of something in order to reach a lower price",
+        example: "Tourists often haggle over prices in the market."
+    },
+    heed: {
+        meaning: "to pay attention to advice, warnings, or instructions",
+        example: "You should heed the doctor's advice."
+    },
+    hunch: {
+        meaning: "a feeling or guess that something is true without clear evidence",
+        example: "I had a hunch that something was wrong."
+    },
+    hamstring: {
+        meaning: "to seriously limit someone's ability to act or succeed",
+        example: "The lack of funding hamstrung the research project."
+    },
+    hallowed: {
+        meaning: "regarded as very holy, sacred, or greatly respected",
+        example: "The cemetery is considered hallowed ground."
+    },
+    hermetic: {
+        meaning: "completely sealed and isolated from outside influence",
+        example: "The equipment was stored in a hermetic container."
+    },
+    incensed: {
+        meaning: "extremely angry",
+        example: "The residents were incensed by the sudden rent increase."
+    },
+    hamlet: {
+        meaning: "a very small village",
+        example: "She grew up in a quiet hamlet in the mountains."
+    },
+    hoodwink: {
+        meaning: "to deceive or trick someone",
+        example: "The elderly man was hoodwinked into giving away his savings."
+    },
+    highhanded: {
+        meaning: "using power or authority without caring about other people's opinions",
+        example: "The manager's highhanded treatment of the staff caused resentment."
+    },
+    hereditary: {
+        meaning: "passed from parents to children through genes",
+        example: "Some forms of the disease are hereditary."
+    },
+    idiosyncrasy: {
+        meaning: "a person's unusual habit, behavior, or characteristic",
+        example: "One of his idiosyncrasies is talking to himself while working."
+    },
+    hurtle: {
+        meaning: "to move very fast, often in an uncontrolled way",
+        example: "The car hurtled down the steep road."
+    },
+    heyday: {
+        meaning: "the period when someone or something was most successful or popular",
+        example: "The theater was famous during its heyday."
+    },
+    intransigent: {
+        meaning: "unwilling to change one's opinions or agree with others",
+        example: "The two sides remained intransigent during the negotiations."
+    },
+    howler: {
+        meaning: "a very obvious and embarrassing mistake",
+        example: "I made a howler by sending the email to the wrong person."
+    },
+    inkling: {
+        meaning: "a slight idea or suspicion about something",
+        example: "I had no inkling that they were planning a surprise."
+    },
+    ignominy: {
+        meaning: "public shame or disgrace",
+        example: "The scandal ended in political ignominy."
+    },
+    hobnob: {
+        meaning: "to spend time talking socially with important or influential people",
+        example: "The businessman spent the evening hobnobbing with politicians."
+    },
+    isotope: {
+        meaning: "one of two or more forms of an element with the same chemical properties but different atomic masses",
+        example: "Carbon-14 is a radioactive isotope of carbon."
+    },
+    hovel: {
+        meaning: "a small, dirty, and unpleasant house or room",
+        example: "They were living in a tiny, damp hovel."
+    },
+    haywire: {
+        meaning: "not working correctly or behaving in an uncontrolled way",
+        example: "The computer system suddenly went haywire."
+    },
+    indemnify: {
+        meaning: "to compensate someone for damage or loss; to protect against financial loss",
+        example: "The insurance policy indemnifies the owner against theft."
+    },
+    harangue: {
+        meaning: "a long and angry speech criticizing or persuading someone",
+        example: "The coach gave the players a long harangue after the defeat."
+    },
+    hiatus: {
+        meaning: "a pause or break in an activity or process",
+        example: "The band returned after a five-year hiatus."
+    },
+    haggard: {
+        meaning: "looking exhausted, worried, or ill",
+        example: "He looked haggard after several nights without sleep."
+    },
+    insidious: {
+        meaning: "gradually causing harm in a way that is difficult to notice",
+        example: "Stress can have an insidious effect on one's health."
+    },
+    immaterial: {
+        meaning: "not important or relevant",
+        example: "Whether he arrived five minutes late is immaterial to the decision."
+    },
+    interminable: {
+        meaning: "seeming to continue for an extremely long time and therefore becoming boring",
+        example: "The meeting seemed interminable."
+    },
+    invoke: {
+        meaning: "to mention or use something as a reason, authority, or source of support",
+        example: "The lawyer invoked the Constitution in his argument."
+    },
+    haphazard: {
+        meaning: "lacking planning, order, or organization",
+        example: "The books were arranged in a haphazard manner."
+    },
+    impertinent: {
+        meaning: "rude or disrespectful, especially toward someone older or more important",
+        example: "The student's impertinent question annoyed the professor."
+    },
+    instigate: {
+        meaning: "to cause an event or situation to happen, especially something unpleasant",
+        example: "The speech was accused of instigating violence."
+    },
+    insolent: {
+        meaning: "rude and disrespectful, especially toward someone in authority",
+        example: "The insolent student refused to apologize."
+    },
+    harrowing: {
+        meaning: "extremely upsetting or frightening",
+        example: "The survivors described their harrowing experience."
+    },
+    hangar: {
+        meaning: "a large building where aircraft are kept and maintained",
+        example: "The plane was moved into the hangar for repairs."
+    },
+    implore: {
+        meaning: "to beg someone strongly to do something",
+        example: "She implored him to reconsider his decision."
+    },
+    lobe: {
+        meaning: "a rounded part of an organ such as the brain, ear, or lung",
+        example: "The surgeon removed a small part of the lung's lower lobe."
+    },
+    jeer: {
+        meaning: "to laugh at or insult someone in a mocking way",
+        example: "The crowd began to jeer at the referee."
+    },
+    manure: {
+        meaning: "animal waste used as fertilizer",
+        example: "The farmer spread manure over the fields."
+    },
+    jolt: {
+        meaning: "a sudden sharp movement or shock",
+        example: "The sudden jolt woke everyone on the bus."
+    },
+    malt: {
+        meaning: "grain, especially barley, that has been soaked and dried for use in brewing or food",
+        example: "Barley malt is an important ingredient in beer."
+    },
+    moat: {
+        meaning: "a deep wide ditch filled with water around a castle or fort",
+        example: "The medieval castle was surrounded by a deep moat."
+    },
+    lynch: {
+        meaning: "to kill someone illegally by hanging or other violence without a legal trial",
+        example: "The mob threatened to lynch the prisoner."
+    },
+    knead: {
+        meaning: "to press and fold dough repeatedly with the hands",
+        example: "Knead the dough for about ten minutes."
+    },
+    levity: {
+        meaning: "lightness or humor, especially in a serious situation",
+        example: "He tried to add a little levity to the tense meeting."
+    },
+    mayhem: {
+        meaning: "a situation involving great disorder, confusion, or violence",
+        example: "The sudden power failure caused mayhem at the airport."
+    },
+    jetty: {
+        meaning: "a structure extending into the water, used for boats or to protect a harbor",
+        example: "We walked along the jetty and watched the fishing boats."
+    },
+    ligament: {
+        meaning: "a strong band of tissue connecting bones at a joint",
+        example: "He tore a ligament in his knee while playing football."
+    },
+    mink: {
+        meaning: "a small animal with valuable dark fur",
+        example: "The coat was made from mink."
+    },
+    menial: {
+        meaning: "involving simple, boring, and low-status work",
+        example: "He started his career doing menial office tasks."
+    },
+    maverick: {
+        meaning: "a person who refuses to follow conventional ideas or practices",
+        example: "The maverick scientist challenged several accepted theories."
+    },
+    meander: {
+        meaning: "to move or develop slowly and without a clear direction",
+        example: "The river meanders through the valley."
+    },
+    mackerel: {
+        meaning: "a type of sea fish with a narrow body and dark stripes",
+        example: "We had grilled mackerel for dinner."
+    },
+    leeway: {
+        meaning: "freedom to act or make decisions within certain limits",
+        example: "The teacher gave us some leeway in choosing our topics."
+    },
+    mar: {
+        meaning: "to damage or spoil the appearance or quality of something",
+        example: "A large scratch marred the surface of the table."
+    },
+    juggle: {
+        meaning: "to manage several activities or responsibilities at the same time",
+        example: "She has to juggle work, study, and family responsibilities."
+    },
+    midget: {
+        meaning: "an outdated and offensive term for a person with dwarfism",
+        example: "The term is now generally considered offensive and should be avoided."
+    },
+    knack: {
+        meaning: "a special natural ability to do something easily or well",
+        example: "She has a knack for explaining difficult ideas clearly."
+    },
+    maul: {
+        meaning: "to attack and badly injure someone or something by biting or tearing",
+        example: "The animal mauled the hunter."
+    },
+    lagoon: {
+        meaning: "a shallow area of salt water separated from the sea by sand or rocks",
+        example: "The resort overlooks a beautiful blue lagoon."
+    },
+    migraine: {
+        meaning: "a severe headache, often accompanied by nausea and sensitivity to light",
+        example: "She had to lie down because of a severe migraine."
+    },
+    mussel: {
+        meaning: "a small sea or freshwater shellfish with a dark shell",
+        example: "We ordered steamed mussels with garlic."
+    },
+    livid: {
+        meaning: "extremely angry; also dark bluish-purple in color",
+        example: "She was livid when she discovered the mistake."
+    },
+    metabolism: {
+        meaning: "the chemical processes by which the body converts food into energy",
+        example: "Exercise can affect the body's metabolism."
+    },
+    pedigree: {
+        meaning: "a record of the ancestry of a person or animal; a person's or thing's distinguished background",
+        example: "The horse has an impressive racing pedigree."
+    },
+    paraffin: {
+        meaning: "a waxy substance used for candles and other products",
+        example: "The candle is made from paraffin."
+    },
+    nebulous: {
+        meaning: "unclear, vague, or difficult to understand",
+        example: "The proposal remains nebulous and needs more detail."
+    },
+    parry: {
+        meaning: "to avoid or deflect a question, attack, or criticism",
+        example: "The politician skillfully parried the reporter's question."
+    },
+    feckless: {
+        meaning: "lacking energy, determination, or effectiveness",
+        example: "The feckless manager failed to solve the problem."
+    },
+    inculcate: {
+        meaning: "to teach an idea or principle repeatedly until it becomes firmly established",
+        example: "Parents often try to inculcate good habits in their children."
+    },
+    nape: {
+        meaning: "the back part of the neck",
+        example: "She felt a cool breeze on the nape of her neck."
+    },
+    nitrate: {
+        meaning: "a chemical compound containing nitrogen and oxygen, often used in fertilizers",
+        example: "High levels of nitrate were found in the groundwater."
+    },
+    nigh: {
+        meaning: "near in time, place, or degree; almost",
+        example: "The task seemed nigh impossible."
+    },
+    nomenclature: {
+        meaning: "a system of names used in a particular subject",
+        example: "Scientists use a standard nomenclature to name chemical compounds."
+    },
+    plunger: {
+        meaning: "a tool with a rubber cup used to clear blocked pipes",
+        example: "I used a plunger to unblock the sink."
+    },
+    opus: {
+        meaning: "a work of art, literature, or music, especially a major one",
+        example: "The symphony is regarded as the composer's greatest opus."
+    },
+    poignant: {
+        meaning: "causing strong feelings of sadness or emotion",
+        example: "The film ends with a poignant scene of farewell."
+    },
+    prodigy: {
+        meaning: "a young person with an exceptional natural ability",
+        example: "The musical prodigy began playing the piano at three."
+    },
+    pheasant: {
+        meaning: "a large bird with a long tail, often hunted for food",
+        example: "A pheasant flew across the field."
+    },
+    perimeter: {
+        meaning: "the outer edge or boundary of an area",
+        example: "Security guards surrounded the perimeter of the building."
+    },
+    pike: {
+        meaning: "a long pointed weapon; also, a freshwater fish with a long body and sharp teeth",
+        example: "The museum displays a medieval pike."
+    },
+    prod: {
+        meaning: "to push or poke someone or something; to encourage someone to act",
+        example: "She prodded him to finish his homework."
+    },
+    pompous: {
+        meaning: "too serious or important in manner, often in a way that seems ridiculous",
+        example: "His pompous speech impressed no one."
+    },
+    pervade: {
+        meaning: "to spread throughout every part of something",
+        example: "A sense of excitement pervaded the room."
+    },
+    prodigal: {
+        meaning: "wastefully spending money or resources",
+        example: "His prodigal spending eventually left him deeply in debt."
+    },
+    pidgin: {
+        meaning: "a simplified language developed for communication between people who speak different languages",
+        example: "The traders communicated in a local pidgin."
+    },
+    plaque: {
+        meaning: "a flat piece of metal or stone with writing on it; also, a substance that builds up on teeth or in arteries",
+        example: "A bronze plaque marks the site of the historic building."
+    },
+    oboe: {
+        meaning: "a woodwind musical instrument with a narrow tube and a double reed",
+        example: "The oboe played the opening melody."
+    },
+    neurotic: {
+        meaning: "often worried or anxious about things that are not particularly serious",
+        example: "He became neurotic about making even small mistakes."
+    },
+    precinct: {
+        meaning: "a district or defined area, especially one used for administrative or electoral purposes",
+        example: "The police closed off the entire precinct."
+    },
+    perfunctory: {
+        meaning: "done quickly and without genuine interest, care, or enthusiasm",
+        example: "He gave the report only a perfunctory review."
+    },
+    prism: {
+        meaning: "a transparent solid that separates light into different colors",
+        example: "Sunlight passed through the prism and formed a rainbow."
+    },
+    prostate: {
+        meaning: "a gland in men that produces part of the fluid in semen",
+        example: "The doctor recommended a routine prostate examination."
+    },
+    nectar: {
+        meaning: "a sweet liquid produced by flowers and collected by bees; something especially delicious",
+        example: "Bees collect nectar from flowers."
+    },
+    pristine: {
+        meaning: "in its original condition; extremely clean or unspoiled",
+        example: "The island has miles of pristine beaches."
+    },
+    polemic: {
+        meaning: "a strong verbal or written attack on a particular idea or group",
+        example: "The article was a fierce polemic against government policy."
+    },
+    prophesy: {
+        meaning: "to say what will happen in the future",
+        example: "The ancient text appeared to prophesy a great disaster."
+    },
+    peat: {
+        meaning: "a dark substance formed from partly decayed plants, used as fuel or in gardening",
+        example: "Peat has traditionally been used as a source of fuel."
+    },
+    perturb: {
+        meaning: "to worry or upset someone",
+        example: "The unexpected delay perturbed the travelers."
+    },
+    outlay: {
+        meaning: "the amount of money spent on something",
+        example: "The initial outlay for the equipment was quite high."
+    },
+    omniscient: {
+        meaning: "knowing everything",
+        example: "The novel is narrated by an omniscient narrator who knows every character's thoughts."
+    },
+    pleat: {
+        meaning: "a narrow fold in cloth made by doubling the material over itself",
+        example: "The skirt has several neat pleats."
+    },
+    palpable: {
+        meaning: "so obvious or intense that it can almost be felt",
+        example: "There was a palpable sense of tension in the room."
+    },
+    pare: {
+        meaning: "to cut away the outer part of something, especially the skin of fruit or vegetables",
+        example: "She carefully pared the apple with a small knife."
+    },
+    picket: {
+        meaning: "a person or group standing outside a workplace to protest; a pointed stake",
+        example: "The workers formed a picket outside the factory."
+    },
+    nab: {
+        meaning: "to catch or arrest someone; to get or obtain something quickly",
+        example: "The police nabbed the suspect near the station."
+    },
+    quail: {
+        meaning: "to feel frightened and lose courage",
+        example: "She did not quail in the face of criticism."
+    },
+    parable: {
+        meaning: "a simple story used to teach a moral or religious lesson",
+        example: "The teacher used a parable to explain the importance of kindness."
+    },
+    nip: {
+        meaning: "to pinch or bite lightly; to take or remove quickly",
+        example: "The cold wind nipped at my face."
+    },
+    provisional: {
+        meaning: "temporary and subject to later change or confirmation",
+        example: "We have made a provisional agreement."
+    },
+    pamper: {
+        meaning: "to treat someone with excessive care, attention, or luxury",
+        example: "The hotel is designed to pamper its guests."
+    },
+    parson: {
+        meaning: "a Christian priest or minister, especially in a Protestant church",
+        example: "The village parson led the Sunday service."
+    },
+    quintessence: {
+        meaning: "the perfect or most typical example of something",
+        example: "She is the quintessence of elegance and good manners."
+    },
+    provident: {
+        meaning: "careful to prepare for the future and avoid unnecessary risks or spending",
+        example: "His provident habits allowed him to save enough for retirement."
+    },
+    plenipotentiary: {
+        meaning: "a person, especially a diplomat, given full power to act on behalf of a government",
+        example: "The ambassador was appointed plenipotentiary for the negotiations."
+    }
+};
+
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+}
+
+
+
+function generateQuizQuestions(numberOfQuestions = Object.keys(vocabulary).length) {
+    const allWords = Object.entries(vocabulary);
+
+    // Randomly select vocabulary items
+    const selectedWords = shuffle([...allWords])
+        .slice(0, Math.min(numberOfQuestions, allWords.length));
+
+    const questions = selectedWords.map(([word, entry]) => {
+
+        // Get three other words as distractors
+        const otherWords = allWords
+            .filter(([w]) => w !== word)
+            .map(([w]) => w);
+
+        // Randomly select 3 distractors
+        const distractors = shuffle([...otherWords])
+            .slice(0, 3);
+
+        // Create four choices
+        const options = [
+            word,
+            ...distractors
+        ];
+
+        // Shuffle the four choices
+        shuffle(options);
+
+        // Find the correct answer
+        const answerIndex = options.indexOf(word);
+
+        const answerLetter =
+            String.fromCharCode(65 + answerIndex);
+
+        // Get meaning and example
+        const meaning = entry.meaning;
+        const example = entry.example;
+
+        return `${meaning}
+A. ${options[0]}
+B. ${options[1]}
+C. ${options[2]}
+D. ${options[3]}
+Answer: ${answerLetter}
+Meaning: ${meaning}
+Example: ${example}`;
+
+    });
+
+    return questions.join("\n\n");
+}
+
+// Generate exactly 100 questions
+const questionText = generateQuizQuestions(Object.keys(vocabulary).length);
+function parseQuestions(text) {
+
+    // Normalize line breaks
+
+    text = text.replace(/\r\n/g, "\n");
+
+
+    // Split questions at blank lines
+
+    const blocks = text
+        .trim()
+        .split(/\n\s*\n/);
+
+
+    const questions = [];
+
+
+    blocks.forEach(function(block) {
+
+        const lines = block
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line !== "");
+
+
+        if (lines.length < 6) {
+            return;
+        }
+
+
+        // ----------------------------------------------
+        // Question
+        // ----------------------------------------------
+
+        const question = lines[0];
+
+
+        // ----------------------------------------------
+        // Options
+        // ----------------------------------------------
+
+        const options = [];
+
+        for (let i = 1; i <= 4; i++) {
+
+            let option = lines[i];
+
+
+            // Remove A. B. C. D.
+            // Also accepts A. option, A) option, etc.
+
+            option = option.replace(
+                /^[A-Da-d]\s*[\.\)]\s*/,
+                ""
+            );
+
+
+            options.push(option);
+
+        }
+
+
+        // ----------------------------------------------
+        // Answer
+        // ----------------------------------------------
+
+        const answerLine = lines[5];
+
+
+        const match = answerLine.match(
+            /Answer\s*:\s*([A-Da-d1-4])/i
+        );
+
+
+        if (!match) {
+            console.warn(
+                "Could not find answer:",
+                answerLine
+            );
+
+            return;
+        }
+
+
+        const answerValue =
+            match[1].toUpperCase();
+
+
+        let answer;
+
+
+        // If answer is A/B/C/D
+
+        if (
+            answerValue === "A" ||
+            answerValue === "B" ||
+            answerValue === "C" ||
+            answerValue === "D"
+        ) {
+
+            answer =
+                answerValue.charCodeAt(0) -
+                "A".charCodeAt(0) +
+                1;
+
+        }
+
+
+        // If answer is 1/2/3/4
+
+        else {
+
+            answer =
+                parseInt(answerValue);
+
+        }
+
+
+        // ----------------------------------------------
+        // Optional Meaning / Example lines
+        // ----------------------------------------------
+
+        let meaning = "";
+        let example = "";
+
+        for (let i = 6; i < lines.length; i++) {
+
+            const meaningMatch = lines[i].match(
+                /^Meaning\s*:\s*(.+)$/i
+            );
+
+            const exampleMatch = lines[i].match(
+                /^Example\s*:\s*(.+)$/i
+            );
+
+            if (meaningMatch) {
+                meaning = meaningMatch[1];
+            } else if (exampleMatch) {
+                example = exampleMatch[1];
+            }
+
+        }
+
+
+        questions.push({
+
+            question: question,
+
+            options: options,
+
+            answer: answer,
+
+            meaning: meaning,
+
+            example: example
+
+        });
+
+    });
+
+
+    return questions;
+
+}
+
+
+// ======================================================
+// CREATE QUESTION ARRAY
+// ======================================================
+let questions =
+    parseQuestions(questionText);
+
+const allQuestions = [...questions];
+
+
+// ======================================================
+// VARIABLES
+// ======================================================
+
+let currentQuestion = 0;
+let correctAnswers = 0;
+let score = 0;
+let questionResults = [];
+
+
+// ======================================================
+// STARRED REVIEW STATE
+// ======================================================
+
+// True while the user is reviewing starred questions
+let isReviewingStarred = false;
+
+// Stores the complete state of the main quiz
+// before entering starred review
+let savedQuizState = null;
+
+let navigationTimer = null;
+// ======================================================
+// SAVE / LOAD QUIZ PROGRESS
+// ======================================================
+
+const QUIZ_STORAGE_KEY = "englishQuizProgress";
+
+
+function getVocabularySignature() {
+
+    return JSON.stringify(
+        Object.keys(vocabulary)
+            .sort()
+            .map(word => [
+                word,
+                vocabulary[word].meaning,
+                vocabulary[word].example
+            ])
+    );
+
+}
+
+
+function saveQuizProgress() {
+
+    // Do NOT save the temporary starred-review quiz
+    if (isReviewingStarred) {
+        return;
+    }
+
+    localStorage.setItem(
+        QUIZ_STORAGE_KEY,
+        JSON.stringify({
+
+            vocabularySignature:
+                getVocabularySignature(),
+
+            questions:
+                questions,
+
+            currentQuestion:
+                currentQuestion,
+
+            correctAnswers:
+                correctAnswers,
+
+            score:
+                score,
+
+            questionResults:
+                questionResults
+
+        })
+    );
+
+}
+
+
+function loadQuizProgress() {
+
+    const saved =
+        localStorage.getItem(QUIZ_STORAGE_KEY);
+
+    if (!saved) {
+        return false;
+    }
+
+    try {
+
+        const data =
+            JSON.parse(saved);
+
+
+        // ------------------------------------------
+        // Vocabulary has changed
+        // ------------------------------------------
+
+        if (
+            data.vocabularySignature !==
+            getVocabularySignature()
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Prevent an old / incomplete review state
+        // from being loaded as the main quiz
+        // ------------------------------------------
+
+        if (
+            !data.questions ||
+            data.questions.length !==
+            allQuestions.length
+        ) {
+
+            localStorage.removeItem(
+                QUIZ_STORAGE_KEY
+            );
+
+            return false;
+        }
+
+
+        // ------------------------------------------
+        // Restore saved questions
+        // ------------------------------------------
+
+        questions.length = 0;
+
+        questions.push(
+            ...data.questions
+        );
+
+
+        currentQuestion =
+            data.currentQuestion || 0;
+
+
+        correctAnswers =
+            data.correctAnswers || 0;
+
+
+        score =
+            data.score || 0;
+
+
+        questionResults =
+            data.questionResults || [];
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Could not load quiz progress:",
+            error
+        );
+
+        localStorage.removeItem(
+            QUIZ_STORAGE_KEY
+        );
+
+        return false;
+    }
+
+}
+
+
+// ======================================================
+// DIFFICULT WORDS / STARRED QUESTIONS
+// ======================================================
+
+const STARRED_WORDS_KEY =
+    "englishQuizStarredWords";
+
+
+function getStarredWords() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                STARRED_WORDS_KEY
+            ) || "[]"
+        );
+
+    }
+
+    catch (error) {
+
+        return [];
+    }
+
+}
+
+
+function saveStarredWords(words) {
+
+    localStorage.setItem(
+        STARRED_WORDS_KEY,
+        JSON.stringify(words)
+    );
+
+}
+
+
+function getCorrectWord(question) {
+
+    return question.options[
+        question.answer - 1
+    ];
+
+}
+
+
+function isStarred(question) {
+
+    return getStarredWords().includes(
+        getCorrectWord(question)
+    );
+
+}
+
+
+function updateStarButton() {
+
+    const button =
+        document.getElementById("starButton");
+
+    if (
+        !button ||
+        !questions[currentQuestion]
+    ) {
+        return;
+    }
+
+
+    if (
+        isStarred(
+            questions[currentQuestion]
+        )
+    ) {
+
+        button.textContent =
+            "★ Difficult";
+
+        button.classList.add(
+            "starred"
+        );
+
+    }
+
+    else {
+
+        button.textContent =
+            "☆ Difficult";
+
+        button.classList.remove(
+            "starred"
+        );
+
+    }
+
+
+    updateReviewButton();
+
+}
+
+
+function updateReviewButton() {
+
+    document.getElementById(
+        "reviewStarredButton"
+    ).textContent =
+        "★ Review (" +
+        getStarredWords().length +
+        ")";
+
+}
+
+
+function toggleStar() {
+
+    const question =
+        questions[currentQuestion];
+
+    if (!question) {
+        return;
+    }
+
+
+    const word =
+        getCorrectWord(question);
+
+
+    const starred =
+        getStarredWords();
+
+
+    const index =
+        starred.indexOf(word);
+
+
+    if (index === -1) {
+
+        starred.push(word);
+
+    }
+
+    else {
+
+        starred.splice(index, 1);
+
+    }
+
+
+    saveStarredWords(starred);
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// REVIEW STARRED QUESTIONS
+// ======================================================
+
+function reviewStarred() {
+ // Cancel any pending automatic navigation
+ if (navigationTimer !== null) {
+        clearTimeout(navigationTimer);
+        navigationTimer = null;
+    }
+
+    if (isReviewingStarred) return;
+    const starred =
+        getStarredWords();
+
+
+    if (starred.length === 0) {
+
+        alert(
+            "You have not marked any difficult words yet."
+        );
+
+        return;
+    }
+
+
+    // ------------------------------------------
+    // SAVE THE COMPLETE MAIN-QUIZ STATE
+    // ------------------------------------------
+
+    savedQuizState = {
+
+        questions:
+            [...questions],
+
+        currentQuestion:
+            currentQuestion,
+
+        correctAnswers:
+            correctAnswers,
+
+        score:
+            score,
+
+        questionResults:
+            [...questionResults]
+
+    };
+
+
+    // We are now entering starred review
+    isReviewingStarred = true;
+
+
+    // ------------------------------------------
+    // Create temporary starred-question quiz
+    // ------------------------------------------
+
+    questions =
+        allQuestions.filter(function(question) {
+
+            return starred.includes(
+                getCorrectWord(question)
+            );
+
+        });
+
+
+    // Start starred review from Question 1
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    // IMPORTANT:
+    // Do NOT remove QUIZ_STORAGE_KEY here.
+    // The original quiz progress remains safely
+    // stored in localStorage.
+
+
+    // Display first starred question
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// DISPLAY QUESTION
+// ======================================================
+
+function displayQuestion() {
+
+if (!isReviewingStarred) {
+    saveQuizProgress();
+}
+
+document.querySelector(".navigation").style.display = "flex";
+
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Question number
+    document.getElementById(
+        "progress"
+    ).textContent =
+        "Question " +
+        (currentQuestion + 1) +
+        " / " +
+        questions.length;
+
+
+    // Current score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+
+    // Display question
+    document.getElementById(
+        "question"
+    ).textContent =
+        question.question;
+
+
+    // Clear old options
+    const optionsDiv =
+        document.getElementById("options");
+
+    optionsDiv.innerHTML = "";
+
+
+    // Clear feedback
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    // Create option buttons
+    question.options.forEach(
+        function(option, index) {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.className =
+                "option";
+
+
+            button.textContent =
+                String.fromCharCode(
+                    65 + index
+                ) +
+                ". " +
+                option;
+
+
+            button.addEventListener(
+                "click",
+                function() {
+
+                    checkAnswer(
+                        index,
+                        button
+                    );
+
+                }
+            );
+
+
+            optionsDiv.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    // Previous button
+    document.getElementById(
+        "prevButton"
+    ).disabled =
+        currentQuestion === 0;
+
+
+    updateStarButton();
+
+}
+
+
+// ======================================================
+// CHECK ANSWER
+// ======================================================
+
+function checkAnswer(
+    selectedIndex,
+    button
+) {
+
+    const question =
+        questions[currentQuestion];
+
+
+    // Prevent answering the same question twice
+    const buttons =
+        document.querySelectorAll(
+            ".option"
+        );
+
+
+    buttons.forEach(
+        function(btn) {
+
+            btn.disabled = true;
+
+        }
+    );
+
+
+    // ==========================================
+    // CORRECT ANSWER
+    // ==========================================
+
+    if (
+        selectedIndex + 1 ===
+        question.answer
+    ) {
+
+        questionResults[
+            currentQuestion
+        ] = 1;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Correct!";
+
+
+            navigationTimer = setTimeout(() => {
+    navigationTimer = null;
+    goToNextOrFinish();
+}, 900);
+
+    }
+
+
+    // ==========================================
+    // WRONG ANSWER
+    // ==========================================
+
+    else {
+
+        questionResults[
+            currentQuestion
+        ] = 0;
+
+
+        score =
+            questionResults.reduce(
+                (total, mark) =>
+                    total + mark,
+                0
+            );
+
+
+        correctAnswers =
+            questionResults.filter(
+                mark => mark === 1
+            ).length;
+
+
+        // saveQuizProgress() automatically
+        // does nothing during starred review
+        saveQuizProgress();
+
+
+        button.classList.add(
+            "wrong"
+        );
+
+
+        buttons[
+            question.answer - 1
+        ].classList.add(
+            "correct"
+        );
+
+
+        document.getElementById(
+            "feedback"
+        ).textContent =
+            "Wrong.";
+
+
+        showInfo(question);
+
+    }
+
+
+    // Update displayed score
+    document.getElementById(
+        "score"
+    ).textContent =
+        "Score: " +
+        score;
+
+}
+
+
+// ======================================================
+// SHOW / CLOSE INFO POPUP
+// ======================================================
+
+function showInfo(question) {
+
+    const correctOption =
+        question.options[
+            question.answer - 1
+        ];
+
+
+    document.getElementById(
+        "infoWord"
+    ).textContent =
+        correctOption;
+
+
+    document.getElementById(
+        "infoMeaning"
+    ).innerHTML =
+        question.meaning
+            ? "<span class='label'>Meaning: </span>" +
+              question.meaning
+            : "";
+
+
+    document.getElementById(
+        "infoExample"
+    ).innerHTML =
+        question.example
+            ? "<span class='label'>Example: </span>" +
+              question.example
+            : "";
+
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.add(
+        "visible"
+    );
+
+}
+
+
+function closeInfo() {
+
+    document.getElementById(
+        "infoOverlay"
+    ).classList.remove(
+        "visible"
+    );
+
+
+    // Automatically move on once
+    // the popup is dismissed
+    goToNextOrFinish();
+
+}
+
+
+// ======================================================
+// PREVIOUS QUESTION
+// ======================================================
+
+function previousQuestion() {
+
+if (currentQuestion > 0) {
+
+    currentQuestion--;
+
+    if (!isReviewingStarred) {
+        saveQuizProgress();
+    }
+
+    displayQuestion();
+}
+}
+
+
+document.getElementById(
+    "prevButton"
+).addEventListener(
+    "click",
+    previousQuestion
+);
+
+
+function goToNextOrFinish() {
+
+// More questions remain
+if (currentQuestion < questions.length - 1) {
+
+    currentQuestion++;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Starred review has finished
+if (isReviewingStarred) {
+
+    questions = [...savedQuizState.questions];
+
+    currentQuestion = savedQuizState.currentQuestion;
+
+    correctAnswers = savedQuizState.correctAnswers;
+
+    score = savedQuizState.score;
+
+    questionResults = [...savedQuizState.questionResults];
+
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+    saveQuizProgress();
+
+    displayQuestion();
+
+    return;
+}
+
+
+// Normal quiz has finished
+showResult();
+}
+function restartQuiz() {
+
+    localStorage.removeItem(
+        QUIZ_STORAGE_KEY
+    );
+
+
+    // Exit starred-review mode if necessary
+    isReviewingStarred = false;
+
+    savedQuizState = null;
+
+
+    // Restore the complete question set
+    questions =
+        [...allQuestions];
+
+
+    currentQuestion = 0;
+
+    correctAnswers = 0;
+
+    score = 0;
+
+    questionResults = [];
+
+
+    document.getElementById(
+        "result"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "none";
+
+
+    displayQuestion();
+
+}
+
+
+// ======================================================
+// SHOW FINAL RESULT
+// ======================================================
+
+function showResult() {
+
+    const totalQuestions =
+        questions.length;
+
+
+    const percentage =
+        (correctAnswers /
+            totalQuestions) *
+        100;
+
+
+    const mark =
+        percentage.toFixed(2);
+
+
+    // Clear quiz
+    document.getElementById(
+        "progress"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "score"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "question"
+    ).textContent = "";
+
+
+    document.getElementById(
+        "options"
+    ).innerHTML = "";
+
+
+    document.getElementById(
+        "feedback"
+    ).textContent = "";
+
+
+    document.querySelector(
+        ".navigation"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "restartButton"
+    ).style.display = "block";
+
+
+    // Display result
+    document.getElementById(
+        "result"
+    ).innerHTML =
+
+        "Quiz Finished!<br><br>" +
+
+        "Correct answers: " +
+        correctAnswers +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Score: " +
+        score +
+        " / " +
+        totalQuestions +
+
+        "<br><br>" +
+
+        "Mark: " +
+        mark +
+        " / 100";
+
+}
+
+
+// ======================================================
+// FULL SCREEN
+// ======================================================
+
+function toggleFullScreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement
+            .requestFullscreen()
+            .catch(function(error) {
+
+                console.log(
+                    "Fullscreen request failed:",
+                    error
+                );
+
+            });
+
+    }
+
+    else {
+
+        document.exitFullscreen();
+
+    }
+
+}
+
+
+document.addEventListener(
+    "fullscreenchange",
+    function() {
+
+        const button =
+            document.getElementById(
+                "fullscreenButton"
+            );
+
+
+        if (
+            document.fullscreenElement
+        ) {
+
+            button.textContent =
+                "⛶Exit";
+
+        }
+
+        else {
+
+            button.textContent =
+                "⛶Full";
+
+        }
+
+    }
+);
+
+
+// ======================================================
+// START QUIZ
+// ======================================================
+
+if (questions.length > 0) {
+
+    loadQuizProgress();
+
+    displayQuestion();
+
+}
+
+else {
+
+    document.getElementById(
+        "question"
+    ).textContent =
+        "No questions found.";
+
+}
+function exportStarredWords() {
+    const starredWords = JSON.parse(
+        localStorage.getItem(STARRED_WORDS_KEY) || "[]"
+    );
+
+    const blob = new Blob(
+        [JSON.stringify(starredWords, null, 2)],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "difficult-words.json";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+
+
+</script>
+
+
+</body>
+
+</html>
